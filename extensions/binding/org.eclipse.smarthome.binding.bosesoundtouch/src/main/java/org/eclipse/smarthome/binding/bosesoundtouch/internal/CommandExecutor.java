@@ -110,6 +110,7 @@ public class CommandExecutor implements AvailableSources {
                 + "\" method=\"GET\"><request requestID=\"0\"><info type=\"new\"/></request></header></msg>";
         try {
             handler.getSession().getRemote().sendString(msg);
+            logger.debug("{}: sending request: {}", handler.getDeviceName(), msg);
         } catch (IOException e) {
             handler.onWebSocketError(e);
         }
@@ -508,6 +509,7 @@ public class CommandExecutor implements AvailableSources {
                 + " type=\"new\"/></request></header><body>" + postData + "</body></msg>";
         try {
             handler.getSession().getRemote().sendString(msg);
+            logger.debug("{}: sending request: {}", handler.getDeviceName(), msg);
         } catch (IOException e) {
             handler.onWebSocketError(e);
         }

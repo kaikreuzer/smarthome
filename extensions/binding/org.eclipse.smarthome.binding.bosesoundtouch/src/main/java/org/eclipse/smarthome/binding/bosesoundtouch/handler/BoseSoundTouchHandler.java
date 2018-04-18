@@ -26,6 +26,7 @@ import org.eclipse.jetty.websocket.api.StatusCode;
 import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.eclipse.smarthome.binding.bosesoundtouch.internal.APIRequest;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.BoseSoundTouchHandlerFactory;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.CommandExecutor;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.PresetContainer;
@@ -144,12 +145,46 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
         if (getThing().getStatus() != ThingStatus.ONLINE) {
             openConnection(); // try to reconnect....
         }
+        if (command.equals(RefreshType.REFRESH)) {
+            switch (channelUID.getIdWithoutGroup()) {
+                case CHANNEL_BASS:
+                    commandExecutor.getInformations(APIRequest.BASS);
+                    break;
+                case CHANNEL_KEY_CODE:
+                    // refresh makes no sense... ?
+                    break;
+                case CHANNEL_NOWPLAYING_ALBUM:
+                case CHANNEL_NOWPLAYING_ARTIST:
+                case CHANNEL_NOWPLAYING_ARTWORK:
+                case CHANNEL_NOWPLAYING_DESCRIPTION:
+                case CHANNEL_NOWPLAYING_GENRE:
+                case CHANNEL_NOWPLAYING_ITEMNAME:
+                case CHANNEL_NOWPLAYING_STATIONLOCATION:
+                case CHANNEL_NOWPLAYING_STATIONNAME:
+                case CHANNEL_NOWPLAYING_TRACK:
+                case CHANNEL_RATEENABLED:
+                case CHANNEL_SKIPENABLED:
+                case CHANNEL_SKIPPREVIOUSENABLED:
+                    commandExecutor.getInformations(APIRequest.NOW_PLAYING);
+                    break;
+                case CHANNEL_VOLUME:
+                    commandExecutor.getInformations(APIRequest.VOLUME);
+                    break;
+                case CHANNEL_ZONE_ADD:
+                case CHANNEL_ZONE_REMOVE:
+                case CHANNEL_ZONE_INFO:
+                    commandExecutor.getInformations(APIRequest.GET_ZONE);
+                    break;
+                default:
+                    logger.warn("{} : Got command '{}' for channel '{}' which is unhandled!", getDeviceName(), command,
+                            channelUID.getId());
+            }
+            return;
+        }
         switch (channelUID.getIdWithoutGroup()) {
             case CHANNEL_POWER:
                 if (command instanceof OnOffType) {
                     commandExecutor.postPower((OnOffType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -157,8 +192,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
             case CHANNEL_VOLUME:
                 if (command instanceof PercentType) {
                     commandExecutor.postVolume((PercentType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -166,8 +199,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
             case CHANNEL_MUTE:
                 if (command instanceof OnOffType) {
                     commandExecutor.postVolumeMuted((OnOffType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -183,8 +214,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 }
                 if (command instanceof OperationModeType) {
                     commandExecutor.postOperationMode((OperationModeType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -204,8 +233,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 }
                 if ((command instanceof PlayPauseType) || (command instanceof NextPreviousType)) {
                     commandExecutor.postPlayerControl(command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -213,8 +240,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
             case CHANNEL_PRESET:
                 if (command instanceof DecimalType) {
                     commandExecutor.postPreset((DecimalType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -222,8 +247,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
             case CHANNEL_BASS:
                 if (command instanceof DecimalType) {
                     commandExecutor.postBass((DecimalType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -231,8 +254,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
             case CHANNEL_SAVE_AS_PRESET:
                 if (command instanceof DecimalType) {
                     commandExecutor.addCurrentContentItemToPresetContainer((DecimalType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -248,8 +269,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 }
                 if (command instanceof RemoteKeyType) {
                     commandExecutor.postRemoteKey((RemoteKeyType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -257,8 +276,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
             case CHANNEL_ZONE_ADD:
                 if (command instanceof StringType) {
                     commandExecutor.postZoneAdd((StringType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
@@ -266,8 +283,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
             case CHANNEL_ZONE_REMOVE:
                 if (command instanceof StringType) {
                     commandExecutor.postZoneRemove((StringType) command);
-                } else if (command.equals(RefreshType.REFRESH)) {
-                    // TODO RefreshType
                 } else {
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
