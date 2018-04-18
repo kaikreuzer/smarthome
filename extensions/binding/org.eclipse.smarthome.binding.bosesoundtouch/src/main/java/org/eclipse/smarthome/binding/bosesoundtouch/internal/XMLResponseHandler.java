@@ -98,18 +98,15 @@ public class XMLResponseHandler extends DefaultHandler {
                     } else {
                         state = XMLHandlerState.Unprocessed;
                     }
-                } else if ("msg".equals(localName)) {
-                    // message
-                    state = XMLHandlerState.Msg;
-                } else if ("SoundTouchSdkInfo".equals(localName)) {
-                    // TODO
-                    state = XMLHandlerState.Unprocessed;
                 } else {
-                    if (logger.isDebugEnabled()) {
-                        logger.warn("{}: Unhandled XML entity during {}: '{}'", handler.getDeviceName(), curState,
-                                localName);
+                    state = stateMap.get(localName);
+                    if (state == null) {
+                        if (logger.isDebugEnabled()) {
+                            logger.warn("{}: Unhandled XML entity during {}: '{}", handler.getDeviceName(), curState,
+                                    localName);
+                        }
+                        state = XMLHandlerState.Unprocessed;
                     }
-                    state = XMLHandlerState.Unprocessed;
                 }
                 break;
             case Msg:
@@ -464,7 +461,6 @@ public class XMLResponseHandler extends DefaultHandler {
             case UnprocessedNoTextExpected:
             case Zone:
             case ZoneUpdated:
-            case VolumeTarget:
             case Sources:
                 logger.debug("{}: Unexpected text data during {}: '{}'", handler.getDeviceName(), state,
                         new String(ch, start, length));
@@ -473,6 +469,7 @@ public class XMLResponseHandler extends DefaultHandler {
             case BassMax: // based on these values...
             case BassDefault:
             case BassTarget:
+            case VolumeTarget:
                 // this are currently unprocessed values.
                 break;
             case BassCapabilities:

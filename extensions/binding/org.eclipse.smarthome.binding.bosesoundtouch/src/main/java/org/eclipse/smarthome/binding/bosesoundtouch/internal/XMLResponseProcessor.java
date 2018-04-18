@@ -48,6 +48,13 @@ public class XMLResponseProcessor {
     // initializes our XML parsing state machine
     private void init() {
         stateSwitchingMap = new HashMap<>();
+
+        Map<String, XMLHandlerState> msgInitMap = new HashMap<>();
+        stateSwitchingMap.put(XMLHandlerState.INIT, msgInitMap);
+        msgInitMap.put("msg", XMLHandlerState.Msg);
+        msgInitMap.put("SoundTouchSdkInfo", XMLHandlerState.Unprocessed);
+        msgInitMap.put("userActivityUpdate", XMLHandlerState.Unprocessed); // ignored..
+
         Map<String, XMLHandlerState> msgBodyMap = new HashMap<>();
         stateSwitchingMap.put(XMLHandlerState.MsgBody, msgBodyMap);
         msgBodyMap.put("info", XMLHandlerState.Info);
@@ -87,7 +94,6 @@ public class XMLResponseProcessor {
         updatesMap.put("volumeUpdated", XMLHandlerState.MsgBody);
         updatesMap.put("zoneUpdated", XMLHandlerState.ZoneUpdated); // just notifies but dosn't provide details
         updatesMap.put("bassUpdated", XMLHandlerState.BassUpdated);
-        updatesMap.put("volumeUpdated", XMLHandlerState.VolumeUpdated);
 
         Map<String, XMLHandlerState> volume = new HashMap<>();
         stateSwitchingMap.put(XMLHandlerState.Volume, volume);
