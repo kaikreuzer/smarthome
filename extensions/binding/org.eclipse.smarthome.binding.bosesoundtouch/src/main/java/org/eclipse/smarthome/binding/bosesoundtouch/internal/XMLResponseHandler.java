@@ -528,13 +528,13 @@ public class XMLResponseHandler extends DefaultHandler {
     private boolean checkDeviceId(String localName, Attributes attributes, boolean allowFromMaster) {
         String deviceID = attributes.getValue("deviceID");
         if (deviceID == null) {
-            logger.warn("{}: No device-ID in Entity {}", handler.getDeviceName(), localName);
+            logger.warn("{}: No device-ID in entity {}", handler.getDeviceName(), localName);
             return false;
         }
         if (deviceID.equals(handler.getMacAddress())) {
             return true;
         }
-        logger.warn("{}: Wrong device-ID in Entity '{}': Got: '{}', expected: '{}'", handler.getDeviceName(), localName,
+        logger.warn("{}: Wrong device-ID in entity '{}': Got: '{}', expected: '{}'", handler.getDeviceName(), localName,
                 deviceID, handler.getMacAddress());
         return false;
     }

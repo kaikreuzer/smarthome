@@ -154,12 +154,12 @@ public class SoundTouchDiscoveryParticipant implements MDNSDiscoveryParticipant 
             }
             byte[] mac = info.getPropertyBytes("MAC");
             if (mac == null) {
-                logger.warn("SoundTouch Device {} delivered no MAC Address!", info.getName());
+                logger.warn("SoundTouch Device {} delivered no MAC address!", info.getName());
                 return null;
             }
             if (mac.length != 12) {
                 BigInteger bi = new BigInteger(1, mac);
-                logger.warn("SoundTouch Device {} delivered an invalid MAC Address: 0x{}", info.getName(),
+                logger.warn("SoundTouch Device {} delivered an invalid MAC address: 0x{}", info.getName(),
                         String.format("%0" + (mac.length << 1) + "X", bi));
                 return null;
             }
