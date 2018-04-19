@@ -14,10 +14,6 @@ package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 import static org.eclipse.smarthome.binding.bosesoundtouch.BoseSoundTouchBindingConstants.SUPPORTED_THING_TYPES_UIDS;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.smarthome.binding.bosesoundtouch.handler.BoseSoundTouchHandler;
 import org.eclipse.smarthome.core.storage.Storage;
 import org.eclipse.smarthome.core.storage.StorageService;
@@ -38,7 +34,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(service = ThingHandlerFactory.class, immediate = true, configurationPid = "binding.bosesoundtouch")
 public class BoseSoundTouchHandlerFactory extends BaseThingHandlerFactory {
 
-    private Map<String, BoseSoundTouchHandler> mapOfBoseSoundTouchHandler = new HashMap<>();
     private StorageService storageService;
 
     @Override
@@ -50,8 +45,7 @@ public class BoseSoundTouchHandlerFactory extends BaseThingHandlerFactory {
     protected ThingHandler createHandler(Thing thing) {
         Storage<ContentItem> storage = storageService.getStorage(thing.getUID().toString(),
                 ContentItem.class.getClassLoader());
-        BoseSoundTouchHandler handler = new BoseSoundTouchHandler(thing, this, new PresetContainer(storage));
-        registerSoundTouchDevice(handler);
+        BoseSoundTouchHandler handler = new BoseSoundTouchHandler(thing, new PresetContainer(storage));
         return handler;
     }
 
@@ -64,44 +58,4 @@ public class BoseSoundTouchHandlerFactory extends BaseThingHandlerFactory {
         this.storageService = null;
     }
 
-    /**
-     * Removes a registered handler from the factory
-     *
-     * Note that a created Handler automatically gets registered! But it is necessary to remove it, if it is not needed
-     * anymore
-     */
-    public void removeSoundTouchDevice(BoseSoundTouchHandler handler) {
-        mapOfBoseSoundTouchHandler.remove(handler.getMacAddress());
-    }
-
-    /**
-     * Returns a collection of all registered BoseSoundTouchHandlers
-     *
-     * @return a collection of all registered BoseSoundTouchHandlers
-     */
-    public Collection<BoseSoundTouchHandler> getAllBoseSoundTouchHandler() {
-        return mapOfBoseSoundTouchHandler.values();
-    }
-
-    /**
-     * Returns a BoseSoundTouchHandler if a Handler with mac is registered. Otherwise null
-     *
-     * @param mac the MAC Address of the registered device
-     *
-     * @return a BoseSoundTouchHandler if a Handler with mac is registered. Otherwise null
-     */
-    public BoseSoundTouchHandler getBoseSoundTouchDevice(String mac) {
-        return mapOfBoseSoundTouchHandler.get(mac);
-    }
-
-    /**
-     * Registers a handler to the factory. So every Handler of a thing knows all other Handlers.
-     * This is necessary for (un)grouping the devices
-     *
-     * Note that a created Handler automatically gets registered! But it is necessary to remove it, if it is not needed
-     * anymore
-     */
-    private void registerSoundTouchDevice(BoseSoundTouchHandler handler) {
-        mapOfBoseSoundTouchHandler.put(handler.getMacAddress(), handler);
-    }
 }

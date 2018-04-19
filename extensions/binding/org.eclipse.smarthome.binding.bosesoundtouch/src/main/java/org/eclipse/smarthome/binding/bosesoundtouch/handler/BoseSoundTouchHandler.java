@@ -27,7 +27,6 @@ import org.eclipse.jetty.websocket.api.WebSocketListener;
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.APIRequest;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.BoseSoundTouchHandlerFactory;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.CommandExecutor;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.PresetContainer;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.XMLResponseProcessor;
@@ -68,7 +67,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
     private Session session;
 
     private XMLResponseProcessor xmlResponseProcessor;
-    private BoseSoundTouchHandlerFactory factory;
     private CommandExecutor commandExecutor;
 
     private PresetContainer presetContainer;
@@ -77,16 +75,11 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
      * Creates a new instance of this class for the {@link Thing}.
      *
      * @param thing the thing that should be handled, not null
-     * @param factory the factory that created this handler
      *
      * @throws IllegalArgumentException if thing or factory argument is null
      */
-    public BoseSoundTouchHandler(Thing thing, BoseSoundTouchHandlerFactory factory, PresetContainer presetContainer) {
+    public BoseSoundTouchHandler(Thing thing, PresetContainer presetContainer) {
         super(thing);
-        if (factory == null) {
-            throw new IllegalArgumentException("The argument 'factory' must not be null.");
-        }
-        this.factory = factory;
         this.presetContainer = presetContainer;
         xmlResponseProcessor = new XMLResponseProcessor(this);
     }
@@ -124,7 +117,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
 
     @Override
     public void handleRemoval() {
-        factory.removeSoundTouchDevice(this);
         super.handleRemoval();
     }
 
@@ -164,8 +156,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 case CHANNEL_VOLUME:
                     commandExecutor.getInformations(APIRequest.VOLUME);
                     break;
-                case CHANNEL_ZONE_ADD:
-                case CHANNEL_ZONE_REMOVE:
                 case CHANNEL_ZONE_INFO:
                     commandExecutor.getInformations(APIRequest.GET_ZONE);
                     break;
@@ -267,20 +257,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                     logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
-            case CHANNEL_ZONE_ADD:
-                if (command instanceof StringType) {
-                    commandExecutor.postZoneAdd((StringType) command);
-                } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
-                }
-                break;
-            case CHANNEL_ZONE_REMOVE:
-                if (command instanceof StringType) {
-                    commandExecutor.postZoneRemove((StringType) command);
-                } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
-                }
-                break;
             default:
                 logger.warn("{} : Got command '{}' for channel '{}' which is unhandled!", getDeviceName(), command,
                         channelUID.getId());
@@ -296,15 +272,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
      */
     public CommandExecutor getCommandExecutor() {
         return commandExecutor;
-    }
-
-    /**
-     * Returns the BoseSoundTouchHandlerFactory this handler was created from
-     *
-     * @return the BoseSoundTouchHandlerFactory this handler was created from
-     */
-    public BoseSoundTouchHandlerFactory getFactory() {
-        return factory;
     }
 
     /**

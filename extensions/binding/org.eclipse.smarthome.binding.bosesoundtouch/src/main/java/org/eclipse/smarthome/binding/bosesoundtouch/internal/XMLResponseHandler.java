@@ -14,8 +14,6 @@ package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 import static org.eclipse.smarthome.binding.bosesoundtouch.BoseSoundTouchBindingConstants.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -61,7 +59,6 @@ public class XMLResponseHandler extends DefaultHandler {
     private OnOffType skipPreviousEnabled;
     // private ZoneState zoneState;
     private BoseSoundTouchHandler zoneMaster;
-    private List<BoseSoundTouchHandler> listOfZoneMembers;
 
     private State nowPlayingSource;
 
@@ -176,7 +173,6 @@ public class XMLResponseHandler extends DefaultHandler {
                         updateNowPlayingTrack(UnDefType.NULL);
                     }
                 } else if ("zone".equals(localName)) {
-                    listOfZoneMembers = new ArrayList<>();
                     String master = attributes.getValue("master");
                     if (master == null || master.isEmpty()) {
                         zoneMaster = null;
@@ -186,12 +182,7 @@ public class XMLResponseHandler extends DefaultHandler {
                             zoneMaster = handler;
                         } else {
                             // an other device is the master
-                            BoseSoundTouchHandlerFactory factory = handler.getFactory();
-                            zoneMaster = factory.getBoseSoundTouchDevice(master);
-                            if (zoneMaster == null) {
-                                logger.warn("{}: Zone update: Unable to find master with ID {}",
-                                        handler.getDeviceName(), master);
-                            }
+                            zoneMaster = null;
                         }
                     }
                     state = XMLHandlerState.Zone;
@@ -427,9 +418,6 @@ public class XMLResponseHandler extends DefaultHandler {
             case ZoneUpdated:
                 commandExecutor.getInformations(APIRequest.GET_ZONE);
                 break;
-            case Zone:
-                commandExecutor.setZone(zoneMaster, listOfZoneMembers);
-                break;
             default:
                 // no actions...
                 break;
@@ -539,15 +527,8 @@ public class XMLResponseHandler extends DefaultHandler {
                 volumeMuteEnabled = Boolean.parseBoolean(new String(ch, start, length));
                 commandExecutor.setCurrentMuted(volumeMuteEnabled);
                 break;
-            case ZoneMember:
-                String mac = new String(ch, start, length);
-                BoseSoundTouchHandlerFactory factory = handler.getFactory();
-                BoseSoundTouchHandler memberHandler = factory.getBoseSoundTouchDevice(mac);
-                if (memberHandler == null) {
-                    logger.warn("{}: Zone update: Unable to find member with ID {}", handler.getDeviceName(), mac);
-                } else {
-                    listOfZoneMembers.add(memberHandler);
-                }
+            default:
+                // do nothing
                 break;
         }
     }

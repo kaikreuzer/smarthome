@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.smarthome.binding.bosesoundtouch.handler.BoseSoundTouchHandler;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.BoseSoundTouchNotFoundException;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.ContentItemNotPresetableException;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoInternetRadioPresetFoundException;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoPresetFoundException;
@@ -310,39 +309,6 @@ public class CommandExecutor implements AvailableSources {
     }
 
     /**
-     * Post Zone Add on the device
-     *
-     * @param command the command is Type of StringType
-     */
-    public void postZoneAdd(StringType command) {
-        // try to parse string command...
-        String identifier = command.toString().toLowerCase();
-        try {
-            BoseSoundTouchHandler handlerFound = findHandlerByNameOrMAC(identifier);
-            addToZone(handlerFound);
-        } catch (BoseSoundTouchNotFoundException e) {
-            logger.warn("{}: Could not find Soundtouchd: {}", handler.getDeviceName(), identifier);
-        }
-
-    }
-
-    /**
-     * Post Zone Remove on the device
-     *
-     * @param command the command is Type of StringType
-     */
-    public void postZoneRemove(StringType command) {
-        // try to parse string command...
-        String identifier = command.toString().toLowerCase();
-        try {
-            BoseSoundTouchHandler handlerFound = findHandlerByNameOrMAC(identifier);
-            removeFromZone(handlerFound);
-        } catch (BoseSoundTouchNotFoundException e) {
-            logger.warn("{}: Could not find Soundtouchd: {}", handler.getDeviceName(), identifier);
-        }
-    }
-
-    /**
      * Update GUI for Basslevel
      *
      * @param state the state is Type of DecimalType
@@ -403,57 +369,6 @@ public class CommandExecutor implements AvailableSources {
      */
     public void updateZoneInfoGUIState(StringType state) {
         handler.updateState(handler.getChannelUID(CHANNEL_ZONE_INFO), state);
-    }
-
-    private void addToZone(BoseSoundTouchHandler memberHandler) {
-        if (memberHandler != null) {
-            boolean found = false;
-            for (BoseSoundTouchHandler m : listOfZoneMembers) {
-                if (memberHandler.getMacAddress().equals(m.getMacAddress())) {
-                    logger.warn("{}: Zone add: ID {} is already member in zone!", memberHandler.getDeviceName(),
-                            memberHandler.getMacAddress());
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                listOfZoneMembers.add(memberHandler);
-
-                StringBuilder sb = new StringBuilder();
-                sb.append("<zone master=\"").append(handler.getMacAddress()).append("\">");
-                for (BoseSoundTouchHandler mbr : listOfZoneMembers) {
-                    sb.append("<member ipaddress=\"").append(mbr.getIPAddress()).append("\">")
-                            .append(mbr.getMacAddress()).append("</member>");
-                }
-                sb.append("</zone>");
-                sendPostRequestInWebSocket("setZone", "mainNode=\"newZone\"", sb.toString());
-            }
-        }
-    }
-
-    private BoseSoundTouchHandler findHandlerByNameOrMAC(String identifier) throws BoseSoundTouchNotFoundException {
-        BoseSoundTouchHandler handlerFound = null;
-        Collection<BoseSoundTouchHandler> colOfHandlers = handler.getFactory().getAllBoseSoundTouchHandler();
-        for (BoseSoundTouchHandler curHandler : colOfHandlers) {
-            // try by mac
-            String mac = curHandler.getMacAddress();
-            if (identifier.equalsIgnoreCase(mac)) {
-                handlerFound = curHandler;
-                break;
-            }
-            // try by name
-            String devName = curHandler.getDeviceName();
-            if (identifier.equalsIgnoreCase(devName)) {
-                handlerFound = curHandler;
-                break;
-            }
-        }
-
-        if (handlerFound != null) {
-            return handlerFound;
-        } else {
-            throw new BoseSoundTouchNotFoundException();
-        }
     }
 
     private void init() {

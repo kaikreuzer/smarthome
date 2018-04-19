@@ -33,8 +33,6 @@ Number  Bose1_Bass                       "Bass: [%d %%]"        <volume>      { 
 Switch  Bose1_Mute                       "Mute: [%s]"           <volume_mute> { channel="bosesoundtouch:device:BOSEMACADDR:mute" }
 String  Bose1_OperationMode              "OperationMode: [%s]"  <text>        { channel="bosesoundtouch:device:BOSEMACADDR:operationMode" }
 String  Bose1_PlayerControl              "Player Control: [%s]" <text>        { channel="bosesoundtouch:device:BOSEMACADDR:playerControl" }
-String  Bose1_ZoneAdd                    "Zone add: [%s]"       <text>        { channel="bosesoundtouch:device:BOSEMACADDR:zoneAdd" }
-String  Bose1_ZoneRemove                 "Zone remove: [%s]"    <text>        { channel="bosesoundtouch:device:BOSEMACADDR:zoneRemove" }
 Number  Bose1_Preset                     "Preset: [%d]"         <text>        { channel="bosesoundtouch:device:BOSEMACADDR:preset" }
 String  Bose1_PresetControl              "Preset Control: [%s]" <text>        { channel="bosesoundtouch:device:BOSEMACADDR:presetControl" }
 Number  Bose1_SaveAsPreset               "Save as Preset: [%d]" <text>        { channel="bosesoundtouch:device:BOSEMACADDR:saveAsPreset" }

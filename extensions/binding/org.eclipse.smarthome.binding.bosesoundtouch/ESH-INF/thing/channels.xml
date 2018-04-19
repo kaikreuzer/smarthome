@@ -188,18 +188,6 @@
 		<category>SoundVolume</category>
 	</channel-type>
 
-	<channel-type id="zoneAdd" advanced="true">
-		<item-type>String</item-type>
-		<label>Zone Add</label>
-		<description>Adds a device to a zone, e.g. "kitchen"/"MACOFKITCHEN"</description>
-	</channel-type>
-
-	<channel-type id="zoneRemove" advanced="true">
-		<item-type>String</item-type>
-		<label>Zone Remove</label>
-		<description>Removes a device from a zone, e.g. "kitchen"/"MACOFKITCHEN"</description>
-	</channel-type>
-
 	<channel-type id="zoneInfo" advanced="true">
 		<item-type>String</item-type>
 		<label>Zone Info</label>
