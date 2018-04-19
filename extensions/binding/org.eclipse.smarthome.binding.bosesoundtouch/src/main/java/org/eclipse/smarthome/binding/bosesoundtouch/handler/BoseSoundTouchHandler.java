@@ -57,6 +57,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Christian Niessner - Initial contribution
  * @author Thomas Traunbauer - Initial contribution
+ * @author Kai Kreuzer - code clean up
  */
 public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocketListener {
 
@@ -191,15 +192,11 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 if (command instanceof StringType) {
                     String cmd = command.toString().toUpperCase().trim();
                     try {
-                        command = OperationModeType.valueOf(cmd);
+                        OperationModeType mode = OperationModeType.valueOf(cmd);
+                        commandExecutor.postOperationMode(mode);
                     } catch (IllegalArgumentException iae) {
                         logger.warn("{}: OperationMode \"{}\" is not valid!", getDeviceName(), cmd);
                     }
-                }
-                if (command instanceof OperationModeType) {
-                    commandExecutor.postOperationMode((OperationModeType) command);
-                } else {
-                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_PLAYER_CONTROL:
@@ -234,15 +231,11 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 if (command instanceof StringType) {
                     String cmd = command.toString().toUpperCase().trim();
                     try {
-                        command = RemoteKeyType.valueOf(cmd);
+                        RemoteKeyType keyCommand = RemoteKeyType.valueOf(cmd);
+                        commandExecutor.postRemoteKey(keyCommand);
                     } catch (IllegalArgumentException e) {
                         logger.debug("{}: Unhandled remote key: {}", getDeviceName(), cmd);
                     }
-                }
-                if (command instanceof RemoteKeyType) {
-                    commandExecutor.postRemoteKey((RemoteKeyType) command);
-                } else {
-                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             default:
