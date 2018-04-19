@@ -203,18 +203,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 }
                 break;
             case CHANNEL_PLAYER_CONTROL:
-                if (command instanceof StringType) {
-                    String cmd = command.toString();
-                    if (cmd.equals("PLAY")) {
-                        command = PlayPauseType.PLAY;
-                    } else if (cmd.equals("PAUSE")) {
-                        command = PlayPauseType.PAUSE;
-                    } else if (cmd.equals("NEXT")) {
-                        command = NextPreviousType.NEXT;
-                    } else if (cmd.equals("PREVIOUS")) {
-                        command = NextPreviousType.PREVIOUS;
-                    }
-                }
                 if ((command instanceof PlayPauseType) || (command instanceof NextPreviousType)) {
                     commandExecutor.postPlayerControl(command);
                 } else {
