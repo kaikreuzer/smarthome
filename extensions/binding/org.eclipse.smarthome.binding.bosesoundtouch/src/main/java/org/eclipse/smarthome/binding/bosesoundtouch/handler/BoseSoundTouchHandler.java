@@ -170,21 +170,21 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 if (command instanceof OnOffType) {
                     commandExecutor.postPower((OnOffType) command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_VOLUME:
                 if (command instanceof PercentType) {
                     commandExecutor.postVolume((PercentType) command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_MUTE:
                 if (command instanceof OnOffType) {
                     commandExecutor.postVolumeMuted((OnOffType) command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_OPERATIONMODE:
@@ -199,35 +199,35 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 if (command instanceof OperationModeType) {
                     commandExecutor.postOperationMode((OperationModeType) command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_PLAYER_CONTROL:
                 if ((command instanceof PlayPauseType) || (command instanceof NextPreviousType)) {
                     commandExecutor.postPlayerControl(command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_PRESET:
                 if (command instanceof DecimalType) {
                     commandExecutor.postPreset((DecimalType) command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_BASS:
                 if (command instanceof DecimalType) {
                     commandExecutor.postBass((DecimalType) command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_SAVE_AS_PRESET:
                 if (command instanceof DecimalType) {
                     commandExecutor.addCurrentContentItemToPresetContainer((DecimalType) command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             case CHANNEL_KEY_CODE:
@@ -236,13 +236,13 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                     try {
                         command = RemoteKeyType.valueOf(cmd);
                     } catch (IllegalArgumentException e) {
-                        logger.warn("{}: Invalid remote key: {}", getDeviceName(), cmd);
+                        logger.debug("{}: Unhandled remote key: {}", getDeviceName(), cmd);
                     }
                 }
                 if (command instanceof RemoteKeyType) {
                     commandExecutor.postRemoteKey((RemoteKeyType) command);
                 } else {
-                    logger.warn("{}: Invalid command type: {}: {}", getDeviceName(), command.getClass(), command);
+                    logger.debug("{}: Unhandled command type: {}: {}", getDeviceName(), command.getClass(), command);
                 }
                 break;
             default:
