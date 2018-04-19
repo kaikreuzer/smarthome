@@ -18,8 +18,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.ContentItemNotPresetableException;
 import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoPresetFoundException;
+import org.eclipse.smarthome.core.storage.DeletableStorage;
 import org.eclipse.smarthome.core.storage.Storage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +93,18 @@ public class PresetContainer {
             return psFound;
         } else {
             throw new NoPresetFoundException();
+        }
+    }
+
+    /**
+     * Deletes all presets from the storage.
+     */
+    public void clear() {
+        if (storage instanceof DeletableStorage) {
+            ((DeletableStorage<ContentItem>) storage).delete();
+        } else {
+            Collection<@NonNull String> keys = storage.getKeys();
+            keys.forEach(key -> storage.remove(key));
         }
     }
 

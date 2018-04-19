@@ -102,6 +102,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
     @Override
     public void handleRemoval() {
         super.handleRemoval();
+        presetContainer.clear();
     }
 
     @Override // just overwrite to give CommandExecutor access
