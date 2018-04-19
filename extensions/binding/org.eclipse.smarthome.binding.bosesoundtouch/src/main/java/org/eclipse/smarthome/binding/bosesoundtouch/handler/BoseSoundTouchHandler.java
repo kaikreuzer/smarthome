@@ -155,9 +155,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 case CHANNEL_VOLUME:
                     commandExecutor.getInformations(APIRequest.VOLUME);
                     break;
-                case CHANNEL_ZONE_INFO:
-                    commandExecutor.getInformations(APIRequest.GET_ZONE);
-                    break;
                 default:
                     logger.warn("{} : Got command '{}' for channel '{}' which is unhandled!", getDeviceName(), command,
                             channelUID.getId());

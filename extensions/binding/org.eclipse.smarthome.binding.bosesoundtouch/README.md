@@ -34,10 +34,8 @@ Switch  Bose1_Mute                       "Mute: [%s]"           <volume_mute> { 
 String  Bose1_OperationMode              "OperationMode: [%s]"  <text>        { channel="bosesoundtouch:device:BOSEMACADDR:operationMode" }
 String  Bose1_PlayerControl              "Player Control: [%s]" <text>        { channel="bosesoundtouch:device:BOSEMACADDR:playerControl" }
 Number  Bose1_Preset                     "Preset: [%d]"         <text>        { channel="bosesoundtouch:device:BOSEMACADDR:preset" }
-String  Bose1_PresetControl              "Preset Control: [%s]" <text>        { channel="bosesoundtouch:device:BOSEMACADDR:presetControl" }
 Number  Bose1_SaveAsPreset               "Save as Preset: [%d]" <text>        { channel="bosesoundtouch:device:BOSEMACADDR:saveAsPreset" }
 String  Bose1_KeyCode                    "Key Code: [%s]"       <text>        { channel="bosesoundtouch:device:BOSEMACADDR:keyCode" }
-String  Bose1_ZoneInfo                   "Zone Info: [%s]"      <text>        { channel="bosesoundtouch:device:BOSEMACADDR:zoneInfo", autoupdate="false" }
 Switch  Bose1_RateEnabled                "Rate: [%s]"           <switch>      { channel="bosesoundtouch:device:BOSEMACADDR:rateEnabled" }
 Switch  Bose1_SkipEnabled                "Skip: [%s]"           <switch>      { channel="bosesoundtouch:device:BOSEMACADDR:skipEnabled" }
 Switch  Bose1_SkipPreviousEnabled        "SkipPrevious: [%s]"   <switch>      { channel="bosesoundtouch:device:BOSEMACADDR:skipPreviousEnabled" }

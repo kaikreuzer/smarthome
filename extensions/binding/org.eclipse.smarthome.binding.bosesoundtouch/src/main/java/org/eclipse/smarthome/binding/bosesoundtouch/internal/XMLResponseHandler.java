@@ -58,8 +58,6 @@ public class XMLResponseHandler extends DefaultHandler {
     private OnOffType rateEnabled;
     private OnOffType skipEnabled;
     private OnOffType skipPreviousEnabled;
-    // private ZoneState zoneState;
-    private BoseSoundTouchHandler zoneMaster;
 
     private State nowPlayingSource;
 
@@ -174,18 +172,6 @@ public class XMLResponseHandler extends DefaultHandler {
                         updateNowPlayingTrack(UnDefType.NULL);
                     }
                 } else if ("zone".equals(localName)) {
-                    String master = attributes.getValue("master");
-                    if (master == null || master.isEmpty()) {
-                        zoneMaster = null;
-                    } else {
-                        if (master.equals(handler.getMacAddress())) {
-                            // we are the master...
-                            zoneMaster = handler;
-                        } else {
-                            // an other device is the master
-                            zoneMaster = null;
-                        }
-                    }
                     state = XMLHandlerState.Zone;
                 } else {
                     state = stateMap.get(localName);
@@ -540,20 +526,16 @@ public class XMLResponseHandler extends DefaultHandler {
     }
 
     private boolean checkDeviceId(String localName, Attributes attributes, boolean allowFromMaster) {
-        String did = attributes.getValue("deviceID");
-        if (did == null) {
-            logger.warn("{}: No Device-ID in Entity {}", handler.getDeviceName(), localName);
+        String deviceID = attributes.getValue("deviceID");
+        if (deviceID == null) {
+            logger.warn("{}: No device-ID in Entity {}", handler.getDeviceName(), localName);
             return false;
         }
-        if (did.equals(handler.getMacAddress())) {
+        if (deviceID.equals(handler.getMacAddress())) {
             return true;
         }
-        if (allowFromMaster && commandExecutor.getZoneMaster() != null
-                && did.equals(commandExecutor.getZoneMaster().getMacAddress())) {
-            return true;
-        }
-        logger.warn("{}: Wrong Device-ID in Entity '{}': Got: '{}', expected: '{}'", handler.getDeviceName(), localName,
-                did, handler.getMacAddress());
+        logger.warn("{}: Wrong device-ID in Entity '{}': Got: '{}', expected: '{}'", handler.getDeviceName(), localName,
+                deviceID, handler.getMacAddress());
         return false;
     }
 

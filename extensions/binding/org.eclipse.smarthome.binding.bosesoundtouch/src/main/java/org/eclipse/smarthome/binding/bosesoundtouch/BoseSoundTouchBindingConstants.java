@@ -49,12 +49,11 @@ public class BoseSoundTouchBindingConstants {
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = new HashSet<ThingTypeUID>(
             SUPPORTED_KNOWN_THING_TYPES_UIDS);
 
-    // List of all Channel ids
+    // List of all Channel IDs
     public static final String CHANNEL_POWER = "power";
     public static final String CHANNEL_VOLUME = "volume";
     public static final String CHANNEL_MUTE = "mute";
     public static final String CHANNEL_OPERATIONMODE = "operationMode";
-    public static final String CHANNEL_ZONE_INFO = "zoneInfo";
     public static final String CHANNEL_PLAYER_CONTROL = "playerControl";
     public static final String CHANNEL_PRESET = "preset";
     public static final String CHANNEL_BASS = "bass";

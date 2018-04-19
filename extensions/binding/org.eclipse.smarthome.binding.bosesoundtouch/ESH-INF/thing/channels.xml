@@ -188,13 +188,6 @@
 		<category>SoundVolume</category>
 	</channel-type>
 
-	<channel-type id="zoneInfo" advanced="true">
-		<item-type>String</item-type>
-		<label>Zone Info</label>
-		<description>Shows information about the current zone setup</description>
-		<state readOnly="true" />
-	</channel-type>
-
 	<!-- Channels common for BOSE SOUNDTOUCH 10/20/30 devices -->
 	<channel-type id="bass" advanced="true">
 		<item-type>Number</item-type>

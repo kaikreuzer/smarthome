@@ -15,10 +15,8 @@ package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 import static org.eclipse.smarthome.binding.bosesoundtouch.BoseSoundTouchBindingConstants.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.smarthome.binding.bosesoundtouch.handler.BoseSoundTouchHandler;
@@ -50,9 +48,6 @@ public class CommandExecutor implements AvailableSources {
     private Logger logger = LoggerFactory.getLogger(CommandExecutor.class);
 
     private BoseSoundTouchHandler handler;
-
-    private BoseSoundTouchHandler zoneMaster;
-    private List<BoseSoundTouchHandler> listOfZoneMembers;
 
     private boolean currentMuted;
     private ContentItem currentContentItem;
@@ -117,15 +112,6 @@ public class CommandExecutor implements AvailableSources {
     }
 
     /**
-     * Returns the Zone Master
-     *
-     * @return the Zone Master
-     */
-    public BoseSoundTouchHandler getZoneMaster() {
-        return zoneMaster;
-    }
-
-    /**
      * Sets the current ContentItem if it is valid, and inits an update of the operating values
      *
      * @param contentItem
@@ -161,20 +147,6 @@ public class CommandExecutor implements AvailableSources {
      */
     public void setCurrentMuted(boolean muted) {
         currentMuted = muted;
-    }
-
-    /**
-     * Sets the device zone definition
-     *
-     * @param zoneState
-     * @param zoneMaster
-     * @param listOfZoneMembers
-     */
-    public void setZone(BoseSoundTouchHandler zoneMaster, List<BoseSoundTouchHandler> listOfZoneMembers) {
-        this.zoneMaster = zoneMaster;
-        this.listOfZoneMembers = listOfZoneMembers;
-
-        updateZoneInfoGUIState();
     }
 
     /**
@@ -363,19 +335,8 @@ public class CommandExecutor implements AvailableSources {
         handler.updateState(CHANNEL_PRESET, state);
     }
 
-    /**
-     * Update GUI for ZoneInfo
-     *
-     * @param state the state is Type of StringType
-     */
-    public void updateZoneInfoGUIState(StringType state) {
-        handler.updateState(CHANNEL_ZONE_INFO, state);
-    }
-
     private void init() {
         getInformations(APIRequest.INFO);
-        listOfZoneMembers = new ArrayList<>();
-        zoneMaster = null;
         currentOperationMode = OperationModeType.OFFLINE;
         currentContentItem = null;
 
@@ -386,31 +347,6 @@ public class CommandExecutor implements AvailableSources {
         if (contentItem != null) {
             setCurrentContentItem(contentItem);
             sendPostRequestInWebSocket("select", "", contentItem.generateXML());
-        }
-    }
-
-    private void removeFromZone(BoseSoundTouchHandler handler) {
-        if (handler != null) {
-            boolean removed = false;
-            for (int i = 0; i < listOfZoneMembers.size(); i++) {
-                if (handler.equals(listOfZoneMembers.get(i))) {
-                    BoseSoundTouchHandler memberHandler = listOfZoneMembers.get(i);
-
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("<zone master=\"").append(zoneMaster.getMacAddress()).append("\">");
-                    sb.append("<member ipaddress=\"").append(memberHandler.getIPAddress()).append("\">")
-                            .append(memberHandler.getMacAddress()).append("</member>");
-                    sb.append("</zone>");
-                    sendPostRequestInWebSocket("removeZoneSlave", sb.toString());
-
-                    listOfZoneMembers.remove(i);
-                    removed = true;
-                }
-            }
-            if (!removed) {
-                logger.warn("{}: Zone remove: ID {} is not a member in zone!", handler.getDeviceName(),
-                        handler.getMacAddress());
-            }
         }
     }
 
@@ -443,48 +379,11 @@ public class CommandExecutor implements AvailableSources {
         updateOperationModeGUIState(new StringType(operationMode.toString()));
         currentOperationMode = operationMode;
         if (currentOperationMode == OperationModeType.STANDBY) {
-            listOfZoneMembers.clear();
-            if (zoneMaster != null) {
-                zoneMaster.getCommandExecutor().removeFromZone(handler);
-                zoneMaster = null;
-            }
             updatePowerStateGUIState(OnOffType.OFF);
             updatePlayerControlGUIState(PlayPauseType.PAUSE);
-
         } else {
             updatePowerStateGUIState(OnOffType.ON);
         }
-        updateZoneInfoGUIState();
-    }
-
-    private void updateZoneInfoGUIState() {
-        String zoneData = "";
-        if (zoneMaster == null) {
-            zoneData = "Standalone";
-        } else {
-            if (zoneMaster.equals(handler)) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Master; Members: ");
-                for (int i = 0; i < listOfZoneMembers.size(); i++) {
-                    if (i > 0) {
-                        sb.append(", ");
-                    }
-                    sb.append(listOfZoneMembers.get(i).getDeviceName());
-                }
-                zoneData = sb.toString();
-            } else {
-                if (zoneMaster == null) {
-                    zoneData = "";
-                } else {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append("Member; Master is: ");
-                    sb.append(zoneMaster.getDeviceName());
-                    zoneData = sb.toString();
-                }
-            }
-        }
-        logger.debug("{}: zoneInfo updated: {}", handler.getDeviceName(), zoneData);
-        updateZoneInfoGUIState(new StringType(zoneData));
     }
 
     @Override
