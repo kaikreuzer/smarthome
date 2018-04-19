@@ -109,13 +109,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
 
     @Override
     public void initialize() {
-        connectionChecker = scheduler.scheduleWithFixedDelay(new Runnable() {
-
-            @Override
-            public void run() {
-                checkConnection();
-            }
-        }, 300, 300, TimeUnit.SECONDS);
+        connectionChecker = scheduler.scheduleWithFixedDelay(() -> checkConnection(), 300, 300, TimeUnit.SECONDS);
         openConnection();
     }
 
