@@ -38,13 +38,11 @@ import org.eclipse.smarthome.core.library.types.OnOffType;
 import org.eclipse.smarthome.core.library.types.PercentType;
 import org.eclipse.smarthome.core.library.types.PlayPauseType;
 import org.eclipse.smarthome.core.library.types.StringType;
-import org.eclipse.smarthome.core.thing.Channel;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.ThingStatusDetail;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
-import org.eclipse.smarthome.core.thing.binding.ThingFactory;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.RefreshType;
 import org.eclipse.smarthome.core.types.State;
@@ -122,8 +120,8 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
     }
 
     @Override // just overwrite to give CommandExecutor access
-    public void updateState(ChannelUID channelUID, State state) {
-        super.updateState(channelUID, state);
+    public void updateState(String channelID, State state) {
+        super.updateState(channelID, state);
     }
 
     @Override
@@ -298,25 +296,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
      */
     public String getIPAddress() {
         return (String) getThing().getConfiguration().getProperties().get(DEVICE_PARAMETER_HOST);
-    }
-
-    /**
-     * Returns the ChannelUID of a channelId String
-     *
-     * @param channelId the channelId is a String representing the channel
-     *
-     * @return the ChannelUID of a channelId String
-     */
-    public ChannelUID getChannelUID(String channelId) {
-        Channel chann = getThing().getChannel(channelId);
-        if (chann == null) {
-            // refresh thing...
-            Thing newThing = ThingFactory.createThing(thingTypeRegistry.getThingType(getThing().getThingTypeUID()),
-                    getThing().getUID(), getThing().getConfiguration());
-            updateThing(newThing);
-            chann = getThing().getChannel(channelId);
-        }
-        return chann.getUID();
     }
 
     /**

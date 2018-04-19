@@ -38,6 +38,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author Christian Niessner - Initial contribution
  * @author Thomas Traunbauer - Initial contribution
+ * @author Kai Kreuzer - code clean up
  */
 public class XMLResponseHandler extends DefaultHandler {
 
@@ -584,50 +585,50 @@ public class XMLResponseHandler extends DefaultHandler {
     }
 
     private void updateNowPlayingAlbum(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_ALBUM), state);
+        handler.updateState(CHANNEL_NOWPLAYING_ALBUM, state);
     }
 
     private void updateNowPlayingArtwork(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_ARTWORK), state);
+        handler.updateState(CHANNEL_NOWPLAYING_ARTWORK, state);
     }
 
     private void updateNowPlayingArtist(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_ARTIST), state);
+        handler.updateState(CHANNEL_NOWPLAYING_ARTIST, state);
     }
 
     private void updateNowPlayingDescription(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_DESCRIPTION), state);
+        handler.updateState(CHANNEL_NOWPLAYING_DESCRIPTION, state);
     }
 
     private void updateNowPlayingGenre(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_GENRE), state);
+        handler.updateState(CHANNEL_NOWPLAYING_GENRE, state);
     }
 
     private void updateNowPlayingItemName(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_ITEMNAME), state);
+        handler.updateState(CHANNEL_NOWPLAYING_ITEMNAME, state);
     }
 
     private void updateNowPlayingStationLocation(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_STATIONLOCATION), state);
+        handler.updateState(CHANNEL_NOWPLAYING_STATIONLOCATION, state);
     }
 
     private void updateNowPlayingStationName(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_STATIONNAME), state);
+        handler.updateState(CHANNEL_NOWPLAYING_STATIONNAME, state);
     }
 
     private void updateNowPlayingTrack(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_NOWPLAYING_TRACK), state);
+        handler.updateState(CHANNEL_NOWPLAYING_TRACK, state);
     }
 
     private void updateRateEnabled(OnOffType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_RATEENABLED), state);
+        handler.updateState(CHANNEL_RATEENABLED, state);
     }
 
     private void updateSkipEnabled(OnOffType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_SKIPENABLED), state);
+        handler.updateState(CHANNEL_SKIPENABLED, state);
     }
 
     private void updateSkipPreviousEnabled(OnOffType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_SKIPPREVIOUSENABLED), state);
+        handler.updateState(CHANNEL_SKIPPREVIOUSENABLED, state);
     }
 }

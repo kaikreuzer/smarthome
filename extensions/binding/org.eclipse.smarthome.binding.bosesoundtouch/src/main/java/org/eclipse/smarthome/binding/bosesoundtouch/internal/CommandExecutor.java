@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
  * The {@link CommandExecutor} class executes commands on the websocket
  *
  * @author Thomas Traunbauer - Initial contribution
+ * @author Kai Kreuzer - code clean up
  */
 public class CommandExecutor implements AvailableSources {
     private Logger logger = LoggerFactory.getLogger(CommandExecutor.class);
@@ -314,7 +315,7 @@ public class CommandExecutor implements AvailableSources {
      * @param state the state is Type of DecimalType
      */
     public void updateBassLevelGUIState(DecimalType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_BASS), state);
+        handler.updateState(CHANNEL_BASS, state);
     }
 
     /**
@@ -323,7 +324,7 @@ public class CommandExecutor implements AvailableSources {
      * @param state the state is Type of PercentType
      */
     public void updateVolumeGUIState(PercentType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_VOLUME), state);
+        handler.updateState(CHANNEL_VOLUME, state);
     }
 
     /**
@@ -332,7 +333,7 @@ public class CommandExecutor implements AvailableSources {
      * @param state the state is Type of StringType
      */
     public void updateOperationModeGUIState(StringType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_OPERATIONMODE), state);
+        handler.updateState(CHANNEL_OPERATIONMODE, state);
     }
 
     /**
@@ -341,7 +342,7 @@ public class CommandExecutor implements AvailableSources {
      * @param state the state is Type of State
      */
     public void updatePlayerControlGUIState(State state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_PLAYER_CONTROL), state);
+        handler.updateState(CHANNEL_PLAYER_CONTROL, state);
     }
 
     /**
@@ -350,7 +351,7 @@ public class CommandExecutor implements AvailableSources {
      * @param state the state is Type of OnOffType
      */
     public void updatePowerStateGUIState(OnOffType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_POWER), state);
+        handler.updateState(CHANNEL_POWER, state);
     }
 
     /**
@@ -359,7 +360,7 @@ public class CommandExecutor implements AvailableSources {
      * @param state the state is Type of DecimalType
      */
     public void updatePresetGUIState(DecimalType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_PRESET), state);
+        handler.updateState(CHANNEL_PRESET, state);
     }
 
     /**
@@ -368,7 +369,7 @@ public class CommandExecutor implements AvailableSources {
      * @param state the state is Type of StringType
      */
     public void updateZoneInfoGUIState(StringType state) {
-        handler.updateState(handler.getChannelUID(CHANNEL_ZONE_INFO), state);
+        handler.updateState(CHANNEL_ZONE_INFO, state);
     }
 
     private void init() {
