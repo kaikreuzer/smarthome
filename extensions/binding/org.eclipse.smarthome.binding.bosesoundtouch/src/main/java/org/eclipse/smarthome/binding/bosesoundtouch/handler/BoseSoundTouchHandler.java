@@ -85,22 +85,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof BoseSoundTouchHandler) {
-            BoseSoundTouchHandler other = (BoseSoundTouchHandler) obj;
-            if (this.getMacAddress().equals(other.getMacAddress())) {
-                return true;
-            }
-        }
-        return super.equals(obj);
-    }
-
-    @Override
-    public String toString() {
-        return getMacAddress() + ": " + getDeviceName();
-    }
-
-    @Override
     public void initialize() {
         connectionChecker = scheduler.scheduleWithFixedDelay(() -> checkConnection(), 300, 300, TimeUnit.SECONDS);
         openConnection();
