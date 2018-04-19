@@ -74,6 +74,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
      * Creates a new instance of this class for the {@link Thing}.
      *
      * @param thing the thing that should be handled, not null
+     * @param presetContainer the preset container instance to use for managing presets
      *
      * @throws IllegalArgumentException if thing or factory argument is null
      */
