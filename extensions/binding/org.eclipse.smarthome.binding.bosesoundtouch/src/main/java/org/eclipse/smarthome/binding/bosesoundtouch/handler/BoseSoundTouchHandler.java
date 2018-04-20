@@ -59,6 +59,8 @@ import org.slf4j.LoggerFactory;
  */
 public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocketListener {
 
+    private static final int RETRY_INTERVAL_IN_SECS = 30;
+
     private final Logger logger = LoggerFactory.getLogger(BoseSoundTouchHandler.class);
 
     private ScheduledFuture<?> connectionChecker;
@@ -86,8 +88,8 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
 
     @Override
     public void initialize() {
-        connectionChecker = scheduler.scheduleWithFixedDelay(() -> checkConnection(), 300, 300, TimeUnit.SECONDS);
-        openConnection();
+        connectionChecker = scheduler.scheduleWithFixedDelay(() -> checkConnection(), 0, RETRY_INTERVAL_IN_SECS,
+                TimeUnit.SECONDS);
     }
 
     @Override
@@ -96,6 +98,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
         closeConnection();
         if (connectionChecker != null && !connectionChecker.isCancelled()) {
             connectionChecker.cancel(false);
+            connectionChecker = null;
         }
     }
 
