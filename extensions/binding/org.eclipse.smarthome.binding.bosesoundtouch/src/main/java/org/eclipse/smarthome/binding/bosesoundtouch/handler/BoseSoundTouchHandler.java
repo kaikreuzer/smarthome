@@ -142,7 +142,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                     commandExecutor.getInformations(APIRequest.VOLUME);
                     break;
                 default:
-                    logger.warn("{} : Got command '{}' for channel '{}' which is unhandled!", getDeviceName(), command,
+                    logger.debug("{} : Got command '{}' for channel '{}' which is unhandled!", getDeviceName(), command,
                             channelUID.getId());
             }
             return;
@@ -295,11 +295,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
     }
 
     @Override
-    public void updateThing(Thing thing) {
-        super.updateThing(thing);
-    }
-
-    @Override
     public void onWebSocketConnect(Session session) {
         logger.debug("{}: onWebSocketConnect('{}')", getDeviceName(), session);
         this.session = session;
@@ -309,7 +304,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
 
     @Override
     public void onWebSocketError(Throwable e) {
-        logger.error("{}: Error during websocket communication: {}", getDeviceName(), e.getMessage(), e);
+        logger.debug("{}: Error during websocket communication: {}", getDeviceName(), e.getMessage(), e);
         updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, e.getMessage());
         commandExecutor.postOperationMode(OperationModeType.OFFLINE);
         if (session != null) {
@@ -322,8 +317,8 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
         logger.debug("{}: onWebSocketText('{}')", getDeviceName(), msg);
         try {
             xmlResponseProcessor.handleMessage(msg);
-        } catch (Throwable s) {
-            logger.error("{}: Could not parse XML from string '{}'; exception is: ", getDeviceName(), msg, s);
+        } catch (Exception e) {
+            logger.warn("{}: Could not parse XML from string '{}'.", getDeviceName(), msg, e);
         }
     }
 
@@ -342,7 +337,6 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
 
     private void openConnection() {
         closeConnection();
-        // updateStatus(ThingStatus.INITIALIZING, ThingStatusDetail.NONE);
         try {
             client = new WebSocketClient();
             // we need longer timeouts for web socket.
@@ -363,8 +357,8 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
         if (session != null) {
             try {
                 session.close(StatusCode.NORMAL, "Binding shutdown");
-            } catch (Throwable e) {
-                logger.error("{}: Error while closing websocket communication: {} ({})", getDeviceName(),
+            } catch (Exception e) {
+                logger.debug("{}: Error while closing websocket communication: {} ({})", getDeviceName(),
                         e.getClass().getName(), e.getMessage());
             }
             session = null;
@@ -374,7 +368,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
                 client.stop();
                 client.destroy();
             } catch (Exception e) {
-                logger.error("{}: Error while closing websocket communication: {} ({})", getDeviceName(),
+                logger.debug("{}: Error while closing websocket communication: {} ({})", getDeviceName(),
                         e.getClass().getName(), e.getMessage());
             }
             client = null;
