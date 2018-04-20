@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.smarthome.binding.bosesoundtouch.handler.BoseSoundTouchHandler;
-import org.eclipse.smarthome.binding.bosesoundtouch.types.OperationModeType;
-import org.eclipse.smarthome.binding.bosesoundtouch.types.RemoteKeyType;
 import org.eclipse.smarthome.core.library.types.DecimalType;
 import org.eclipse.smarthome.core.library.types.NextPreviousType;
 import org.eclipse.smarthome.core.library.types.OnOffType;

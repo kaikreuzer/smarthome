@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.eclipse.smarthome.binding.bosesoundtouch.types.OperationModeType;
 
 import com.google.gson.annotations.Expose;
 

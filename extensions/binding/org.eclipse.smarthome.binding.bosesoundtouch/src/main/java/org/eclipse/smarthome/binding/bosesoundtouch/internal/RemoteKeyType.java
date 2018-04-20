@@ -10,40 +10,50 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.smarthome.binding.bosesoundtouch.types;
+package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.PrimitiveType;
 import org.eclipse.smarthome.core.types.State;
 
 /**
- * The {@link OperationModeType} class is holding all OperationModes
+ * The {@link RemoteKeyType} class is holding the Keys on a remote. For simulating key presses
  *
  * @author Christian Niessner - Initial contribution
- * @author Thomas Traunbauer - Initial contribution
  */
-public enum OperationModeType implements PrimitiveType, State, Command {
-    OFFLINE,
-    STANDBY,
-    INTERNET_RADIO,
-    BLUETOOTH,
-    AUX,
-    AUX1,
-    AUX2,
-    AUX3,
-    SPOTIFY,
-    PANDORA,
-    DEEZER,
-    SIRIUSXM,
-    STORED_MUSIC,
-    AMAZON,
-    TV,
-    HDMI1,
-    OTHER;
+public enum RemoteKeyType implements PrimitiveType, State, Command {
+    PLAY,
+    PAUSE,
+    STOP,
+    PREV_TRACK,
+    NEXT_TRACK,
+    THUMBS_UP,
+    THUMBS_DOWN,
+    BOOKMARK,
+    POWER,
+    MUTE,
+    VOLUME_UP,
+    VOLUME_DOWN,
+    PRESET_1,
+    PRESET_2,
+    PRESET_3,
+    PRESET_4,
+    PRESET_5,
+    PRESET_6,
+    AUX_INPUT,
+    SHUFFLE_OFF,
+    SHUFFLE_ON,
+    REPEAT_OFF,
+    REPEAT_ONE,
+    REPEAT_ALL,
+    PLAY_PAUSE,
+    ADD_FAVORITE,
+    REMOVE_FAVORITE,
+    INVALID_KEY;
 
     private String name;
 
-    private OperationModeType() {
+    private RemoteKeyType() {
         this.name = name();
     }
 

@@ -14,8 +14,6 @@ package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 import java.util.Collection;
 
-import org.eclipse.smarthome.binding.bosesoundtouch.types.OperationModeType;
-
 /**
  * The {@link ContentItemMaker} class makes ContentItems for sources
  *
