@@ -3,9 +3,9 @@
 	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
 
-	<thing-type id="waveSoundTouchMusicSystemIV">
-		<label>Bose Wave SoundTouch Music System IV</label>
-		<description>Bose Wave SoundTouch Music System IV</description>
+	<thing-type id="sa5Amplifier">
+		<label>Bose SoundTouch SA-5 Amplifier</label>
+		<description>A Bose SoundTouch SA-5 Amplifier</description>
 
 		<channels>
 			<channel id="power" typeId="power" />

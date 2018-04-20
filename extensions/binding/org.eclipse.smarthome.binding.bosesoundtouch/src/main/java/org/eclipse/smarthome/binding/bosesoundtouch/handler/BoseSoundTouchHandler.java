@@ -269,10 +269,10 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
     /**
      * Returns the MAC Address of this device
      *
-     * @return the MAC Address of this device
+     * @return the MAC Address of this device (in format "123456789ABC")
      */
     public String getMacAddress() {
-        return (String) getThing().getConfiguration().get(Thing.PROPERTY_MAC_ADDRESS);
+        return ((String) getThing().getConfiguration().get(Thing.PROPERTY_MAC_ADDRESS)).replaceAll(":", "");
     }
 
     /**
@@ -385,7 +385,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
         if (getThing().getStatus() == ThingStatus.ONLINE) {
             try {
                 session.getRemote().sendString("HELLO");
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 onWebSocketError(e);
                 closeConnection();
                 openConnection();

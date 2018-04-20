@@ -355,7 +355,7 @@ public class CommandExecutor implements AvailableSources {
         try {
             handler.getSession().getRemote().sendString(msg);
             logger.debug("{}: sending request: {}", handler.getDeviceName(), msg);
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             handler.onWebSocketError(e);
         }
     }
