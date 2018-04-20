@@ -472,11 +472,19 @@ public class XMLResponseHandler extends DefaultHandler {
                 break;
             case NowPlayingArt:
                 String url = new String(ch, start, length);
-                // We download the cover art in a different thread to not delay the other operations
-                handler.getScheduler().submit(() -> {
-                    RawType image = HttpUtil.downloadImage(url, true, 500000);
-                    updateNowPlayingArtwork(image);
-                });
+                if (url.startsWith("http")) {
+                    // We download the cover art in a different thread to not delay the other operations
+                    handler.getScheduler().submit(() -> {
+                        RawType image = HttpUtil.downloadImage(url, true, 500000);
+                        if (image != null) {
+                            updateNowPlayingArtwork(image);
+                        } else {
+                            updateNowPlayingArtwork(UnDefType.UNDEF);
+                        }
+                    });
+                } else {
+                    updateNowPlayingArtwork(UnDefType.UNDEF);
+                }
                 break;
             case NowPlayingArtist:
                 updateNowPlayingArtist(new StringType(new String(ch, start, length)));

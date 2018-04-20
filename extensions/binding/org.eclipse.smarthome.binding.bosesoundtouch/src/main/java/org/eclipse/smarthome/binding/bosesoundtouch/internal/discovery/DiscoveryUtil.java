@@ -13,6 +13,7 @@
 package org.eclipse.smarthome.binding.bosesoundtouch.internal.discovery;
 
 import java.io.IOException;
+
 import org.eclipse.smarthome.io.net.http.HttpUtil;
 
 /**
