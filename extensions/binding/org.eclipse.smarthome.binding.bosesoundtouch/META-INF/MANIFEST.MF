@@ -36,6 +36,5 @@ Import-Package:
  org.slf4j
 Service-Component: OSGI-INF/*.xml
 Export-Package: org.eclipse.smarthome.binding.bosesoundtouch,
- org.eclipse.smarthome.binding.bosesoundtouch.handler,
- org.eclipse.smarthome.binding.bosesoundtouch.types
+ org.eclipse.smarthome.binding.bosesoundtouch.handler
 Automatic-Module-Name: org.eclipse.smarthome.binding.bosesoundtouch

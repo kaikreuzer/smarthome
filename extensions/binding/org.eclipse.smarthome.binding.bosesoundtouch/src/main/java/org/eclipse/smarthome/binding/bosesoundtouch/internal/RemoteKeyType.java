@@ -12,16 +12,12 @@
  */
 package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
-import org.eclipse.smarthome.core.types.Command;
-import org.eclipse.smarthome.core.types.PrimitiveType;
-import org.eclipse.smarthome.core.types.State;
-
 /**
  * The {@link RemoteKeyType} class is holding the Keys on a remote. For simulating key presses
  *
  * @author Christian Niessner - Initial contribution
  */
-public enum RemoteKeyType implements PrimitiveType, State, Command {
+public enum RemoteKeyType {
     PLAY,
     PAUSE,
     STOP,
@@ -58,17 +54,8 @@ public enum RemoteKeyType implements PrimitiveType, State, Command {
     }
 
     @Override
-    public String format(String pattern) {
-        return String.format(pattern, this.toString());
-    }
-
-    @Override
     public String toString() {
         return name;
     }
 
-    @Override
-    public String toFullString() {
-        return toString();
-    }
 }
