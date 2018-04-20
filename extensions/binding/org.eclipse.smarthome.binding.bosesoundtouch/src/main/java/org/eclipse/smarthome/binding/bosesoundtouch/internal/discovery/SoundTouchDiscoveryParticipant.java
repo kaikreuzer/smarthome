@@ -117,7 +117,7 @@ public class SoundTouchDiscoveryParticipant implements MDNSDiscoveryParticipant 
                 String content = DiscoveryUtil.executeUrl("http://" + ip + ":8090/info");
                 deviceType = DiscoveryUtil.getContentOfFirstElement(content, "type");
             } catch (IOException e) {
-                return BST_UNKNOWN_THING_TYPE_UID;
+                return null;
             }
 
             if (deviceType.toLowerCase().contains("soundtouch 10")) {
@@ -141,7 +141,7 @@ public class SoundTouchDiscoveryParticipant implements MDNSDiscoveryParticipant 
             if (deviceType.toLowerCase().contains("amplifier")) {
                 return BST_SA5A_THING_TYPE_UID;
             }
-            return BST_UNKNOWN_THING_TYPE_UID;
+            return null;
         }
         return null;
     }
