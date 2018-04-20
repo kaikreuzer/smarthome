@@ -328,7 +328,7 @@ public class BoseSoundTouchHandler extends BaseThingHandler implements WebSocket
     @Override
     public void onWebSocketBinary(byte[] arr, int pos, int len) {
         // we don't expect binary data so just dump if we get some...
-        logger.debug("{}: onWebSocketBinary({}, {}, '{}')", pos, len, Arrays.toString(arr));
+        logger.debug("{}: onWebSocketBinary({}, {}, '{}')", getDeviceName(), pos, len, Arrays.toString(arr));
     }
 
     @Override
