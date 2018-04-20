@@ -1,8 +1,0 @@
-<info deviceID="XXXXXXXXXXXX">
-<type>SoundTouch 10</type>
-</info>
-
-<sources deviceID="XXXXXXXXXXXX">
-<sourceItem source="AUX" sourceAccount="AUX" status="READY" isLocal="true">AUX IN</sourceItem>
-<sourceItem source="BLUETOOTH" status="READY" isLocal="true"/>
-</sources>
