@@ -10,29 +10,29 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions;
+package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 /**
- * The {@link NoPresetFoundException} class is an exception
+ * The {@link ContentItemNotPresetableException} class is an exception
  *
  * @author Thomas Traunbauer - Initial contribution
  */
-public class NoPresetFoundException extends Exception {
+public class ContentItemNotPresetableException extends NoPresetFoundException {
     private static final long serialVersionUID = 1L;
 
-    public NoPresetFoundException() {
+    public ContentItemNotPresetableException() {
         super();
     }
 
-    public NoPresetFoundException(String message) {
+    public ContentItemNotPresetableException(String message) {
         super(message);
     }
 
-    public NoPresetFoundException(String message, Throwable cause) {
+    public ContentItemNotPresetableException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public NoPresetFoundException(Throwable cause) {
+    public ContentItemNotPresetableException(Throwable cause) {
         super(cause);
     }
 }

@@ -19,8 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.ContentItemNotPresetableException;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoPresetFoundException;
 import org.eclipse.smarthome.core.storage.DeletableStorage;
 import org.eclipse.smarthome.core.storage.Storage;
 import org.slf4j.Logger;

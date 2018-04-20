@@ -58,7 +58,7 @@ public class SoundTouchDiscoveryParticipant implements MDNSDiscoveryParticipant 
         if (uid != null) {
 
             Map<String, Object> properties = new HashMap<>(2);
-            String label = "unnamed Bose SoundTouch device";
+            String label = "Bose SoundTouch";
             try {
                 label = info.getName();
             } catch (Exception e) {
@@ -84,7 +84,7 @@ public class SoundTouchDiscoveryParticipant implements MDNSDiscoveryParticipant 
 
     @Override
     public ThingUID getThingUID(ServiceInfo info) {
-        logger.trace("ServiceInfo: " + info);
+        logger.trace("ServiceInfo: {}", info);
         ThingTypeUID typeUID = getThingTypeUID(info);
         if (typeUID != null) {
             if (info.getType() != null) {
@@ -148,7 +148,7 @@ public class SoundTouchDiscoveryParticipant implements MDNSDiscoveryParticipant 
 
     private byte[] getMacAddress(ServiceInfo info) {
         if (info != null) {
-            // sometimes we see empty messages - ignore them..
+            // sometimes we see empty messages - ignore them
             if (!info.hasData()) {
                 return null;
             }

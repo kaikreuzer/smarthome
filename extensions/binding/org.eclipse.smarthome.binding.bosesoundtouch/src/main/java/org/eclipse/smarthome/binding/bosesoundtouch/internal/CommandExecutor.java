@@ -20,11 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.smarthome.binding.bosesoundtouch.handler.BoseSoundTouchHandler;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.ContentItemNotPresetableException;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoInternetRadioPresetFoundException;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoPresetFoundException;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoStoredMusicPresetFoundException;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.OperationModeNotAvailableException;
 import org.eclipse.smarthome.binding.bosesoundtouch.types.OperationModeType;
 import org.eclipse.smarthome.binding.bosesoundtouch.types.RemoteKeyType;
 import org.eclipse.smarthome.core.library.types.DecimalType;

@@ -14,9 +14,6 @@ package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 import java.util.Collection;
 
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoInternetRadioPresetFoundException;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.NoStoredMusicPresetFoundException;
-import org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions.OperationModeNotAvailableException;
 import org.eclipse.smarthome.binding.bosesoundtouch.types.OperationModeType;
 
 /**

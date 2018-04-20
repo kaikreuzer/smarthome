@@ -10,29 +10,29 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions;
+package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 /**
- * The {@link OperationModeNotAvailableException} class is an exception
+ * The {@link NoPresetFoundException} class is an exception
  *
  * @author Thomas Traunbauer - Initial contribution
  */
-public class OperationModeNotAvailableException extends Exception {
+public class NoPresetFoundException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public OperationModeNotAvailableException() {
+    public NoPresetFoundException() {
         super();
     }
 
-    public OperationModeNotAvailableException(String message) {
+    public NoPresetFoundException(String message) {
         super(message);
     }
 
-    public OperationModeNotAvailableException(String message, Throwable cause) {
+    public NoPresetFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public OperationModeNotAvailableException(Throwable cause) {
+    public NoPresetFoundException(Throwable cause) {
         super(cause);
     }
 }

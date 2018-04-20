@@ -10,29 +10,29 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions;
+package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 /**
- * The {@link ContentItemNotPresetableException} class is an exception
+ * The {@link OperationModeNotAvailableException} class is an exception
  *
  * @author Thomas Traunbauer - Initial contribution
  */
-public class ContentItemNotPresetableException extends NoPresetFoundException {
+public class OperationModeNotAvailableException extends Exception {
     private static final long serialVersionUID = 1L;
 
-    public ContentItemNotPresetableException() {
+    public OperationModeNotAvailableException() {
         super();
     }
 
-    public ContentItemNotPresetableException(String message) {
+    public OperationModeNotAvailableException(String message) {
         super(message);
     }
 
-    public ContentItemNotPresetableException(String message, Throwable cause) {
+    public OperationModeNotAvailableException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public ContentItemNotPresetableException(Throwable cause) {
+    public OperationModeNotAvailableException(Throwable cause) {
         super(cause);
     }
 }

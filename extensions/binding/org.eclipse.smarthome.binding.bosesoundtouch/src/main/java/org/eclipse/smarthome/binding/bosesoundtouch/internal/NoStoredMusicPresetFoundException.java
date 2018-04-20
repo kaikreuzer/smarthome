@@ -10,29 +10,29 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
-package org.eclipse.smarthome.binding.bosesoundtouch.internal.exceptions;
+package org.eclipse.smarthome.binding.bosesoundtouch.internal;
 
 /**
- * The {@link BoseSoundTouchNotFoundException} class is an exception
+ * The {@link NoStoredMusicPresetFoundException} class is an exception
  *
  * @author Thomas Traunbauer - Initial contribution
  */
-public class BoseSoundTouchNotFoundException extends Exception {
+public class NoStoredMusicPresetFoundException extends NoPresetFoundException {
     private static final long serialVersionUID = 1L;
 
-    public BoseSoundTouchNotFoundException() {
+    public NoStoredMusicPresetFoundException() {
         super();
     }
 
-    public BoseSoundTouchNotFoundException(String message) {
+    public NoStoredMusicPresetFoundException(String message) {
         super(message);
     }
 
-    public BoseSoundTouchNotFoundException(String message, Throwable cause) {
+    public NoStoredMusicPresetFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public BoseSoundTouchNotFoundException(Throwable cause) {
+    public NoStoredMusicPresetFoundException(Throwable cause) {
         super(cause);
     }
 }
