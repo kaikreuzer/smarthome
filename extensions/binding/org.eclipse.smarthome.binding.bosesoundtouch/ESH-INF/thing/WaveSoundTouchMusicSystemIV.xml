@@ -33,6 +33,6 @@
 			<channel id="nowPlayingStationName" typeId="nowPlayingStationName" />
 			<channel id="nowPlayingTrack" typeId="nowPlayingTrack" />
 		</channels>
-        <config-description-ref uri="thing-type:bosesoundtouch:config" />
+		<config-description-ref uri="thing-type:bosesoundtouch:config" />
 	</thing-type>
 </thing:thing-descriptions>

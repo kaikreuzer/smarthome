@@ -202,16 +202,16 @@
 		<description>Current Operation Mode</description>
 		<state readOnly="false">
 			<options>
-                <option value="STANDBY">Standby</option>
-                <option value="INTERNET_RADIO">Internet Radio</option>
-                <option value="BLUETOOTH">Bluetooth</option>
-                <option value="STORED_MUSIC">Stored Music</option>
-                <option value="AUX">AUX</option>
-                <option value="SPOTIFY">Spotify</option>
-                <option value="PANDORA">Pandora</option>
-                <option value="DEEZER">Deezer</option>
-                <option value="SIRIUSXM">SiriusXM</option>
-                <option value="AMAZON">Amazon</option>
+				<option value="STANDBY">Standby</option>
+				<option value="INTERNET_RADIO">Internet Radio</option>
+				<option value="BLUETOOTH">Bluetooth</option>
+				<option value="STORED_MUSIC">Stored Music</option>
+				<option value="AUX">AUX</option>
+				<option value="SPOTIFY">Spotify</option>
+				<option value="PANDORA">Pandora</option>
+				<option value="DEEZER">Deezer</option>
+				<option value="SIRIUSXM">SiriusXM</option>
+				<option value="AMAZON">Amazon</option>
 			</options>
 		</state>
 	</channel-type>
@@ -223,17 +223,17 @@
 		<description>Current Operation Mode</description>
 		<state readOnly="false">
 			<options>
-                <option value="STANDBY">Standby</option>
-                <option value="INTERNET_RADIO">Internet Radio</option>
-                <option value="BLUETOOTH">Bluetooth</option>
-                <option value="STORED_MUSIC">Stored Music</option>
-                <option value="TV">TV</option>
-                <option value="HDMI">HDMI</option>
-                <option value="SPOTIFY">Spotify</option>
-                <option value="PANDORA">Pandora</option>
-                <option value="DEEZER">Deezer</option>
-                <option value="SIRIUSXM">SiriusXM</option>
-                <option value="AMAZON">Amazon</option>
+				<option value="STANDBY">Standby</option>
+				<option value="INTERNET_RADIO">Internet Radio</option>
+				<option value="BLUETOOTH">Bluetooth</option>
+				<option value="STORED_MUSIC">Stored Music</option>
+				<option value="TV">TV</option>
+				<option value="HDMI">HDMI</option>
+				<option value="SPOTIFY">Spotify</option>
+				<option value="PANDORA">Pandora</option>
+				<option value="DEEZER">Deezer</option>
+				<option value="SIRIUSXM">SiriusXM</option>
+				<option value="AMAZON">Amazon</option>
 			</options>
 		</state>
 	</channel-type>
@@ -245,16 +245,16 @@
 		<description>Current Operation Mode</description>
 		<state readOnly="false">
 			<options>
-                <option value="STANDBY">Standby</option>
-                <option value="INTERNET_RADIO">Internet Radio</option>
-                <option value="BLUETOOTH">Bluetooth</option>
-                <option value="STORED_MUSIC">Stored Music</option>
-                <option value="AUX">AUX</option>
-                <option value="SPOTIFY">Spotify</option>
-                <option value="PANDORA">Pandora</option>
-                <option value="DEEZER">Deezer</option>
-                <option value="SIRIUSXM">SiriusXM</option>
-                <option value="AMAZON">Amazon</option>
+				<option value="STANDBY">Standby</option>
+				<option value="INTERNET_RADIO">Internet Radio</option>
+				<option value="BLUETOOTH">Bluetooth</option>
+				<option value="STORED_MUSIC">Stored Music</option>
+				<option value="AUX">AUX</option>
+				<option value="SPOTIFY">Spotify</option>
+				<option value="PANDORA">Pandora</option>
+				<option value="DEEZER">Deezer</option>
+				<option value="SIRIUSXM">SiriusXM</option>
+				<option value="AMAZON">Amazon</option>
 			</options>
 		</state>
 	</channel-type>
@@ -266,18 +266,18 @@
 		<description>Bose SoundTouch current Operation Mode</description>
 		<state readOnly="false">
 			<options>
-                <option value="STANDBY">Standby</option>
-                <option value="INTERNET_RADIO">Internet Radio</option>
-                <option value="BLUETOOTH">Bluetooth</option>
-                <option value="STORED_MUSIC">Stored Music</option>
-                <option value="AUX1">AUX1</option>
-                <option value="AUX2">AUX2</option>
-                <option value="AUX3">AUX3</option>
-                <option value="SPOTIFY">Spotify</option>
-                <option value="PANDORA">Pandora</option>
-                <option value="DEEZER">Deezer</option>
-                <option value="SIRIUSXM">SiriusXM</option>
-                <option value="AMAZON">Amazon</option>
+				<option value="STANDBY">Standby</option>
+				<option value="INTERNET_RADIO">Internet Radio</option>
+				<option value="BLUETOOTH">Bluetooth</option>
+				<option value="STORED_MUSIC">Stored Music</option>
+				<option value="AUX1">AUX1</option>
+				<option value="AUX2">AUX2</option>
+				<option value="AUX3">AUX3</option>
+				<option value="SPOTIFY">Spotify</option>
+				<option value="PANDORA">Pandora</option>
+				<option value="DEEZER">Deezer</option>
+				<option value="SIRIUSXM">SiriusXM</option>
+				<option value="AMAZON">Amazon</option>
 			</options>
 		</state>
 	</channel-type>
