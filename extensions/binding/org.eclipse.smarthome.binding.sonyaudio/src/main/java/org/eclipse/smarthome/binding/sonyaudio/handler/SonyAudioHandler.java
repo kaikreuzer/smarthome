@@ -1,0 +1,546 @@
+/**
+ * Copyright (c) 2014,2018 Contributors to the Eclipse Foundation
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
+package org.eclipse.smarthome.binding.sonyaudio.handler;
+
+import static org.eclipse.smarthome.binding.sonyaudio.SonyAudioBindingConstants.*;
+
+import org.eclipse.smarthome.binding.sonyaudio.SonyAudioBindingConstants;
+
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.function.Supplier;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.Map;
+import java.util.HashMap;
+
+import org.eclipse.smarthome.binding.sonyaudio.internal.SonyAudioEventListener;
+import org.eclipse.smarthome.binding.sonyaudio.internal.protocol.SonyAudioConnection;
+import org.eclipse.smarthome.config.core.Configuration;
+import org.eclipse.smarthome.core.cache.ExpiringCacheAsync;
+import org.eclipse.smarthome.core.cache.ExpiringCache;
+import org.eclipse.smarthome.core.library.types.DecimalType;
+import org.eclipse.smarthome.core.library.types.OnOffType;
+import org.eclipse.smarthome.core.library.types.StringType;
+import org.eclipse.smarthome.core.library.types.PercentType;
+import org.eclipse.smarthome.core.library.types.IncreaseDecreaseType;
+import org.eclipse.smarthome.core.thing.Channel;
+import org.eclipse.smarthome.core.thing.ChannelUID;
+import org.eclipse.smarthome.core.thing.Thing;
+import org.eclipse.smarthome.core.thing.ThingStatus;
+import org.eclipse.smarthome.core.thing.ThingStatusDetail;
+import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
+import org.eclipse.smarthome.core.types.Command;
+import org.eclipse.smarthome.core.types.RefreshType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The {@link SonyAudioHandler} is responsible for handling commands, which are
+ * sent to one of the channels.
+ *
+ * @author David Åberg - Initial contribution
+ */
+abstract class SonyAudioHandler extends BaseThingHandler implements SonyAudioEventListener {
+
+    private final Logger logger = LoggerFactory.getLogger(SonyAudioHandler.class);
+
+    protected SonyAudioConnection connection;
+    private ScheduledFuture<?> connectionCheckerFuture;
+    private ScheduledFuture<?> refreshJob;
+
+    private int currentRadioStation = 0;
+    private Map<Integer,String> input_zone = new HashMap<Integer,String>();
+
+    private static final long CACHE_EXPIRY = TimeUnit.SECONDS.toMillis(5);
+
+    protected ExpiringCache<Boolean>[] power_cache;
+    protected ExpiringCache<SonyAudioConnection.SonyAudioInput>[] input_cache;
+    protected ExpiringCache<SonyAudioConnection.SonyAudioVolume>[] volume_cache;
+    protected ExpiringCache<Map<String,String>> sound_settings_cache;
+
+    protected Supplier<Boolean>[] power_supplier;
+    protected Supplier<SonyAudioConnection.SonyAudioInput>[] input_supplier;
+    protected Supplier<SonyAudioConnection.SonyAudioVolume>[] volume_supplier;
+    protected Supplier<Map<String,String>> sound_settings_supplier;
+
+    public SonyAudioHandler(Thing thing) {
+        super(thing);
+
+        power_cache = new ExpiringCache[5];
+        power_supplier = new Supplier[5];
+        input_cache = new ExpiringCache[5];
+        input_supplier = new Supplier[5];
+        volume_cache = new ExpiringCache[5];
+        volume_supplier = new Supplier[5];
+
+        for(int i=0; i<5; i++){
+            final int index = i;
+
+            input_supplier[i] = () -> {
+                try {
+                    return connection.getInput(index);
+                } catch(IOException ex) { throw new CompletionException(ex); }
+            };
+
+            power_supplier[i] = () -> {
+              try {
+                  return connection.getPower(index);
+              } catch(IOException ex) { throw new CompletionException(ex); }
+            };
+
+            volume_supplier[i] = () -> {
+              try {
+                  return connection.getVolume(index);
+              } catch(IOException ex) { throw new CompletionException(ex); }
+            };
+
+            power_cache[i] = new ExpiringCache<>(CACHE_EXPIRY, power_supplier[i]);
+            input_cache[i] = new ExpiringCache<>(CACHE_EXPIRY, input_supplier[i]);
+            volume_cache[i] = new ExpiringCache<>(CACHE_EXPIRY, volume_supplier[i]);
+        }
+
+        sound_settings_supplier = () -> {
+            try {
+                return connection.getSoundSettings();
+            } catch(IOException ex) { throw new CompletionException(ex); }
+        };
+
+        sound_settings_cache = new ExpiringCache<>(CACHE_EXPIRY, sound_settings_supplier);
+    }
+
+    @Override
+    public void handleCommand(ChannelUID channelUID, Command command) {
+        if (connection == null) {
+            logger.debug("Thing not yet initialized!");
+            return;
+        }
+
+        String id = channelUID.getId();
+
+        logger.debug("Handle command {} {}", channelUID, command);
+
+        try {
+            switch (id) {
+                case CHANNEL_POWER:
+                case CHANNEL_MASTER_POWER:
+                    handlePowerCommand(command, channelUID);
+                    break;
+                case CHANNEL_ZONE1_POWER:
+                    handlePowerCommand(command, channelUID, 1);
+                    break;
+                case CHANNEL_ZONE2_POWER:
+                    handlePowerCommand(command, channelUID, 2);
+                    break;
+                case CHANNEL_ZONE3_POWER:
+                    handlePowerCommand(command, channelUID, 3);
+                    break;
+                case CHANNEL_ZONE4_POWER:
+                    handlePowerCommand(command, channelUID, 4);
+                    break;
+                case CHANNEL_INPUT:
+                    handleInputCommand(command, channelUID);
+                    break;
+                case CHANNEL_ZONE1_INPUT:
+                    handleInputCommand(command, channelUID, 1);
+                    break;
+                case CHANNEL_ZONE2_INPUT:
+                    handleInputCommand(command, channelUID, 2);
+                    break;
+                case CHANNEL_ZONE3_INPUT:
+                    handleInputCommand(command, channelUID, 3);
+                    break;
+                case CHANNEL_ZONE4_INPUT:
+                    handleInputCommand(command, channelUID, 4);
+                    break;
+                case CHANNEL_VOLUME:
+                    handleVolumeCommand(command, channelUID);
+                    break;
+                case CHANNEL_ZONE1_VOLUME:
+                    handleVolumeCommand(command, channelUID, 1);
+                    break;
+                case CHANNEL_ZONE2_VOLUME:
+                    handleVolumeCommand(command, channelUID, 2);
+                    break;
+                case CHANNEL_ZONE3_VOLUME:
+                    handleVolumeCommand(command, channelUID, 3);
+                    break;
+                case CHANNEL_ZONE4_VOLUME:
+                    handleVolumeCommand(command, channelUID, 4);
+                    break;
+                case CHANNEL_MUTE:
+                    handleMuteCommand(command, channelUID);
+                    break;
+                case CHANNEL_ZONE1_MUTE:
+                    handleMuteCommand(command, channelUID, 1);
+                    break;
+                case CHANNEL_ZONE2_MUTE:
+                    handleMuteCommand(command, channelUID, 2);
+                    break;
+                case CHANNEL_ZONE3_MUTE:
+                    handleMuteCommand(command, channelUID, 3);
+                    break;
+                case CHANNEL_ZONE4_MUTE:
+                    handleMuteCommand(command, channelUID, 4);
+                    break;
+                case CHANNEL_MASTER_SOUND_FIELD:
+                case CHANNEL_SOUND_FIELD:
+                    handleSoundSettings(command, channelUID);
+                    break;
+                case CHANNEL_RADIO_FREQ:
+                    handleRadioCommand(command, channelUID);
+                    break;
+                case CHANNEL_RADIO_STATION:
+                    handleRadioStationCommand(command, channelUID);
+                    break;
+                case CHANNEL_RADIO_SEEK_STATION:
+                    handleRadioSeekStationCommand(command, channelUID);
+                    break;
+                default:
+                    logger.error("Channel {} not supported!", id);
+            }
+        } catch (IOException e) {
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, e.getMessage());
+        }
+    }
+
+    public void handleSoundSettings(Command command, ChannelUID channelUID) throws IOException {
+        if (command instanceof RefreshType) {
+            logger.debug("handleSoundSettings RefreshType");
+            Map<String,String> result = sound_settings_cache.getValue();
+            updateState(channelUID, new StringType(result.get("soundField")));
+        }
+        if (command instanceof StringType) {
+            logger.debug("handleSoundSettings set {} {}", command);
+            connection.setSoundSettings("soundField", ((StringType) command).toString());
+        }
+    }
+
+    public void handlePowerCommand(Command command, ChannelUID channelUID) throws IOException {
+        handlePowerCommand(command, channelUID, 0);
+    }
+
+    public void handlePowerCommand(Command command, ChannelUID channelUID, int zone) throws IOException {
+        if (command instanceof RefreshType) {
+            logger.debug("handlePowerCommand RefreshType {}", zone);
+            Boolean result = power_cache[zone].getValue();
+            updateState(channelUID, result ? OnOffType.ON : OnOffType.OFF);
+        }
+        if (command instanceof OnOffType) {
+            logger.debug("handlePowerCommand set {} {}", zone, command);
+            connection.setPower(((OnOffType) command) == OnOffType.ON, zone);
+        }
+    }
+
+    public void handleInputCommand(Command command, ChannelUID channelUID) throws IOException {
+        handleInputCommand(command, channelUID, 0);
+    }
+
+    public void handleInputCommand(Command command, ChannelUID channelUID, int zone) throws IOException {
+        if (command instanceof RefreshType) {
+            logger.debug("handleInputCommand RefreshType {}", zone);
+            try {
+                SonyAudioConnection.SonyAudioInput result = input_cache[zone].getValue();
+                if(zone > 0)
+                    input_zone.put(zone, result.input);
+                updateState(channelUID, inputSource(result.input));
+
+                if(result.radio_freq.isPresent()){
+                    updateState(SonyAudioBindingConstants.CHANNEL_RADIO_FREQ, new DecimalType(result.radio_freq.get() / 1000000.0));
+                }
+            } catch(CompletionException ex) {
+                throw new IOException(ex.getCause());
+            }
+        }
+        if (command instanceof StringType) {
+            logger.debug("handleInputCommand set {} {}", zone, command);
+            connection.setInput(setInputCommand(command), zone);
+        }
+    }
+
+    public void handleVolumeCommand(Command command, ChannelUID channelUID) throws IOException {
+        handleVolumeCommand(command, channelUID, 0);
+    }
+
+    public void handleVolumeCommand(Command command, ChannelUID channelUID, int zone) throws IOException {
+        if (command instanceof RefreshType) {
+            logger.debug("handleVolumeCommand RefreshType {}", zone);
+            SonyAudioConnection.SonyAudioVolume result = volume_cache[zone].getValue();
+            updateState(channelUID, new PercentType(result.volume));
+        }
+        if (command instanceof PercentType) {
+            logger.debug("handleVolumeCommand PercentType set {} {}", zone, command);
+            connection.setVolume(((PercentType) command).intValue(), zone);
+        }
+        if (command instanceof IncreaseDecreaseType) {
+            logger.debug("handleVolumeCommand IncreaseDecreaseType set {} {}", zone, command);
+            String change = command == IncreaseDecreaseType.INCREASE ? "+1" : "-1";
+            connection.setVolume(change, zone);
+        }
+        if (command instanceof OnOffType) {
+            logger.debug("handleVolumeCommand OnOffType set {} {}", zone, command);
+            connection.setMute(((OnOffType) command) == OnOffType.ON, zone);
+        }
+    }
+
+    public void handleMuteCommand(Command command, ChannelUID channelUID) throws IOException {
+        handleMuteCommand(command, channelUID, 0);
+    }
+
+    public void handleMuteCommand(Command command, ChannelUID channelUID, int zone) throws IOException {
+        if (command instanceof RefreshType) {
+            logger.debug("handleMuteCommand RefreshType {}", zone);
+            SonyAudioConnection.SonyAudioVolume result = volume_cache[zone].getValue();
+            updateState(channelUID, result.mute ? OnOffType.ON : OnOffType.OFF);
+        }
+        if (command instanceof OnOffType) {
+            logger.debug("handleMuteCommand set {} {}", zone, command);
+            connection.setMute(((OnOffType) command) == OnOffType.ON, zone);
+        }
+    }
+
+    public void handleRadioCommand(Command command, ChannelUID channelUID) throws IOException {
+    }
+
+    public void handleRadioStationCommand(Command command, ChannelUID channelUID) throws IOException {
+        if (command instanceof RefreshType) {
+            updateState(channelUID, new DecimalType(currentRadioStation));
+        }
+        if (command instanceof DecimalType) {
+            currentRadioStation = ((DecimalType) command).intValue();
+            String radioCommand = "radio:fm?contentId=" + currentRadioStation;
+
+            for(int i=1; i<=4; i++){
+              String input = input_zone.get(i);
+              if (input != null && input.startsWith("radio:fm")) {
+                  connection.setInput(radioCommand, i);
+              }
+            }
+        }
+    }
+
+    public void handleRadioSeekStationCommand(Command command, ChannelUID channelUID) throws IOException {
+        if (command instanceof RefreshType) {
+            updateState(channelUID, new StringType(""));
+        }
+        if (command instanceof StringType) {
+            switch (((StringType) command).toString()) {
+                case "fwdSeeking":
+                    connection.radioSeekFwd();
+                    break;
+                case "bwdSeeking":
+                    connection.radioSeekBwd();
+                    break;
+            }
+        }
+    }
+
+    abstract public String setInputCommand(Command command);
+
+    @Override
+    public void initialize() {
+        Configuration config = getThing().getConfiguration();
+        String ipAddress = (String) config.get(SonyAudioBindingConstants.HOST_PARAMETER);
+        String path = (String) config.get(SonyAudioBindingConstants.SCALAR_PATH_PARAMETER);
+        Object port_o = config.get(SonyAudioBindingConstants.SCALAR_PORT_PARAMETER);
+        int port = 10000;
+        if (port_o instanceof BigDecimal) {
+            port = ((BigDecimal) port_o).intValue();
+        } else if (port_o instanceof Integer) {
+            port = (int) port_o;
+        }
+
+        Object refresh_o = config.get(SonyAudioBindingConstants.REFRESHINTERVAL);
+        int refresh = 0;
+        if (refresh_o instanceof BigDecimal) {
+            refresh = ((BigDecimal) refresh_o).intValue();
+        } else if (refresh_o instanceof Integer) {
+            refresh = (int) refresh_o;
+        }
+
+        try {
+            connection = new SonyAudioConnection(ipAddress, port, path, this);
+
+            connection.connect(scheduler);
+
+            // Start the connection checker
+            Runnable connectionChecker = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (!connection.checkConnection()) {
+                            if(getThing().getStatusInfo().getStatus() != ThingStatus.OFFLINE) {
+                                updateStatus(ThingStatus.OFFLINE);
+                            }
+                        }
+                    } catch (Exception ex) {
+                        logger.warn("Exception in check connection to @{}. Cause: {}", connection.getConnectionName(), ex.getMessage(), ex);
+                    }
+                }
+            };
+            connectionCheckerFuture = scheduler.scheduleWithFixedDelay(connectionChecker, 1, 10, TimeUnit.SECONDS);
+
+            // Start the status updater
+            startAutomaticRefresh(refresh);
+        } catch (IOException e) {
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, e.getMessage());
+        }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (connectionCheckerFuture != null) {
+            connectionCheckerFuture.cancel(true);
+        }
+        if (refreshJob != null) {
+            refreshJob.cancel(true);
+        }
+        if (connection != null) {
+            connection.close();
+        }
+    }
+
+    @Override
+    public void updateConnectionState(boolean connected) {
+        if (connected) {
+            updateStatus(ThingStatus.ONLINE);
+        } else {
+            updateStatus(ThingStatus.OFFLINE);
+        }
+    }
+
+    @Override
+    public void updateInputSource(int zone, String source) {
+        input_cache[zone].invalidateValue();
+        switch (zone) {
+            case 0:
+                updateState(SonyAudioBindingConstants.CHANNEL_INPUT, inputSource(source));
+                break;
+            case 1:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE1_INPUT, inputSource(source));
+                break;
+            case 2:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE2_INPUT, inputSource(source));
+                break;
+            case 3:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE3_INPUT, inputSource(source));
+                break;
+            case 4:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE4_INPUT, inputSource(source));
+                break;
+        }
+    }
+
+    abstract public StringType inputSource(String input);
+
+    @Override
+    public void updateBroadcastFreq(int freq) {
+        updateState(SonyAudioBindingConstants.CHANNEL_RADIO_FREQ, new DecimalType(freq / 1000000.0));
+    }
+
+    @Override
+    public void updateCurrentRadioStation(int radioStation) {
+        currentRadioStation = radioStation;
+        updateState(SonyAudioBindingConstants.CHANNEL_RADIO_STATION, new DecimalType(currentRadioStation));
+    }
+
+    @Override
+    public void updateSeekStation(String seek) {
+        updateState(SonyAudioBindingConstants.CHANNEL_RADIO_SEEK_STATION, new StringType(seek));
+    }
+
+    @Override
+    public void updateVolume(int zone, int volume) {
+        power_cache[zone].invalidateValue();
+        switch (zone) {
+            case 0:
+                updateState(SonyAudioBindingConstants.CHANNEL_VOLUME, new PercentType(volume));
+                break;
+            case 1:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE1_VOLUME, new PercentType(volume));
+                break;
+            case 2:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE2_VOLUME, new PercentType(volume));
+                break;
+            case 3:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE3_VOLUME, new PercentType(volume));
+                break;
+            case 4:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE4_VOLUME, new PercentType(volume));
+                break;
+        }
+    }
+
+    @Override
+    public void updateMute(int zone, boolean mute) {
+        power_cache[zone].invalidateValue();
+        switch (zone) {
+            case 0:
+                updateState(SonyAudioBindingConstants.CHANNEL_MUTE, mute ? OnOffType.ON : OnOffType.OFF);
+                break;
+            case 1:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE1_MUTE, mute ? OnOffType.ON : OnOffType.OFF);
+                break;
+            case 2:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE2_MUTE, mute ? OnOffType.ON : OnOffType.OFF);
+                break;
+            case 3:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE3_MUTE, mute ? OnOffType.ON : OnOffType.OFF);
+                break;
+            case 4:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE4_MUTE, mute ? OnOffType.ON : OnOffType.OFF);
+                break;
+        }
+    }
+
+    @Override
+    public void updatePowerStatus(int zone, boolean power) {
+        power_cache[zone].invalidateValue();
+        switch (zone) {
+            case 0:
+                updateState(SonyAudioBindingConstants.CHANNEL_POWER, power ? OnOffType.ON : OnOffType.OFF);
+                break;
+            case 1:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE1_POWER, power ? OnOffType.ON : OnOffType.OFF);
+                break;
+            case 2:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE2_POWER, power ? OnOffType.ON : OnOffType.OFF);
+                break;
+            case 3:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE3_POWER, power ? OnOffType.ON : OnOffType.OFF);
+                break;
+            case 4:
+                updateState(SonyAudioBindingConstants.CHANNEL_ZONE4_POWER, power ? OnOffType.ON : OnOffType.OFF);
+                break;
+        }
+    }
+
+    private void startAutomaticRefresh(int refresh) {
+        if (refresh <= 0) {
+            return;
+        }
+
+        refreshJob = scheduler.scheduleWithFixedDelay(() -> {
+            List<Channel> channels = getThing().getChannels();
+            for (Channel channel : channels) {
+                if(!isLinked(channel.getUID()))
+                    continue;
+                handleCommand(channel.getUID(), RefreshType.REFRESH);
+            }
+        }, 5, refresh, TimeUnit.SECONDS);
+    }
+}
