@@ -1,11 +1,11 @@
 # SonyAudio Binding
 
-This binding integrates the [Sony Audio system](http://www.sony.com).
+This binding integrates the [Sony Audio Control API](https://developer.sony.com/develop/audio-control-api/).
 
 ## Supported Things
 
 For the moment the devices that are supported by this binding are
- * STR-1080
+ * STR-DN1080
  * HT-CT800
  * SRS-ZR5
  * HT-ST5000
@@ -18,41 +18,79 @@ Please note that these thing types are case sensitive (you need to define them i
 
 ## Discovery
 
-The Sony devices are discovered through UPnP in the local network and all devices are put in the Inbox.
-
-## Binding Configuration
-
-_If your binding requires or supports general configuration settings, please create a folder ```cfg``` and place the configuration file ```<bindingId>.cfg``` inside it. In this section, you should link to this file and provide some information about the options. The file could e.g. look like:_
-
-```
-# Configuration for the Philips Hue Binding
-#
-# Default secret key for the pairing of the Philips Hue Bridge.
-# It has to be between 10-40 (alphanumeric) characters
-# This may be changed by the user for security reasons.
-secret=EclipseSmartHome
-```
-
-_Note that it is planned to generate some part of this based on the information that is available within ```ESH-INF/binding``` of your binding._
-
-_If your binding does not offer any generic configurations, you can remove this section completely._
+The SonyAudio devices are discovered through UPnP in the local network and all devices are put in the Inbox.
 
 ## Thing Configuration
 
-_Describe what is needed to manually configure a thing, either through the (Paper) UI or via a thing-file. This should be mainly about its mandatory and optional configuration parameters. A short example entry for a thing file can help!_
+The SonyAudio Thing requires the network address, port and path as a configuration value in order for the binding to know how to access the device.
+Additionally, a refresh interval, used to poll the Sony Audio device, can be specified (in seconds).
 
-_Note that it is planned to generate some part of this based on the XML files within ```ESH-INF/thing``` of your binding._
+```
+Thing sonyaudio:HT-ST5000:1 [ipAddress="192.168.123.123", port=10000, path="/sony", refresh=60]
+```
 
 ## Channels
 
-_Here you should provide information about available channel types, what their meaning is and how they can be used._
+The devices support the following channels:
 
-_Note that it is planned to generate some part of this based on the XML files within ```ESH-INF/thing``` of your binding._
+| Channel Type ID            | Item Type | Access Mode | Description                                                                           | Thing types                            |
+|----------------------------|-----------|-------------|---------------------------------------------------------------------------------------|----------------------------------------|
+| power                      | Switch    | RW          | Main power on/off                                                                     | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
+| input                      | String    | RW          | Set or get the input source                                                           | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
+| volume                     | Dimmer    | RW          | Set or get the master volume                                                          | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
+| mute                       | Switch    | RW          | Set or get the mute state of the master volume                                        | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
+| soundField                 | String    | RW          | Sound field                                                                           | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
+| master#power               | Switch    | RW          | Main power on/off                                                                     | STR-1080                               |
+| master#soundField          | String    | RW          | Sound field                                                                           | STR-1080                               |
+| zone1#power                | Switch    | RW          | Power for zone1 for devices supporting multizone                                      | STR-1080                               |
+| zone1#input                | String    | RW          | Set or get the input source for zone1 for devices supporting multizone                | STR-1080                               |
+| zone1#volume               | Dimmer    | RW          | Set or get the zone1 volume for devices supporting multizone                          | STR-1080                               |
+| zone1#mute                 | Switch    | RW          | Set or get the mute state for zone1 volume                                            | STR-1080                               |
+| zone2#power                | Switch    | RW          | Power for zone2 for devices supporting multizone                                      | STR-1080                               |
+| zone2#input                | String    | RW          | Set or get the input source for zone2 for devices supporting multizone                | STR-1080                               |
+| zone2#volume               | Dimmer    | RW          | Set or get the zone2 volume for devices supporting multizone                          | STR-1080                               |
+| zone2#mute                 | Switch    | RW          | Set or get the mute state for zone2 volume                                            | STR-1080                               |
+| zone3#power                | Switch    | RW          | Power for zone3 for devices supporting multizone                                      | none                                   |
+| zone3#input                | String    | RW          | Set or get the input source for zone3 for devices supporting multizone                | none                                   |
+| zone3#volume               | Dimmer    | RW          | Set or get the zone3 volume for devices supporting multizone                          | none                                   |
+| zone3#mute                 | Switch    | RW          | Set or get the mute state for zone3 volume                                            | none                                   |
+| zone4#power                | Switch    | RW          | Power for zone4 for devices supporting multizone                                      | STR-1080                               |
+| zone4#input                | String    | RW          | Set or get the input source for zone4 for devices supporting multizone                | STR-1080                               |
+| zone4#volume               | Dimmer    | RW          | Set or get the zone4 volume for devices supporting multizone                          | STR-1080                               |
+| zone4#mute                 | Switch    | RW          | Set or get the mute state for zone4 volume                                            | STR-1080                               |
+| radio#broadcastFreq        | Number    | R           | Current radio frequency                                                               | STR-1080                               |
+| radio#broadcastStation     | Number    | RW          | Set or get current preset radio station                                               | STR-1080                               |
+| radio#broadcastSeekStation | String    | W           | Seek for new broadcast station, forward search "fwdSeeking" and backward "bwdSeeking" | STR-1080                               |
+
 
 ## Full Example
 
-_Provide a full usage example based on textual configuration files (*.things, *.items, *.sitemap)._
+demo.things:
 
-## Any custom content here!
+```
+Thing sonyaudio:HT-ST5000:living [ipAddress="192.168.123.123"]
+```
 
-_Feel free to add additional sections for whatever you think should also be mentioned about your binding!_
+demo.items:
+
+```
+Group  SonyAudio <sonyaudio>
+
+Dimmer Sony_Volume       "Volume [%.0f %%]"  <soundvolume>      (SonyAudio) {channel="sonyaudio:HT-ST5000:living:volume"}
+Switch Sony_Mute         "Mute"              <soundvolume_mute> (SonyAudio) {channel="sonyaudio:HT-ST5000:living:mute"}
+String Sony_Sound_Field  "Sound Field: [%s]" <text>             (SonyAudio) {channel="sonyaudio:HT-ST5000:living:master#soundField"}
+```
+
+demo.sitemap:
+
+```
+sitemap demo label="Main Menu" {
+    Frame label="Sony" {
+        Text label="Volume" icon="soundvolume" {
+            Slider item=Sony_Volume
+            Switch item=Sony_Mute
+        }
+        Text item=Sony_Sound_Field
+    }
+}
+```

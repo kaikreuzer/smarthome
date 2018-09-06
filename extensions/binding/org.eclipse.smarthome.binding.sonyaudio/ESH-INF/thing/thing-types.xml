@@ -24,10 +24,4 @@
 		<label>Mute</label>
 		<description>Enable/Disable Mute on the AVR</description>
 	</channel-type>
-
-	<channel-type id="title">
-		<item-type>String</item-type>
-		<label>Title</label>
-		<description>Current playing title</description>
-	</channel-type>
 </thing:thing-descriptions>

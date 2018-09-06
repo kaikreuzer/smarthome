@@ -62,11 +62,10 @@ public class SonyAudioBindingConstants {
     public static final String CHANNEL_VOLUME = "volume";
     public static final String CHANNEL_MUTE = "mute";
     public static final String CHANNEL_SOUND_FIELD = "soundField";
-    public static final String CHANNEL_CLEAR_AUDIO = "clearAudio";
+
 
     public static final String CHANNEL_MASTER_POWER = "master#power";
     public static final String CHANNEL_MASTER_SOUND_FIELD = "master#soundField";
-    public static final String CHANNEL_MASTER_PURE_DIRECT = "master#pureDirect";
 
     public static final String CHANNEL_ZONE1_POWER = "zone1#power";
     public static final String CHANNEL_ZONE1_INPUT = "zone1#input";
