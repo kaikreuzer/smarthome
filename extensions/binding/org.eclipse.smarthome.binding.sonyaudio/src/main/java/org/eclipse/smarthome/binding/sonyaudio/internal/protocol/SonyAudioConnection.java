@@ -225,6 +225,7 @@ public class SonyAudioConnection implements SonyAudioClientSocketEventListener {
     }
 
     public synchronized void close() {
+        logger.debug("SonyAudio closing connections");
         if(av_content_socket != null) {
           av_content_socket.close();
         }

@@ -402,15 +402,19 @@ abstract class SonyAudioHandler extends BaseThingHandler implements SonyAudioEve
 
     @Override
     public void dispose() {
+        logger.debug("Disposing SonyAudioHandler");
         super.dispose();
         if (connectionCheckerFuture != null) {
             connectionCheckerFuture.cancel(true);
+            connectionCheckerFuture = null;
         }
         if (refreshJob != null) {
             refreshJob.cancel(true);
+            refreshJob = null;
         }
         if (connection != null) {
             connection.close();
+            connection = null;
         }
     }
 

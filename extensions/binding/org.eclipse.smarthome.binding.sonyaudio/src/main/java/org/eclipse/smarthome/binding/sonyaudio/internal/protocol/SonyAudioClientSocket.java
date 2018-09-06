@@ -91,19 +91,23 @@ public class SonyAudioClientSocket {
     }
 
     public void close() {
+        logger.debug("Closing socket {}", uri);
         // if there is an old web socket then clean up and destroy
         if (session != null) {
             try {
                 session.close();
             } catch (Exception e) {
-                logger.debug("Exception during closing the websocket {}", e.getMessage(), e);
+                logger.debug("Exception during closing the websocket session {}", e.getMessage(), e);
             }
             session = null;
         }
-        try {
-            client.stop();
-        } catch (Exception e) {
-            logger.debug("Exception during closing the websocket {}", e.getMessage(), e);
+        if(client != null) {
+            try {
+                client.stop();
+            } catch (Exception e) {
+                logger.debug("Exception during closing the websocket client {}", e.getMessage(), e);
+            }
+            client = null;
         }
     }
 
