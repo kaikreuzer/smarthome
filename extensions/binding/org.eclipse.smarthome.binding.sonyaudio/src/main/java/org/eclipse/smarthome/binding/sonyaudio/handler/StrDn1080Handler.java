@@ -14,7 +14,7 @@ package org.eclipse.smarthome.binding.sonyaudio.handler;
 
 import java.io.IOException;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.Map;
 
 import org.eclipse.smarthome.core.thing.Thing;
@@ -104,14 +104,18 @@ public class StrDn1080Handler extends SonyAudioHandler {
     @Override
     public void handleSoundSettings(Command command, ChannelUID channelUID) throws IOException {
         if (command instanceof RefreshType) {
-            logger.debug("StrDn1080Handler handleSoundSettings RefreshType");
-            Map<String,String> result = sound_settings_cache.getValue();
+            try{
+                logger.debug("StrDn1080Handler handleSoundSettings RefreshType");
+                Map<String,String> result = sound_settings_cache.getValue();
 
-            logger.debug("StrDn1080Handler Updateing sound field to {} {}", result.get("pureDirect"), result.get("soundField"));
-            if(result.get("pureDirect").equalsIgnoreCase("on")){
-                updateState(channelUID, new StringType("pureDirect"));
-            }else{
-                updateState(channelUID, new StringType(result.get("soundField")));
+                logger.debug("StrDn1080Handler Updateing sound field to {} {}", result.get("pureDirect"), result.get("soundField"));
+                if(result.get("pureDirect").equalsIgnoreCase("on")){
+                    updateState(channelUID, new StringType("pureDirect"));
+                }else{
+                    updateState(channelUID, new StringType(result.get("soundField")));
+                }
+            } catch (CompletionException ex) {
+                throw new IOException(ex.getCause());
             }
         }
         if (command instanceof StringType) {

@@ -14,7 +14,7 @@ package org.eclipse.smarthome.binding.sonyaudio.handler;
 
 import java.io.IOException;
 
-import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.Map;
 
 import org.eclipse.smarthome.core.thing.Thing;
@@ -76,14 +76,18 @@ public class SrsZr5Handler extends SonyAudioHandler {
     @Override
     public void handleSoundSettings(Command command, ChannelUID channelUID) throws IOException {
         if (command instanceof RefreshType) {
-            logger.debug("SrsZr5Handler handleSoundSettings RefreshType");
-            Map<String,String> result = sound_settings_cache.getValue();
+            try{
+                logger.debug("SrsZr5Handler handleSoundSettings RefreshType");
+                Map<String,String> result = sound_settings_cache.getValue();
 
-            logger.debug("SrsZr5Handler Updateing sound field to {} {}", result.get("clearAudio"), result.get("soundField"));
-            if(result.get("clearAudio").equalsIgnoreCase("on")){
-                updateState(channelUID, new StringType("clearAudio"));
-            }else{
-                updateState(channelUID, new StringType(result.get("soundField")));
+                logger.debug("SrsZr5Handler Updateing sound field to {} {}", result.get("clearAudio"), result.get("soundField"));
+                if(result.get("clearAudio").equalsIgnoreCase("on")){
+                    updateState(channelUID, new StringType("clearAudio"));
+                }else{
+                    updateState(channelUID, new StringType(result.get("soundField")));
+                }
+            } catch (CompletionException ex) {
+                throw new IOException(ex.getCause());
             }
         }
         if (command instanceof StringType) {

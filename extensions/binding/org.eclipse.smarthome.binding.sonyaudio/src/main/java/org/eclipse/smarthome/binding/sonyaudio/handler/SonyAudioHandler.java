@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.function.Supplier;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -235,9 +234,13 @@ abstract class SonyAudioHandler extends BaseThingHandler implements SonyAudioEve
 
     public void handlePowerCommand(Command command, ChannelUID channelUID, int zone) throws IOException {
         if (command instanceof RefreshType) {
-            logger.debug("handlePowerCommand RefreshType {}", zone);
-            Boolean result = power_cache[zone].getValue();
-            updateState(channelUID, result ? OnOffType.ON : OnOffType.OFF);
+            try{
+                logger.debug("handlePowerCommand RefreshType {}", zone);
+                Boolean result = power_cache[zone].getValue();
+                updateState(channelUID, result ? OnOffType.ON : OnOffType.OFF);
+            } catch (CompletionException ex) {
+                throw new IOException(ex.getCause());
+            }
         }
         if (command instanceof OnOffType) {
             logger.debug("handlePowerCommand set {} {}", zone, command);
@@ -277,9 +280,13 @@ abstract class SonyAudioHandler extends BaseThingHandler implements SonyAudioEve
 
     public void handleVolumeCommand(Command command, ChannelUID channelUID, int zone) throws IOException {
         if (command instanceof RefreshType) {
-            logger.debug("handleVolumeCommand RefreshType {}", zone);
-            SonyAudioConnection.SonyAudioVolume result = volume_cache[zone].getValue();
-            updateState(channelUID, new PercentType(result.volume));
+            try {
+                logger.debug("handleVolumeCommand RefreshType {}", zone);
+                SonyAudioConnection.SonyAudioVolume result = volume_cache[zone].getValue();
+                updateState(channelUID, new PercentType(result.volume));
+            } catch(CompletionException ex) {
+                throw new IOException(ex.getCause());
+            }
         }
         if (command instanceof PercentType) {
             logger.debug("handleVolumeCommand PercentType set {} {}", zone, command);
@@ -302,9 +309,13 @@ abstract class SonyAudioHandler extends BaseThingHandler implements SonyAudioEve
 
     public void handleMuteCommand(Command command, ChannelUID channelUID, int zone) throws IOException {
         if (command instanceof RefreshType) {
-            logger.debug("handleMuteCommand RefreshType {}", zone);
-            SonyAudioConnection.SonyAudioVolume result = volume_cache[zone].getValue();
-            updateState(channelUID, result.mute ? OnOffType.ON : OnOffType.OFF);
+            try {
+                logger.debug("handleMuteCommand RefreshType {}", zone);
+                SonyAudioConnection.SonyAudioVolume result = volume_cache[zone].getValue();
+                updateState(channelUID, result.mute ? OnOffType.ON : OnOffType.OFF);
+            } catch(CompletionException ex) {
+                throw new IOException(ex.getCause());
+            }
         }
         if (command instanceof OnOffType) {
             logger.debug("handleMuteCommand set {} {}", zone, command);
