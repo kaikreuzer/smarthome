@@ -56,7 +56,6 @@ public class SonyAudioClientSocket {
 
     private URI uri;
     private Session session;
-    private WebSocketClient client;
 
     private final JsonParser parser = new JsonParser();
     private final Gson mapper;
@@ -68,23 +67,19 @@ public class SonyAudioClientSocket {
         mapper = new GsonBuilder().disableHtmlEscaping().create();
         this.eventHandler = eventHandler;
         this.uri = uri;
-        client = new WebSocketClient();
         this.scheduler = scheduler;
     }
 
-    public synchronized void open() {
+    public synchronized void open(WebSocketClient webSocketClient) {
         try{
             if (isConnected()) {
                 logger.warn("connect: connection is already open");
             }
-            logger.debug("connect: connection to {}", uri.toString());
-            if (!client.isStarted()) {
-                client.start();
-            }
+
             SonyAudioWebSocketListener socket = new SonyAudioWebSocketListener();
             ClientUpgradeRequest request = new ClientUpgradeRequest();
 
-            client.connect(socket, uri, request);
+            webSocketClient.connect(socket, uri, request);
         } catch(Exception e) {
             logger.debug("Exception then trying to start the websocket {}", e.getMessage(), e);
         }
@@ -100,14 +95,6 @@ public class SonyAudioClientSocket {
                 logger.debug("Exception during closing the websocket session {}", e.getMessage(), e);
             }
             session = null;
-        }
-        if(client != null) {
-            try {
-                client.stop();
-            } catch (Exception e) {
-                logger.debug("Exception during closing the websocket client {}", e.getMessage(), e);
-            }
-            client = null;
         }
     }
 

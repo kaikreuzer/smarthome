@@ -28,8 +28,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.eclipse.smarthome.binding.sonyaudio.internal.SonyAudioEventListener;
 import org.eclipse.smarthome.binding.sonyaudio.internal.protocol.SwitchNotifications.Notification;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +53,8 @@ public class SonyAudioConnection implements SonyAudioClientSocketEventListener {
     private int port;
     private String path;
     private URI base_uri;
+
+    private WebSocketClient web_socket_client;
 
     private SonyAudioClientSocket av_content_socket;
     private SonyAudioClientSocket audio_socket;
@@ -208,19 +212,24 @@ public class SonyAudioConnection implements SonyAudioClientSocketEventListener {
         try {
             base_uri = new URI(String.format("ws://%s:%d/%s", host, port, path)).normalize();
 
+            web_socket_client = new WebSocketClient();
+            web_socket_client.start();
+
             URI wsAvContentUri = base_uri.resolve(base_uri.getPath() + "/avContent").normalize();
             av_content_socket = new SonyAudioClientSocket(this, wsAvContentUri, scheduler);
-            av_content_socket.open();
+            av_content_socket.open(web_socket_client);
 
             URI wsAudioUri = base_uri.resolve(base_uri.getPath() + "/audio").normalize();
             audio_socket = new SonyAudioClientSocket(this, wsAudioUri, scheduler);
-            audio_socket.open();
+            audio_socket.open(web_socket_client);
 
             URI wsSystemUri = base_uri.resolve(base_uri.getPath() + "/system").normalize();
             system_socket = new SonyAudioClientSocket(this, wsSystemUri, scheduler);
-            system_socket.open();
+            system_socket.open(web_socket_client);
         } catch (URISyntaxException e) {
             logger.debug("Invalid URI ws://{}:{}/", host, port, path, e);
+        } catch (Exception e) {
+            logger.debug("Exception then trying to start the websocket {}", e.getMessage(), e);
         }
     }
 
@@ -240,12 +249,29 @@ public class SonyAudioConnection implements SonyAudioClientSocketEventListener {
           system_socket.close();
         }
         system_socket = null;
+
+        if(web_socket_client != null) {
+            try {
+                web_socket_client.stop();
+            } catch (Exception e) {
+                logger.debug("Exception during closing the websocket client {}", e.getMessage(), e);
+            }
+            web_socket_client = null;
+        }
     }
 
     private boolean checkConnection(SonyAudioClientSocket socket) {
+        if (!web_socket_client.isStarted()) {
+            try{
+                web_socket_client.start();
+            } catch (Exception e) {
+                logger.debug("Exception then trying to start the websocket {}", e.getMessage(), e);
+                return false;
+            }
+        }
         if (!socket.isConnected()) {
             logger.debug("checkConnection: try to connect to {}", socket.getURI().toString());
-            socket.open();
+            socket.open(web_socket_client);
             return socket.isConnected();
         }
         return true;
