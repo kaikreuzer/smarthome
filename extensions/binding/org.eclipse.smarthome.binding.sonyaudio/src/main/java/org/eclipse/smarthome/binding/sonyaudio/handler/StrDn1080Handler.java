@@ -55,6 +55,7 @@ public class StrDn1080Handler extends SonyAudioHandler {
             case "sa-cd/cd": return "extInput:sacd-cd";
             case "network": return "dlna:music";
             case "source": return "extInput:source";
+            case "cast": return "cast:audio";
         }
         return command.toString();
     }
@@ -97,6 +98,9 @@ public class StrDn1080Handler extends SonyAudioHandler {
         }
         if(in.contains("extInput:source".toLowerCase())){
             return new StringType("source");
+        }
+        if(in.contains("cast:audio".toLowerCase())){
+            return new StringType("cast");
         }
         return new StringType(input);
     }

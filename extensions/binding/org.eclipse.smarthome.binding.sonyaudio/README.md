@@ -9,10 +9,12 @@ For the moment the devices that are supported by this binding are
  * HT-CT800
  * SRS-ZR5
  * HT-ST5000
+ * HT-Z9F
+ * HT-ZF9
  * HT-MT500
 
 When being defined in a \*.things file, the specific thing types
-STR-DN1080, HT-ST5000, HT-CT800, HT-MT500 and SRS-ZR5 should be used.
+STR-DN1080, HT-ST5000, HT-ZF9, HT-Z9F, HT-CT800, HT-MT500 and SRS-ZR5 should be used.
 
 Please note that these thing types are case sensitive (you need to define them in upper case).
 
@@ -33,34 +35,34 @@ Thing sonyaudio:HT-ST5000:1 [ipAddress="192.168.123.123", port=10000, path="/son
 
 The devices support the following channels:
 
-| Channel Type ID            | Item Type | Access Mode | Description                                                                           | Thing types                            |
-|----------------------------|-----------|-------------|---------------------------------------------------------------------------------------|----------------------------------------|
-| power                      | Switch    | RW          | Main power on/off                                                                     | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
-| input                      | String    | RW          | Set or get the input source                                                           | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
-| volume                     | Dimmer    | RW          | Set or get the master volume                                                          | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
-| mute                       | Switch    | RW          | Set or get the mute state of the master volume                                        | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
-| soundField                 | String    | RW          | Sound field                                                                           | HT-CT800, SRS-ZR5, HT-ST5000, HT-MT500 |
-| master#power               | Switch    | RW          | Main power on/off                                                                     | STR-1080                               |
-| master#soundField          | String    | RW          | Sound field                                                                           | STR-1080                               |
-| zone1#power                | Switch    | RW          | Power for zone1 for devices supporting multizone                                      | STR-1080                               |
-| zone1#input                | String    | RW          | Set or get the input source for zone1 for devices supporting multizone                | STR-1080                               |
-| zone1#volume               | Dimmer    | RW          | Set or get the zone1 volume for devices supporting multizone                          | STR-1080                               |
-| zone1#mute                 | Switch    | RW          | Set or get the mute state for zone1 volume                                            | STR-1080                               |
-| zone2#power                | Switch    | RW          | Power for zone2 for devices supporting multizone                                      | STR-1080                               |
-| zone2#input                | String    | RW          | Set or get the input source for zone2 for devices supporting multizone                | STR-1080                               |
-| zone2#volume               | Dimmer    | RW          | Set or get the zone2 volume for devices supporting multizone                          | STR-1080                               |
-| zone2#mute                 | Switch    | RW          | Set or get the mute state for zone2 volume                                            | STR-1080                               |
-| zone3#power                | Switch    | RW          | Power for zone3 for devices supporting multizone                                      | none                                   |
-| zone3#input                | String    | RW          | Set or get the input source for zone3 for devices supporting multizone                | none                                   |
-| zone3#volume               | Dimmer    | RW          | Set or get the zone3 volume for devices supporting multizone                          | none                                   |
-| zone3#mute                 | Switch    | RW          | Set or get the mute state for zone3 volume                                            | none                                   |
-| zone4#power                | Switch    | RW          | Power for zone4 for devices supporting multizone                                      | STR-1080                               |
-| zone4#input                | String    | RW          | Set or get the input source for zone4 for devices supporting multizone                | STR-1080                               |
-| zone4#volume               | Dimmer    | RW          | Set or get the zone4 volume for devices supporting multizone                          | STR-1080                               |
-| zone4#mute                 | Switch    | RW          | Set or get the mute state for zone4 volume                                            | STR-1080                               |
-| radio#broadcastFreq        | Number    | R           | Current radio frequency                                                               | STR-1080                               |
-| radio#broadcastStation     | Number    | RW          | Set or get current preset radio station                                               | STR-1080                               |
-| radio#broadcastSeekStation | String    | W           | Seek for new broadcast station, forward search "fwdSeeking" and backward "bwdSeeking" | STR-1080                               |
+| Channel Type ID            | Item Type | Access Mode | Description                                                                           | Thing types                                            |
+|----------------------------|-----------|-------------|---------------------------------------------------------------------------------------|--------------------------------------------------------|
+| power                      | Switch    | RW          | Main power on/off                                                                     | HT-CT800, SRS-ZR5, HT-ST5000, HT-ZF9, HT-Z9F, HT-MT500 |
+| input                      | String    | RW          | Set or get the input source                                                           | HT-CT800, SRS-ZR5, HT-ST5000, HT-ZF9, HT-Z9F, HT-MT500 |
+| volume                     | Dimmer    | RW          | Set or get the master volume                                                          | HT-CT800, SRS-ZR5, HT-ST5000, HT-ZF9, HT-Z9F, HT-MT500 |
+| mute                       | Switch    | RW          | Set or get the mute state of the master volume                                        | HT-CT800, SRS-ZR5, HT-ST5000, HT-ZF9, HT-Z9F, HT-MT500 |
+| soundField                 | String    | RW          | Sound field                                                                           | HT-CT800, SRS-ZR5, HT-ST5000, HT-ZF9, HT-Z9F, HT-MT500 |
+| master#power               | Switch    | RW          | Main power on/off                                                                     | STR-1080                                               |
+| master#soundField          | String    | RW          | Sound field                                                                           | STR-1080                                               |
+| zone1#power                | Switch    | RW          | Power for zone1 for devices supporting multizone                                      | STR-1080                                               |
+| zone1#input                | String    | RW          | Set or get the input source for zone1 for devices supporting multizone                | STR-1080                                               |
+| zone1#volume               | Dimmer    | RW          | Set or get the zone1 volume for devices supporting multizone                          | STR-1080                                               |
+| zone1#mute                 | Switch    | RW          | Set or get the mute state for zone1 volume                                            | STR-1080                                               |
+| zone2#power                | Switch    | RW          | Power for zone2 for devices supporting multizone                                      | STR-1080                                               |
+| zone2#input                | String    | RW          | Set or get the input source for zone2 for devices supporting multizone                | STR-1080                                               |
+| zone2#volume               | Dimmer    | RW          | Set or get the zone2 volume for devices supporting multizone                          | STR-1080                                               |
+| zone2#mute                 | Switch    | RW          | Set or get the mute state for zone2 volume                                            | STR-1080                                               |
+| zone3#power                | Switch    | RW          | Power for zone3 for devices supporting multizone                                      | none                                                   |
+| zone3#input                | String    | RW          | Set or get the input source for zone3 for devices supporting multizone                | none                                                   |
+| zone3#volume               | Dimmer    | RW          | Set or get the zone3 volume for devices supporting multizone                          | none                                                   |
+| zone3#mute                 | Switch    | RW          | Set or get the mute state for zone3 volume                                            | none                                                   |
+| zone4#power                | Switch    | RW          | Power for zone4 for devices supporting multizone                                      | STR-1080                                               |
+| zone4#input                | String    | RW          | Set or get the input source for zone4 for devices supporting multizone                | STR-1080                                               |
+| zone4#volume               | Dimmer    | RW          | Set or get the zone4 volume for devices supporting multizone                          | STR-1080                                               |
+| zone4#mute                 | Switch    | RW          | Set or get the mute state for zone4 volume                                            | STR-1080                                               |
+| radio#broadcastFreq        | Number    | R           | Current radio frequency                                                               | STR-1080                                               |
+| radio#broadcastStation     | Number    | RW          | Set or get current preset radio station                                               | STR-1080                                               |
+| radio#broadcastSeekStation | String    | W           | Seek for new broadcast station, forward search "fwdSeeking" and backward "bwdSeeking" | STR-1080                                               |
 
 
 ## Full Example

@@ -92,6 +92,7 @@
 				<option value="tv">TV</option>
 				<option value="sa-cd/cd">SA-CD/CD</option>
 				<option value="network">Home Network</option>
+				<option value="cast">Chromecast</option>
 			</options>
 		</state>
 	</channel-type>

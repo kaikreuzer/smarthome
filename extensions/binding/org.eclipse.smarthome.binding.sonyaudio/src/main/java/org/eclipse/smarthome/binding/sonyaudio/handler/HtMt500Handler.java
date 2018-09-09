@@ -35,6 +35,7 @@ public class HtMt500Handler extends SonyAudioHandler {
             case "analog": return "extInput:line";
             case "usb": return "storage:usb1";
             case "network": return "dlna:music";
+            case "cast": return "cast:audio";
         }
         return command.toString();
     }
@@ -56,6 +57,9 @@ public class HtMt500Handler extends SonyAudioHandler {
         }
         if(in.contains("dlna:music".toLowerCase())){
             return new StringType("network");
+        }
+        if(in.contains("cast:audio".toLowerCase())){
+            return new StringType("cast");
         }
         return new StringType(input);
     }

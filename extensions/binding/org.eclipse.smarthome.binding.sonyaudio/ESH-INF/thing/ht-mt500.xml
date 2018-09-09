@@ -16,6 +16,7 @@
 				<option value="analog">Analog</option>
 				<option value="usb">USB</option>
 				<option value="network">Home Network</option>
+				<option value="cast">Chromecast</option>
 			</options>
 		</state>
 	</channel-type>

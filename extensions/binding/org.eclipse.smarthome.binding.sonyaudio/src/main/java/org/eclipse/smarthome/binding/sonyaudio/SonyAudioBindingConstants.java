@@ -32,22 +32,22 @@ public class SonyAudioBindingConstants {
     public static final String SONY_TYPE_STRDN1080 = "STR-DN1080";
     public static final String SONY_TYPE_HTCT800 = "HT-CT800";
     public static final String SONY_TYPE_HTST5000 = "HT-ST5000";
+    public static final String SONY_TYPE_HTZ9F = "HT-Z9F";
+    public static final String SONY_TYPE_HTZF9 = "HT-ZF9";
     public static final String SONY_TYPE_HTMT500 = "HT-MT500";
     public static final String SONY_TYPE_SRSZR5 = "SRS-ZR5";
-
-    public static final Set<String> SUPPORTED_DEVICE_MODELS = Stream
-            .of(SONY_TYPE_STRDN1080, SONY_TYPE_HTCT800, SONY_TYPE_SRSZR5)
-            .collect(Collectors.toSet());
 
     // List of all Thing Type UIDs
     public static final ThingTypeUID THING_TYPE_STRDN1080 = new ThingTypeUID(BINDING_ID, SONY_TYPE_STRDN1080);
     public static final ThingTypeUID THING_TYPE_HTCT800 = new ThingTypeUID(BINDING_ID, SONY_TYPE_HTCT800);
     public static final ThingTypeUID THING_TYPE_HTST5000 = new ThingTypeUID(BINDING_ID, SONY_TYPE_HTST5000);
+    public static final ThingTypeUID THING_TYPE_HTZ9F = new ThingTypeUID(BINDING_ID, SONY_TYPE_HTZ9F);
+    public static final ThingTypeUID THING_TYPE_HTZF9 = new ThingTypeUID(BINDING_ID, SONY_TYPE_HTZF9);
     public static final ThingTypeUID THING_TYPE_HTMT500 = new ThingTypeUID(BINDING_ID, SONY_TYPE_HTMT500);
     public static final ThingTypeUID THING_TYPE_SRSZR5 = new ThingTypeUID(BINDING_ID, SONY_TYPE_SRSZR5);
 
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Stream
-            .of(THING_TYPE_STRDN1080, THING_TYPE_HTCT800, THING_TYPE_HTST5000, THING_TYPE_HTMT500, THING_TYPE_SRSZR5)
+            .of(THING_TYPE_STRDN1080, THING_TYPE_HTCT800, THING_TYPE_HTST5000, THING_TYPE_HTZ9F, THING_TYPE_HTZF9, THING_TYPE_HTMT500, THING_TYPE_SRSZR5)
             .collect(Collectors.toSet());
 
     // List of thing parameters names

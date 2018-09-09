@@ -16,14 +16,14 @@ import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.library.types.StringType;
 
 /**
- * The {@link HtSt5000Handler} is responsible for handling commands for HT-ST5000, which are
+ * The {@link HtZf9Handler} is responsible for handling commands for HT-ZF9, which are
  * sent to one of the channels.
  *
  * @author David Åberg - Initial contribution
  */
-public class HtSt5000Handler extends SonyAudioHandler {
+public class HtZf9Handler extends SonyAudioHandler {
 
-  public HtSt5000Handler(Thing thing) {
+  public HtZf9Handler(Thing thing) {
       super(thing);
   }
 
@@ -34,7 +34,6 @@ public class HtSt5000Handler extends SonyAudioHandler {
           case "tv": return "extInput:tv";
           case "hdmi1": return "extInput:hdmi?port=1";
           case "hdmi2": return "extInput:hdmi?port=2";
-          case "hdmi3": return "extInput:hdmi?port=3";
           case "analog": return "extInput:line";
           case "usb": return "storage:usb1";
           case "network": return "dlna:music";
@@ -57,9 +56,6 @@ public class HtSt5000Handler extends SonyAudioHandler {
     }
     if(in.contains("extinput:hdmi?port=2".toLowerCase())){
         return new StringType("hdmi2");
-    }
-    if(in.contains("extinput:hdmi?port=3".toLowerCase())){
-        return new StringType("hdmi3");
     }
     if(in.contains("extinput:line".toLowerCase())){
         return new StringType("analog");
