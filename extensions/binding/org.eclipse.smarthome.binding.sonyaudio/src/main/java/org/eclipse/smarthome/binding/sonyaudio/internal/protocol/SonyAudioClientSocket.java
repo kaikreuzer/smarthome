@@ -18,7 +18,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import java.nio.ByteBuffer;
+
 import org.eclipse.jetty.websocket.api.Session;
+import org.eclipse.jetty.websocket.api.RemoteEndpoint;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
@@ -60,6 +63,8 @@ public class SonyAudioClientSocket {
     private final JsonParser parser = new JsonParser();
     private final Gson mapper;
 
+    private static int ping = 0;
+
     private final SonyAudioClientSocketEventListener eventHandler;
 
     public SonyAudioClientSocket(SonyAudioClientSocketEventListener eventHandler, URI uri,
@@ -100,6 +105,19 @@ public class SonyAudioClientSocket {
 
     public boolean isConnected() {
         if (session == null || !session.isOpen()) {
+            return false;
+        }
+
+        RemoteEndpoint remote = session.getRemote();
+
+        ByteBuffer payload = ByteBuffer.allocate(4).putInt(ping++);
+        try
+        {
+            remote.sendPing(payload);
+        }
+        catch (IOException e)
+        {
+            logger.error("Connection to {} lost {}", uri, e);
             return false;
         }
 
@@ -200,8 +218,6 @@ public class SonyAudioClientSocket {
                 logger.debug("Timeout during callMethod({}, {})", method.method, message);
                 throw new IOException("Timeout during callMethod");
             }
-        } catch (IOException e) {
-            throw new IOException("Error during callMethod", e);
         } catch (InterruptedException e) {
             throw new IOException("Timeout in callMethod");
         }

@@ -132,6 +132,18 @@ abstract class SonyAudioHandler extends BaseThingHandler implements SonyAudioEve
 
         logger.debug("Handle command {} {}", channelUID, command);
 
+        if(getThing().getStatusInfo().getStatus() == ThingStatus.OFFLINE) {
+            switch (id) {
+                case CHANNEL_POWER:
+                case CHANNEL_MASTER_POWER:
+                    logger.debug("Device powered off sending {} {}", channelUID, command);
+                    break;
+                default:
+                    logger.debug("Device powered off ignore command {} {}", channelUID, command);
+                    return;
+            }
+        }
+
         try {
             switch (id) {
                 case CHANNEL_POWER:
@@ -528,6 +540,7 @@ abstract class SonyAudioHandler extends BaseThingHandler implements SonyAudioEve
         switch (zone) {
             case 0:
                 updateState(SonyAudioBindingConstants.CHANNEL_POWER, power ? OnOffType.ON : OnOffType.OFF);
+                updateState(SonyAudioBindingConstants.CHANNEL_MASTER_POWER, power ? OnOffType.ON : OnOffType.OFF);
                 break;
             case 1:
                 updateState(SonyAudioBindingConstants.CHANNEL_ZONE1_POWER, power ? OnOffType.ON : OnOffType.OFF);

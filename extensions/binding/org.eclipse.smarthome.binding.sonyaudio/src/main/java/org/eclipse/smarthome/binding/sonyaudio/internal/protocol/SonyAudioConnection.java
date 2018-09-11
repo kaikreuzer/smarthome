@@ -168,7 +168,7 @@ public class SonyAudioConnection implements SonyAudioClientSocketEventListener {
 
                 SwitchNotifications switchNotifications = new SwitchNotifications(notifications.enabled,
                         notifications.disabled);
-                av_content_socket.callMethod(switchNotifications);
+                JsonElement resp = av_content_socket.callMethod(switchNotifications);
             }
 
             if (audio_socket.getURI().equals(resource)) {
@@ -184,7 +184,7 @@ public class SonyAudioConnection implements SonyAudioClientSocketEventListener {
 
                 SwitchNotifications switchNotifications = new SwitchNotifications(notifications.enabled,
                         notifications.disabled);
-                audio_socket.callMethod(switchNotifications);
+                JsonElement resp = audio_socket.callMethod(switchNotifications);
             }
 
             if (system_socket.getURI().equals(resource)) {
@@ -200,7 +200,7 @@ public class SonyAudioConnection implements SonyAudioClientSocketEventListener {
 
                 SwitchNotifications switchNotifications = new SwitchNotifications(notifications.enabled,
                         notifications.disabled);
-                system_socket.callMethod(switchNotifications);
+                JsonElement resp = system_socket.callMethod(switchNotifications);
             }
             listener.updateConnectionState(true);
         } catch (IOException e) {

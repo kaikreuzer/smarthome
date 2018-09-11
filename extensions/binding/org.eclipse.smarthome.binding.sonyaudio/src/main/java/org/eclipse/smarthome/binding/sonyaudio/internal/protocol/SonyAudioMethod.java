@@ -93,7 +93,9 @@ class SetActiveTerminal extends SonyAudioMethod {
 
         Param(boolean power, int zone) {
             active = power ? "active" : "inactive";
-            uri = "extOutput:zone?zone=" + Integer.toString(zone);
+            if( zone > 0 ) {
+                uri = "extOutput:zone?zone=" + Integer.toString(zone);
+            }
         }
     }
 
@@ -119,7 +121,9 @@ class GetPlayingContentInfo extends SonyAudioMethod {
         }
 
         Param(int zone) {
-            output = "extOutput:zone?zone=" + Integer.toString(zone);
+            if(zone > 0) {
+                output = "extOutput:zone?zone=" + Integer.toString(zone);
+            }
         }
     }
 
@@ -154,7 +158,9 @@ class SetPlayContent extends SonyAudioMethod {
 
         Param(String input, int zone) {
             uri = input;
-            output = "extOutput:zone?zone=" + Integer.toString(zone);
+            if( zone > 0) {
+                output = "extOutput:zone?zone=" + Integer.toString(zone);
+            }
         }
     }
 
@@ -222,12 +228,16 @@ class SetAudioVolume extends SonyAudioMethod {
 
         Param(long new_volume, int zone) {
             volume = Long.toString(new_volume);
-            output = "extOutput:zone?zone=" + Integer.toString(zone);
+            if(zone > 0) {
+                output = "extOutput:zone?zone=" + Integer.toString(zone);
+            }
         }
 
         Param(String volume_change, int zone) {
             volume = volume_change;
-            output = "extOutput:zone?zone=" + Integer.toString(zone);
+            if(zone > 0) {
+                output = "extOutput:zone?zone=" + Integer.toString(zone);
+            }
         }
 
     }
@@ -277,7 +287,9 @@ class SetAudioMute extends SonyAudioMethod {
 
         Param(boolean mute, int zone) {
             this.mute = mute ? "on" : "off";
-            output = "extOutput:zone?zone=" + Integer.toString(zone);
+            if(zone > 0) {
+                output = "extOutput:zone?zone=" + Integer.toString(zone);
+            }
         }
     }
 
@@ -402,6 +414,11 @@ class SwitchNotifications extends SonyAudioMethod {
     class Notification {
         String name;
         String version;
+
+        @Override
+        public String toString() {
+            return "Notification{name='" + name + "' version='" + version + "'}";
+        }
     }
 
     class Param {
@@ -416,6 +433,8 @@ class SwitchNotifications extends SonyAudioMethod {
 
     SwitchNotifications(List<Notification> enabled, List<Notification> disabled) {
         super("switchNotifications", "1.0");
+        enabled = enabled.size() > 0 ? enabled : null;
+        disabled = disabled.size() > 0 ? disabled : null;
         params = new Param[] { new Param(enabled, disabled) };
     }
 }
