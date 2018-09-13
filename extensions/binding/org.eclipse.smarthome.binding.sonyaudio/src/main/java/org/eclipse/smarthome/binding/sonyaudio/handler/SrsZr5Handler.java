@@ -42,7 +42,7 @@ public class SrsZr5Handler extends SonyAudioHandler {
     public String setInputCommand(Command command) {
         switch (command.toString().toLowerCase()) {
             case "btaudio":
-                return "extInput:btaudio";
+                return "extInput:btAudio";
             case "usb":
                 return "storage:usb1";
             case "analog":

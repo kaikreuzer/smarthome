@@ -42,7 +42,7 @@ public class StrDn1080Handler extends SonyAudioHandler {
     public String setInputCommand(Command command) {
         switch (command.toString().toLowerCase()) {
             case "btaudio":
-                return "extInput:btaudio";
+                return "extInput:btAudio";
             case "fm":
                 return "radio:fm";
             case "usb":

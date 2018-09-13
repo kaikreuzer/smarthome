@@ -32,7 +32,7 @@ public class HtZf9Handler extends SonyAudioHandler {
     public String setInputCommand(Command command) {
         switch (command.toString().toLowerCase()) {
             case "btaudio":
-                return "extInput:btaudio";
+                return "extInput:btAudio";
             case "tv":
                 return "extInput:tv";
             case "hdmi1":
