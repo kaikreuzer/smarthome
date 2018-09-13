@@ -17,9 +17,10 @@
 			<default>10000</default>
 		</parameter>
 		<parameter name="path" type="text">
-			<label>Base path</label>
+			<label>Base Path</label>
 			<description>The base path, "/sony" in most cases</description>
 			<default>/sony</default>
+			<advanced>true</advanced>
 		</parameter>
 		<parameter name="refreshInterval" type="integer" min="0">
 			<label>Refresh Interval</label>
