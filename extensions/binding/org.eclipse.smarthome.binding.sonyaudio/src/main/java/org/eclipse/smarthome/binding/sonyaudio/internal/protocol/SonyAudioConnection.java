@@ -499,7 +499,7 @@ public class SonyAudioConnection implements SonyAudioClientSocketEventListener {
         if (audio_socket == null) {
             throw new IOException("Audio Socket not connected");
         }
-        Map<String, String> m = new HashMap<String, String>();
+        Map<String, String> m = new HashMap<>();
 
         GetSoundSettings getSoundSettings = new GetSoundSettings();
         JsonElement element = audio_socket.callMethod(getSoundSettings);

@@ -60,7 +60,7 @@ abstract class SonyAudioHandler extends BaseThingHandler implements SonyAudioEve
     private ScheduledFuture<?> refreshJob;
 
     private int currentRadioStation = 0;
-    private Map<Integer, String> input_zone = new HashMap<Integer, String>();
+    private Map<Integer, String> input_zone = new HashMap<>();
 
     private static final long CACHE_EXPIRY = TimeUnit.SECONDS.toMillis(5);
 

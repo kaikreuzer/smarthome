@@ -11,9 +11,10 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 package org.eclipse.smarthome.binding.sonyaudio.handler;
+
+import org.eclipse.smarthome.core.library.types.StringType;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.types.Command;
-import org.eclipse.smarthome.core.library.types.StringType;
 
 /**
  * The {@link HtMt500Handler} is responsible for handling commands for HT-ST500, which are
@@ -28,37 +29,43 @@ public class HtMt500Handler extends SonyAudioHandler {
     }
 
     @Override
-    public String setInputCommand(Command command){
-        switch(command.toString().toLowerCase()){
-            case "btaudio": return "extInput:btaudio";
-            case "tv": return "extInput:tv";
-            case "analog": return "extInput:line";
-            case "usb": return "storage:usb1";
-            case "network": return "dlna:music";
-            case "cast": return "cast:audio";
+    public String setInputCommand(Command command) {
+        switch (command.toString().toLowerCase()) {
+            case "btaudio":
+                return "extInput:btaudio";
+            case "tv":
+                return "extInput:tv";
+            case "analog":
+                return "extInput:line";
+            case "usb":
+                return "storage:usb1";
+            case "network":
+                return "dlna:music";
+            case "cast":
+                return "cast:audio";
         }
         return command.toString();
     }
 
     @Override
-    public StringType inputSource(String input){
+    public StringType inputSource(String input) {
         String in = input.toLowerCase();
-        if(in.contains("extinput:btaudio".toLowerCase())){
+        if (in.contains("extinput:btaudio".toLowerCase())) {
             return new StringType("btaudio");
         }
-        if(in.contains("extinput:tv".toLowerCase())){
+        if (in.contains("extinput:tv".toLowerCase())) {
             return new StringType("tv");
         }
-        if(in.contains("extinput:line".toLowerCase())){
+        if (in.contains("extinput:line".toLowerCase())) {
             return new StringType("analog");
         }
-        if(in.contains("storage:usb1".toLowerCase())){
+        if (in.contains("storage:usb1".toLowerCase())) {
             return new StringType("usb");
         }
-        if(in.contains("dlna:music".toLowerCase())){
+        if (in.contains("dlna:music".toLowerCase())) {
             return new StringType("network");
         }
-        if(in.contains("cast:audio".toLowerCase())){
+        if (in.contains("cast:audio".toLowerCase())) {
             return new StringType("cast");
         }
         return new StringType(input);

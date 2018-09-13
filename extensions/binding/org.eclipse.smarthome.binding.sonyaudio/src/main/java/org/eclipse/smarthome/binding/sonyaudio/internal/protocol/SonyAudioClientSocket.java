@@ -14,14 +14,13 @@ package org.eclipse.smarthome.binding.sonyaudio.internal.protocol;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import java.nio.ByteBuffer;
-
-import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.RemoteEndpoint;
+import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
@@ -35,9 +34,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonParseException;
-
+import com.google.gson.JsonParser;
 
 /**
  * The {@link SonyAudioConnection} is responsible for communicating with SONY audio products
@@ -76,7 +74,7 @@ public class SonyAudioClientSocket {
     }
 
     public synchronized void open(WebSocketClient webSocketClient) {
-        try{
+        try {
             if (isConnected()) {
                 logger.warn("connect: connection is already open");
             }
@@ -85,7 +83,7 @@ public class SonyAudioClientSocket {
             ClientUpgradeRequest request = new ClientUpgradeRequest();
 
             webSocketClient.connect(socket, uri, request);
-        } catch(Exception e) {
+        } catch (Exception e) {
             logger.debug("Exception then trying to start the websocket {}", e.getMessage(), e);
         }
     }
@@ -111,12 +109,9 @@ public class SonyAudioClientSocket {
         RemoteEndpoint remote = session.getRemote();
 
         ByteBuffer payload = ByteBuffer.allocate(4).putInt(ping++);
-        try
-        {
+        try {
             remote.sendPing(payload);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             logger.error("Connection to {} lost {}", uri, e);
             return false;
         }
@@ -146,34 +141,35 @@ public class SonyAudioClientSocket {
         @OnWebSocketMessage
         public void onMessage(String message) {
             logger.debug("Message received from server: {}", message);
-            try{
-              final JsonObject json = parser.parse(message).getAsJsonObject();
-              if (json.has("id")) {
-                  logger.debug("Response received from server: {}", json);
-                  int messageId = json.get("id").getAsInt();
-                  if (messageId == nextMessageId - 1) {
-                      commandResponse = json;
-                      commandLatch.countDown();
-                  }
-              } else {
-                  logger.debug("Event received from server: {}", json);
-                  try {
-                      if (eventHandler != null) {
-                          scheduler.submit(() -> {
-                              try {
-                                  eventHandler.handleEvent(json);
-                              } catch (Exception e) {
-                                  logger.error("Error handling event {} player state change message: {}", json, e.getMessage(), e);
-                              }
-                          });
-                      }
-                  } catch (Exception e) {
-                      logger.error("Error handling player state change message", e);
-                  }
-              }
-          } catch(JsonParseException e) {
-              logger.debug("Not valid JSON message: {}", e.getMessage(), e);
-          }
+            try {
+                final JsonObject json = parser.parse(message).getAsJsonObject();
+                if (json.has("id")) {
+                    logger.debug("Response received from server: {}", json);
+                    int messageId = json.get("id").getAsInt();
+                    if (messageId == nextMessageId - 1) {
+                        commandResponse = json;
+                        commandLatch.countDown();
+                    }
+                } else {
+                    logger.debug("Event received from server: {}", json);
+                    try {
+                        if (eventHandler != null) {
+                            scheduler.submit(() -> {
+                                try {
+                                    eventHandler.handleEvent(json);
+                                } catch (Exception e) {
+                                    logger.error("Error handling event {} player state change message: {}", json,
+                                            e.getMessage(), e);
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        logger.error("Error handling player state change message", e);
+                    }
+                }
+            } catch (JsonParseException e) {
+                logger.debug("Not valid JSON message: {}", e.getMessage(), e);
+            }
         }
 
         @OnWebSocketClose

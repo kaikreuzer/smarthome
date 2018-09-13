@@ -10,7 +10,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  */
- package org.eclipse.smarthome.binding.sonyaudio.internal;
+package org.eclipse.smarthome.binding.sonyaudio.internal;
 
 import java.util.EventListener;
 
