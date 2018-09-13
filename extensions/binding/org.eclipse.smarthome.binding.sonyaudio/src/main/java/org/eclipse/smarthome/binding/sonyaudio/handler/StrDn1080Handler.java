@@ -13,16 +13,14 @@
 package org.eclipse.smarthome.binding.sonyaudio.handler;
 
 import java.io.IOException;
-
-import java.util.concurrent.CompletionException;
 import java.util.Map;
+import java.util.concurrent.CompletionException;
 
+import org.eclipse.smarthome.core.library.types.StringType;
+import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.RefreshType;
-import org.eclipse.smarthome.core.thing.ChannelUID;
-import org.eclipse.smarthome.core.library.types.StringType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,65 +39,78 @@ public class StrDn1080Handler extends SonyAudioHandler {
     }
 
     @Override
-    public String setInputCommand(Command command){
-        switch(command.toString().toLowerCase()){
-            case "btaudio": return "extInput:btaudio";
-            case "fm": return "radio:fm";
-            case "usb": return "storage:usb1";
-            case "bd/dvd": return "extInput:bd-dvd";
-            case "game": return "extInput:game";
-            case "sat/catv": return "extInput:sat-catv";
-            case "video1": return "extInput:video?port=1";
-            case "video2": return "extInput:video?port=2";
-            case "tv": return "extInput:tv";
-            case "sa-cd/cd": return "extInput:sacd-cd";
-            case "network": return "dlna:music";
-            case "source": return "extInput:source";
-            case "cast": return "cast:audio";
+    public String setInputCommand(Command command) {
+        switch (command.toString().toLowerCase()) {
+            case "btaudio":
+                return "extInput:btaudio";
+            case "fm":
+                return "radio:fm";
+            case "usb":
+                return "storage:usb1";
+            case "bd/dvd":
+                return "extInput:bd-dvd";
+            case "game":
+                return "extInput:game";
+            case "sat/catv":
+                return "extInput:sat-catv";
+            case "video1":
+                return "extInput:video?port=1";
+            case "video2":
+                return "extInput:video?port=2";
+            case "tv":
+                return "extInput:tv";
+            case "sa-cd/cd":
+                return "extInput:sacd-cd";
+            case "network":
+                return "dlna:music";
+            case "source":
+                return "extInput:source";
+            case "cast":
+                return "cast:audio";
         }
         return command.toString();
     }
 
     @Override
-    public StringType inputSource(String input){
+    public StringType inputSource(String input) {
         String in = input.toLowerCase();
-        if(in.contains("extinput:btaudio".toLowerCase())){
+        if (in.contains("extinput:btaudio".toLowerCase())) {
             return new StringType("btaudio");
         }
-        if(in.contains("radio:fm".toLowerCase())){
+        if (in.contains("radio:fm".toLowerCase())) {
             return new StringType("fm");
         }
-        if(in.contains("storage:usb1".toLowerCase())){
+        if (in.contains("storage:usb1".toLowerCase())) {
             return new StringType("usb");
         }
-        if(in.contains("extInput:bd-dvd".toLowerCase())){
+        if (in.contains("extInput:bd-dvd".toLowerCase())) {
             return new StringType("bd/dvd");
         }
-        if(in.contains("extInput:game".toLowerCase())){
+        if (in.contains("extInput:game".toLowerCase())) {
             return new StringType("game");
         }
-        if(in.contains("extInput:sat-catv".toLowerCase())){
+        if (in.contains("extInput:sat-catv".toLowerCase())) {
             return new StringType("sat/catv");
         }
-        if(in.contains("extInput:video?port=1".toLowerCase())){
+        if (in.contains("extInput:video?port=1".toLowerCase())) {
             return new StringType("video1");
         }
-        if(in.contains("extInput:video?port=2".toLowerCase())){
+        if (in.contains("extInput:video?port=2".toLowerCase())) {
             return new StringType("video2");
         }
-        if(in.contains("extinput:tv".toLowerCase())){
+        if (in.contains("extinput:tv".toLowerCase())) {
             return new StringType("tv");
         }
-        if(in.contains("extInput:sacd-cd".toLowerCase())){
+        if (in.contains("extInput:sacd-cd".toLowerCase())) {
             return new StringType("sa-cd/cd");
         }
-        if(in.contains("dlna:music".toLowerCase())){
+        if (in.contains("dlna:music".toLowerCase())) {
             return new StringType("network");
         }
-        if(in.contains("extInput:source".toLowerCase())){
+        if (in.contains("extInput:source".toLowerCase())) {
             return new StringType("source");
         }
-        if(in.contains("cast:audio".toLowerCase())){
+        if (in.contains("cast:audio".toLowerCase())) {
             return new StringType("cast");
         }
         return new StringType(input);
@@ -108,24 +119,27 @@ public class StrDn1080Handler extends SonyAudioHandler {
     @Override
     public void handleSoundSettings(Command command, ChannelUID channelUID) throws IOException {
         if (command instanceof RefreshType) {
-            try{
+            try {
                 logger.debug("StrDn1080Handler handleSoundSettings RefreshType");
-                Map<String,String> result = sound_settings_cache.getValue();
+                Map<String, String> result = sound_settings_cache.getValue();
 
-                logger.debug("StrDn1080Handler Updateing sound field to {} {}", result.get("pureDirect"), result.get("soundField"));
-                if(result.get("pureDirect").equalsIgnoreCase("on")){
-                    updateState(channelUID, new StringType("pureDirect"));
-                }else{
-                    updateState(channelUID, new StringType(result.get("soundField")));
+                if (result != null) {
+                    logger.debug("StrDn1080Handler Updateing sound field to {} {}", result.get("pureDirect"),
+                            result.get("soundField"));
+                    if (result.get("pureDirect").equalsIgnoreCase("on")) {
+                        updateState(channelUID, new StringType("pureDirect"));
+                    } else {
+                        updateState(channelUID, new StringType(result.get("soundField")));
+                    }
                 }
             } catch (CompletionException ex) {
                 throw new IOException(ex.getCause());
             }
         }
         if (command instanceof StringType) {
-            if(((StringType) command).toString().equalsIgnoreCase("pureDirect")){
+            if (((StringType) command).toString().equalsIgnoreCase("pureDirect")) {
                 connection.setSoundSettings("pureDirect", "on");
-            }else{
+            } else {
                 connection.setSoundSettings("soundField", ((StringType) command).toString());
             }
         }

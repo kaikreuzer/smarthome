@@ -93,7 +93,7 @@ class SetActiveTerminal extends SonyAudioMethod {
 
         Param(boolean power, int zone) {
             active = power ? "active" : "inactive";
-            if( zone > 0 ) {
+            if (zone > 0) {
                 uri = "extOutput:zone?zone=" + Integer.toString(zone);
             }
         }
@@ -121,7 +121,7 @@ class GetPlayingContentInfo extends SonyAudioMethod {
         }
 
         Param(int zone) {
-            if(zone > 0) {
+            if (zone > 0) {
                 output = "extOutput:zone?zone=" + Integer.toString(zone);
             }
         }
@@ -158,7 +158,7 @@ class SetPlayContent extends SonyAudioMethod {
 
         Param(String input, int zone) {
             uri = input;
-            if( zone > 0) {
+            if (zone > 0) {
                 output = "extOutput:zone?zone=" + Integer.toString(zone);
             }
         }
@@ -190,8 +190,8 @@ class GetVolumeInformation extends SonyAudioMethod {
         }
 
         Param(int zone) {
-            if(zone > 0){
-              output = "extOutput:zone?zone=" + Integer.toString(zone);
+            if (zone > 0) {
+                output = "extOutput:zone?zone=" + Integer.toString(zone);
             }
         }
     }
@@ -228,14 +228,14 @@ class SetAudioVolume extends SonyAudioMethod {
 
         Param(long new_volume, int zone) {
             volume = Long.toString(new_volume);
-            if(zone > 0) {
+            if (zone > 0) {
                 output = "extOutput:zone?zone=" + Integer.toString(zone);
             }
         }
 
         Param(String volume_change, int zone) {
             volume = volume_change;
-            if(zone > 0) {
+            if (zone > 0) {
                 output = "extOutput:zone?zone=" + Integer.toString(zone);
             }
         }
@@ -287,7 +287,7 @@ class SetAudioMute extends SonyAudioMethod {
 
         Param(boolean mute, int zone) {
             this.mute = mute ? "on" : "off";
-            if(zone > 0) {
+            if (zone > 0) {
                 output = "extOutput:zone?zone=" + Integer.toString(zone);
             }
         }
@@ -316,7 +316,7 @@ class GetSoundSettings extends SonyAudioMethod {
         String target;
 
         Param(String target) {
-          this.target = target;
+            this.target = target;
         }
     }
 
@@ -337,36 +337,36 @@ class GetSoundSettings extends SonyAudioMethod {
  * @author David Åberg - Initial contribution
  */
 class SetSoundSettings extends SonyAudioMethod {
-  public Param[] params;
+    public Param[] params;
 
-  class Settings {
-    String value;
-    String target;
+    class Settings {
+        String value;
+        String target;
 
-    Settings(String target, String value) {
-      this.target = target;
-      this.value = value;
+        Settings(String target, String value) {
+            this.target = target;
+            this.value = value;
+        }
     }
-  }
 
-  class Param {
+    class Param {
 
-      Settings[] settings;
+        Settings[] settings;
 
-      Param(Settings[] settings) {
-          this.settings = settings;
-      }
-  }
+        Param(Settings[] settings) {
+            this.settings = settings;
+        }
+    }
 
-  SetSoundSettings() {
-    super("setSoundSettings", "1.1");
-  }
+    SetSoundSettings() {
+        super("setSoundSettings", "1.1");
+    }
 
-  SetSoundSettings(String target, String value) {
-      super("setSoundSettings", "1.1");
-      Settings[] settings = { new Settings(target, value) };
-      params = new Param[] { new Param(settings) };
-  }
+    SetSoundSettings(String target, String value) {
+        super("setSoundSettings", "1.1");
+        Settings[] settings = { new Settings(target, value) };
+        params = new Param[] { new Param(settings) };
+    }
 }
 
 /**
@@ -387,7 +387,7 @@ class SetSoundField extends SetSoundSettings {
  */
 class SetPureDirect extends SetSoundSettings {
     SetPureDirect(boolean pureDirect) {
-      super("pureDirect", pureDirect ? "on" : "off");
+        super("pureDirect", pureDirect ? "on" : "off");
     }
 }
 
@@ -398,10 +398,9 @@ class SetPureDirect extends SetSoundSettings {
  */
 class SetClearAudio extends SetSoundSettings {
     SetClearAudio(boolean clearAudio) {
-      super("clearAudio", clearAudio ? "on" : "off");
+        super("clearAudio", clearAudio ? "on" : "off");
     }
 }
-
 
 /**
  * The {@link SwitchNotifications} SONY Audio control API method
@@ -433,9 +432,7 @@ class SwitchNotifications extends SonyAudioMethod {
 
     SwitchNotifications(List<Notification> enabled, List<Notification> disabled) {
         super("switchNotifications", "1.0");
-        enabled = enabled.size() > 0 ? enabled : null;
-        disabled = disabled.size() > 0 ? disabled : null;
-        params = new Param[] { new Param(enabled, disabled) };
+        params = new Param[] { new Param(enabled.size() > 0 ? enabled : null, disabled.size() > 0 ? disabled : null) };
     }
 }
 

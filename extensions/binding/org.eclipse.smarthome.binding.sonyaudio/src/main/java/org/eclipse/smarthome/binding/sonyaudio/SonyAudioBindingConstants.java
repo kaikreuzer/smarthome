@@ -12,7 +12,6 @@
  */
 package org.eclipse.smarthome.binding.sonyaudio;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -47,7 +46,8 @@ public class SonyAudioBindingConstants {
     public static final ThingTypeUID THING_TYPE_SRSZR5 = new ThingTypeUID(BINDING_ID, SONY_TYPE_SRSZR5);
 
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Stream
-            .of(THING_TYPE_STRDN1080, THING_TYPE_HTCT800, THING_TYPE_HTST5000, THING_TYPE_HTZ9F, THING_TYPE_HTZF9, THING_TYPE_HTMT500, THING_TYPE_SRSZR5)
+            .of(THING_TYPE_STRDN1080, THING_TYPE_HTCT800, THING_TYPE_HTST5000, THING_TYPE_HTZ9F, THING_TYPE_HTZF9,
+                    THING_TYPE_HTMT500, THING_TYPE_SRSZR5)
             .collect(Collectors.toSet());
 
     // List of thing parameters names
@@ -62,7 +62,6 @@ public class SonyAudioBindingConstants {
     public static final String CHANNEL_VOLUME = "volume";
     public static final String CHANNEL_MUTE = "mute";
     public static final String CHANNEL_SOUND_FIELD = "soundField";
-
 
     public static final String CHANNEL_MASTER_POWER = "master#power";
     public static final String CHANNEL_MASTER_SOUND_FIELD = "master#soundField";

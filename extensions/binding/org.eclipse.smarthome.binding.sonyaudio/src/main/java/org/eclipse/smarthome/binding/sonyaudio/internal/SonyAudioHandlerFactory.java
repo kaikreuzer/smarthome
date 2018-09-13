@@ -13,18 +13,15 @@
 package org.eclipse.smarthome.binding.sonyaudio.internal;
 
 import org.eclipse.smarthome.binding.sonyaudio.SonyAudioBindingConstants;
-
-import org.eclipse.smarthome.binding.sonyaudio.handler.StrDn1080Handler;
 import org.eclipse.smarthome.binding.sonyaudio.handler.HtCt800Handler;
-import org.eclipse.smarthome.binding.sonyaudio.handler.HtSt5000Handler;
-import org.eclipse.smarthome.binding.sonyaudio.handler.HtZf9Handler;
-import org.eclipse.smarthome.binding.sonyaudio.handler.HtZ9fHandler;
 import org.eclipse.smarthome.binding.sonyaudio.handler.HtMt500Handler;
+import org.eclipse.smarthome.binding.sonyaudio.handler.HtSt5000Handler;
+import org.eclipse.smarthome.binding.sonyaudio.handler.HtZ9fHandler;
+import org.eclipse.smarthome.binding.sonyaudio.handler.HtZf9Handler;
 import org.eclipse.smarthome.binding.sonyaudio.handler.SrsZr5Handler;
-import org.eclipse.smarthome.config.core.Configuration;
+import org.eclipse.smarthome.binding.sonyaudio.handler.StrDn1080Handler;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
-import org.eclipse.smarthome.core.thing.ThingUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
@@ -49,15 +46,23 @@ public class SonyAudioHandlerFactory extends BaseThingHandlerFactory {
     protected ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
-        switch(thingTypeUID.getId()){
-          case SonyAudioBindingConstants.SONY_TYPE_STRDN1080: return new StrDn1080Handler(thing);
-          case SonyAudioBindingConstants.SONY_TYPE_HTCT800: return new HtCt800Handler(thing);
-          case SonyAudioBindingConstants.SONY_TYPE_HTST5000: return new HtSt5000Handler(thing);
-          case SonyAudioBindingConstants.SONY_TYPE_HTZ9F: return new HtZ9fHandler(thing);
-          case SonyAudioBindingConstants.SONY_TYPE_HTZF9: return new HtZf9Handler(thing);
-          case SonyAudioBindingConstants.SONY_TYPE_HTMT500: return new HtMt500Handler(thing);
-          case SonyAudioBindingConstants.SONY_TYPE_SRSZR5: return new SrsZr5Handler(thing);
-          default: return null;
+        switch (thingTypeUID.getId()) {
+            case SonyAudioBindingConstants.SONY_TYPE_STRDN1080:
+                return new StrDn1080Handler(thing);
+            case SonyAudioBindingConstants.SONY_TYPE_HTCT800:
+                return new HtCt800Handler(thing);
+            case SonyAudioBindingConstants.SONY_TYPE_HTST5000:
+                return new HtSt5000Handler(thing);
+            case SonyAudioBindingConstants.SONY_TYPE_HTZ9F:
+                return new HtZ9fHandler(thing);
+            case SonyAudioBindingConstants.SONY_TYPE_HTZF9:
+                return new HtZf9Handler(thing);
+            case SonyAudioBindingConstants.SONY_TYPE_HTMT500:
+                return new HtMt500Handler(thing);
+            case SonyAudioBindingConstants.SONY_TYPE_SRSZR5:
+                return new SrsZr5Handler(thing);
+            default:
+                return null;
         }
     }
 }

@@ -12,10 +12,6 @@
  */
 package org.eclipse.smarthome.binding.sonyaudio.internal.discovery;
 
-import org.eclipse.smarthome.binding.sonyaudio.SonyAudioBindingConstants;
-
-import org.eclipse.smarthome.binding.sonyaudio.SonyAudioBindingConstants;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,9 +23,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.smarthome.binding.sonyaudio.SonyAudioBindingConstants;
 import org.eclipse.smarthome.config.discovery.DiscoveryResult;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
-import org.eclipse.smarthome.config.discovery.UpnpDiscoveryParticipant;
+import org.eclipse.smarthome.config.discovery.upnp.UpnpDiscoveryParticipant;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.ThingUID;
 import org.jupnp.model.meta.RemoteDevice;
@@ -44,7 +41,8 @@ import org.slf4j.LoggerFactory;
  */
 @Component(immediate = true)
 public class SonyAudioDiscoveryParticipant implements UpnpDiscoveryParticipant {
-    private Logger logger = LoggerFactory.getLogger(SonyAudioDiscoveryParticipant.class);
+
+    private final Logger logger = LoggerFactory.getLogger(SonyAudioDiscoveryParticipant.class);
 
     private Set<ThingTypeUID> supportedThingTypes;
 
@@ -70,7 +68,8 @@ public class SonyAudioDiscoveryParticipant implements UpnpDiscoveryParticipant {
             String path = device.getIdentity().getDescriptorURL().getPath();
             try {
                 Map<String, Object> properties = getDescription(host, port, path);
-                properties.put(SonyAudioBindingConstants.HOST_PARAMETER, device.getIdentity().getDescriptorURL().getHost());
+                properties.put(SonyAudioBindingConstants.HOST_PARAMETER,
+                        device.getIdentity().getDescriptorURL().getHost());
                 result = DiscoveryResultBuilder.create(thingUid).withLabel(label).withProperties(properties).build();
             } catch (IOException e) {
                 return null;
@@ -83,8 +82,7 @@ public class SonyAudioDiscoveryParticipant implements UpnpDiscoveryParticipant {
     public ThingUID getThingUID(RemoteDevice device) {
         ThingUID result = null;
 
-        if (!StringUtils.containsIgnoreCase(
-                device.getDetails().getManufacturerDetails().getManufacturer(),
+        if (!StringUtils.containsIgnoreCase(device.getDetails().getManufacturerDetails().getManufacturer(),
                 SonyAudioBindingConstants.MANUFACTURER)) {
             return result;
         }
