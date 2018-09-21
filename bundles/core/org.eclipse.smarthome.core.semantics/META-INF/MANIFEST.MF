@@ -1,5 +1,7 @@
 Manifest-Version: 1.0
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/graphql-java-10.0.jar,
+ lib/antlr4-runtime-4.7.1.jar
 Bundle-License: https://www.eclipse.org/legal/epl-2.0/
 Bundle-ManifestVersion: 2
 Bundle-Name: Eclipse SmartHome Core Semantics
@@ -14,6 +16,7 @@ Import-Package:
  org.eclipse.smarthome.core.common.registry,
  org.eclipse.smarthome.core.items,
  org.eclipse.smarthome.core.types,
+ org.osgi.framework;version="1.8.0",
  org.slf4j
 Service-Component: OSGI-INF/*.xml
 Automatic-Module-Name: org.eclipse.smarthome.core.semantics

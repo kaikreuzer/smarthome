@@ -1,0 +1,7 @@
+schema {
+    location: LocationType
+}
+
+type LocationType {
+}
+
