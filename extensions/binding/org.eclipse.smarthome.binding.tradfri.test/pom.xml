@@ -5,11 +5,10 @@
 
   <parent>
     <groupId>org.eclipse.smarthome.binding</groupId>
-    <artifactId>pom</artifactId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.binding</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.eclipse.smarthome.archetype</groupId>
   <artifactId>org.eclipse.smarthome.binding.tradfri.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
 

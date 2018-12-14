@@ -5,13 +5,22 @@
 
   <parent>
     <groupId>org.eclipse.smarthome.binding</groupId>
-    <artifactId>pom</artifactId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.binding</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.smarthome.binding.tradfri</artifactId>
-  <packaging>eclipse-plugin</packaging>
 
   <name>Eclipse SmartHome TRÅDFRI Binding</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.bom</groupId>
+      <artifactId>org.eclipse.smarthome.bom.coap</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -3,13 +3,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.bundles</groupId>
-    <artifactId>automation</artifactId>
+    <groupId>org.eclipse.smarthome.automation</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles.automation</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.smarthome.automation.module.script.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
+
   <name>Eclipse SmartHome Automation Script Module Tests</name>
 
   <build>

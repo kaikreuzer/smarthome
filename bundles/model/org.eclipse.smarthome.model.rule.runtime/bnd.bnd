@@ -1,0 +1,2 @@
+Bundle-SymbolicName: ${project.artifactId}
+Require-Bundle: org.eclipse.smarthome.model.rule

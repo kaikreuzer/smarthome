@@ -4,15 +4,26 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.bundles</groupId>
-    <artifactId>core</artifactId>
+    <groupId>org.eclipse.smarthome.core</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles.core</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.eclipse.smarthome.core</groupId>
   <artifactId>org.eclipse.smarthome.core.thing</artifactId>
-  <packaging>eclipse-plugin</packaging>
 
   <name>Eclipse SmartHome Thing</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.config</groupId>
+      <artifactId>org.eclipse.smarthome.config.core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.smarthome.io</groupId>
+      <artifactId>org.eclipse.smarthome.io.console</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>

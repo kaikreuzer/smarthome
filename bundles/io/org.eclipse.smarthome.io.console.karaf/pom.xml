@@ -4,25 +4,26 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.bundles</groupId>
-    <artifactId>io</artifactId>
+    <groupId>org.eclipse.smarthome.io</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles.io</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.eclipse.smarthome.io</groupId>
   <artifactId>org.eclipse.smarthome.io.console.karaf</artifactId>
-
-  <packaging>eclipse-plugin</packaging>
 
   <name>Eclipse SmartHome Console for OSGi runtime Karaf</name>
 
-  <!-- This dependency is added as long as the bundles are not available in a p2 repo of the target platform. -->
   <dependencies>
     <dependency>
       <groupId>org.apache.karaf.shell</groupId>
       <artifactId>org.apache.karaf.shell.core</artifactId>
       <version>${karaf.version}</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.smarthome.io</groupId>
+      <artifactId>org.eclipse.smarthome.io.console</artifactId>
+      <version>${project.version}</version>
     </dependency>
   </dependencies>
 

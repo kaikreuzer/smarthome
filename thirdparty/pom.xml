@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.smarthome</groupId>
+    <artifactId>org.eclipse.smarthome</artifactId>
+    <version>0.11.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>org.eclipse.smarthome.thirdparty</groupId>
+  <artifactId>org.eclipse.smarthome.thirdparty</artifactId>
+  <packaging>pom</packaging>
+
+  <name>Eclipse SmartHome # 3rd Party</name>
+  <description>External artifacts that could not be found in a public Maven repository</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>libs/tinyb-0.5.1.jar</file>
+                  <type>jar</type>
+                  <classifier>tinyb-0.5.1</classifier>
+                </artifact>
+                <artifact>
+                  <file>libs/libdbus-java-2.7.jar</file>
+                  <type>jar</type>
+                  <classifier>libdbus-java-2.7</classifier>
+                </artifact>
+                <artifact>
+                  <file>libs/unix-0.5.jar</file>
+                  <type>jar</type>
+                  <classifier>unix-0.5</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

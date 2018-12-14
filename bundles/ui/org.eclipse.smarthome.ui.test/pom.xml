@@ -4,13 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.bundles</groupId>
-    <artifactId>ui</artifactId>
+    <groupId>org.eclipse.smarthome.ui</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles.ui</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.ui</groupId>
-  <artifactId>org.eclipse.smarthome.ui.test</artifactId>
 
+  <artifactId>org.eclipse.smarthome.ui.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
 
   <name>Eclipse SmartHome UI Tests</name>

@@ -4,20 +4,22 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>pom</artifactId>
-    <groupId>org.eclipse.smarthome.extension</groupId>
+    <groupId>org.eclipse.smarthome.extensions</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.persistence</groupId>
-  <artifactId>pom</artifactId>
 
+  <groupId>org.eclipse.smarthome.persistence</groupId>
+  <artifactId>org.eclipse.smarthome.reactor.extensions.persistence</artifactId>
   <packaging>pom</packaging>
 
   <name>Eclipse SmartHome Persistence</name>
 
   <modules>
     <module>org.eclipse.smarthome.persistence.mapdb</module>
-    <module>org.eclipse.smarthome.persistence.mapdb.test</module>
+    <!--
+<module>org.eclipse.smarthome.persistence.mapdb.test</module>
+    -->
   </modules>
 
 </project>

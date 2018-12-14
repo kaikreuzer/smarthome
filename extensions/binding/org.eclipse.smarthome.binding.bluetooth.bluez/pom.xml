@@ -5,13 +5,27 @@
 
   <parent>
     <groupId>org.eclipse.smarthome.binding</groupId>
-    <artifactId>pom</artifactId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.binding</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.smarthome.binding.bluetooth.bluez</artifactId>
-  <packaging>eclipse-plugin</packaging>
 
   <name>Eclipse SmartHome BlueZ Bluetooth Adapter</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.binding</groupId>
+      <artifactId>org.eclipse.smarthome.binding.bluetooth</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.smarthome.thirdparty</groupId>
+      <artifactId>org.eclipse.smarthome.thirdparty</artifactId>
+      <version>${project.version}</version>
+      <classifier>tinyb-0.5.1</classifier>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
 </project>

@@ -5,42 +5,18 @@
 
   <parent>
     <groupId>org.eclipse.smarthome</groupId>
-    <artifactId>smarthome</artifactId>
+    <artifactId>org.eclipse.smarthome</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome</groupId>
-  <artifactId>features</artifactId>
 
+  <groupId>org.eclipse.smarthome.features</groupId>
+  <artifactId>org.eclipse.smarthome.reactor.features</artifactId>
   <packaging>pom</packaging>
 
   <name>Eclipse SmartHome Features</name>
 
   <modules>
-    <module>org.eclipse.smarthome.feature.runtime.core</module>
-    <module>org.eclipse.smarthome.feature.runtime.rest</module>
-    <module>org.eclipse.smarthome.feature.runtime.model</module>
-    <module>org.eclipse.smarthome.feature.runtime.ui</module>
-    <module>org.eclipse.smarthome.feature.runtime.automation</module>
-    <module>org.eclipse.smarthome.feature.runtime.console.equinox</module>
-    <module>org.eclipse.smarthome.feature.runtime.console.rfc147</module>
-    <module>org.eclipse.smarthome.feature.runtime.binding</module>
-    <module>org.eclipse.smarthome.feature.test</module>
     <module>karaf</module>
   </modules>
-
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>${tycho-groupid}</groupId>
-          <artifactId>tycho-p2-plugin</artifactId>
-          <configuration>
-            <!-- fix to prevent double upload of p2metadata artifacts  -->
-            <defaultP2Metadata>false</defaultP2Metadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
 
 </project>

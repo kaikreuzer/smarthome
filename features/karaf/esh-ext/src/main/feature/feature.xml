@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-	Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
+        Copyright (c) 2014,2019 Contributors to the Eclipse Foundation
 
-	See the NOTICE file(s) distributed with this work for additional
-	information regarding copyright ownership.
+        See the NOTICE file(s) distributed with this work for additional
+        information regarding copyright ownership.
 
-	This program and the accompanying materials are made available under the
-	terms of the Eclipse Public License 2.0 which is available at
-	http://www.eclipse.org/legal/epl-2.0
+        This program and the accompanying materials are made available under the
+        terms of the Eclipse Public License 2.0 which is available at
+        http://www.eclipse.org/legal/epl-2.0
 
-	SPDX-License-Identifier: EPL-2.0
+        SPDX-License-Identifier: EPL-2.0
 
 -->
 <features name="${project.artifactId}-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.3.0">
+
+  <repository>mvn:org.eclipse.smarthome.features.karaf/org.eclipse.smarthome.features.karaf.esh-core/${project.version}/xml/features</repository>
 
   <feature name="esh-binding-astro" version="${project.version}">
     <feature>esh-base</feature>
@@ -181,7 +183,13 @@
     <feature>esh-base</feature>
     <feature>esh-automation-api</feature>
     <feature>esh-extensionservice-marketplace</feature>
+    <feature dependency="true">esh-automation-parser-gson</feature>
     <bundle>mvn:org.eclipse.smarthome.extensionservice/org.eclipse.smarthome.extensionservice.marketplace.automation/${project.version}</bundle>
+  </feature>
+
+  <feature name="esh-persistence-mapdb" version="${project.version}">
+    <feature>esh-base</feature>
+    <bundle>mvn:org.eclipse.smarthome.persistence/org.eclipse.smarthome.persistence.mapdb/${project.version}</bundle>
   </feature>
 
   <feature name="esh-transform-exec" description="Exec Transformation" version="${project.version}">
@@ -235,24 +243,24 @@
     <requirement>esh.tp;filter:="(feature=commons-net)"</requirement>
     <feature dependency="true">esh.tp-commons-net</feature>
 
-    <bundle>mvn:org.eclipse.smarthome.extension.ui/org.eclipse.smarthome.ui.basic/${project.version}</bundle>
+    <bundle>mvn:org.eclipse.smarthome.ui/org.eclipse.smarthome.ui.basic/${project.version}</bundle>
   </feature>
 
   <feature name="esh-ui-classic" version="${project.version}">
     <feature>esh-base</feature>
     <feature>esh-ui</feature>
-    <bundle>mvn:org.eclipse.smarthome.extension.ui/org.eclipse.smarthome.ui.classic/${project.version}</bundle>
+    <bundle>mvn:org.eclipse.smarthome.ui/org.eclipse.smarthome.ui.classic/${project.version}</bundle>
   </feature>
 
   <feature name="esh-ui-paper" version="${project.version}">
     <feature>esh-base</feature>
-    <bundle>mvn:org.eclipse.smarthome.extension.ui/org.eclipse.smarthome.ui.paper/${project.version}</bundle>
+    <bundle>mvn:org.eclipse.smarthome.ui/org.eclipse.smarthome.ui.paper/${project.version}</bundle>
   </feature>
 
   <feature name="esh-ui-iconset-classic" version="${project.version}">
     <feature>esh-base</feature>
     <feature>esh-ui-icon</feature>
-    <bundle>mvn:org.eclipse.smarthome.extension.ui.iconset/org.eclipse.smarthome.ui.iconset.classic/${project.version}</bundle>
+    <bundle>mvn:org.eclipse.smarthome.ui.iconset/org.eclipse.smarthome.ui.iconset.classic/${project.version}</bundle>
   </feature>
 
   <feature name="esh-io-mqttembeddedbroker" description="Embedded MQTT Broker" version="${project.version}">
@@ -261,6 +269,18 @@
 
     <requirement>esh.tp;filter:="(feature=commons-net)"</requirement>
     <feature dependency="true">esh.tp-commons-net</feature>
+
+    <bundle dependency="true">mvn:io.netty/netty-buffer/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-codec/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-codec-http/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-codec-mqtt/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-common/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-handler/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-resolver/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-transport/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-transport-native-epoll/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:io.netty/netty-transport-native-unix-common/4.1.29.Final</bundle>
+    <bundle dependency="true">mvn:com.hazelcast/hazelcast/3.5.4</bundle>
 
     <bundle>mvn:org.eclipse.smarthome.io/org.eclipse.smarthome.io.mqttembeddedbroker/${project.version}</bundle>
   </feature>

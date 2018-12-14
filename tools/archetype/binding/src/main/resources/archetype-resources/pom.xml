@@ -10,7 +10,7 @@
   </parent>
 
   <artifactId>${rootArtifactId}</artifactId>
-  <packaging>eclipse-plugin</packaging>
+  
 
   <name>${bindingIdCamelCase} Binding</name>
 

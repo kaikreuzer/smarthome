@@ -1,0 +1,10 @@
+Bundle-SymbolicName: ${project.artifactId}
+Private-Package: \
+  io.moquette.*
+Import-Package: \
+ com.bugsnag.*;resolution:=optional,\
+ com.codahale.metrics.*;resolution:=optional,\
+ com.librato.metrics.reporter.*;resolution:=optional,\
+ com.zaxxer.hikari.*;resolution:=optional,\
+ org.apache.commons.codec.*;resolution:=optional,\
+ *

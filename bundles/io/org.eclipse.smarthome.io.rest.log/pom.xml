@@ -4,16 +4,21 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.bundles</groupId>
-    <artifactId>io</artifactId>
+    <groupId>org.eclipse.smarthome.io</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles.io</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.io</groupId>
 
   <artifactId>org.eclipse.smarthome.io.rest.log</artifactId>
 
-  <packaging>eclipse-plugin</packaging>
-
   <name>Eclipse SmartHome Core REST UI Logging Module</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.io</groupId>
+      <artifactId>org.eclipse.smarthome.io.rest</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>

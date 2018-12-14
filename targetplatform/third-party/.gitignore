@@ -1,5 +1,0 @@
-# Added separate .gitignore because of the very special handling.
-# Ignore all but .gitignore itself and the README.md file.
-*
-!.gitignore
-!README.md

@@ -4,13 +4,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.extension.ui</groupId>
-    <artifactId>pom</artifactId>
+    <groupId>org.eclipse.smarthome.ui</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.ui</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.extension.ui.iconset</groupId>
-  <artifactId>pom</artifactId>
 
+  <groupId>org.eclipse.smarthome.ui.iconset</groupId>
+  <artifactId>org.eclipse.smarthome.reactor.extensions.ui.iconset</artifactId>
   <packaging>pom</packaging>
 
   <name>Eclipse SmartHome Icon Sets</name>

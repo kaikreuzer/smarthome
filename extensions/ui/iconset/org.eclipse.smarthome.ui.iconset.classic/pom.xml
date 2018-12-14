@@ -4,15 +4,46 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.extension.ui.iconset</groupId>
-    <artifactId>pom</artifactId>
+    <groupId>org.eclipse.smarthome.ui.iconset</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.ui.iconset</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.eclipse.smarthome.extension.ui.iconset</groupId>
   <artifactId>org.eclipse.smarthome.ui.iconset.classic</artifactId>
-  <packaging>eclipse-plugin</packaging>
 
   <name>Eclipse SmartHome Classic Icon Set</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.ui</groupId>
+      <artifactId>org.eclipse.smarthome.ui.icon</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>add-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>icons</directory>
+                  <targetPath>icons</targetPath>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

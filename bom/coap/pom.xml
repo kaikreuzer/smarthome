@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.eclipse.smarthome.bom</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bom</artifactId>
+    <version>0.11.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>org.eclipse.smarthome.bom.coap</artifactId>
+  <packaging>pom</packaging>
+
+  <name>Eclipse SmartHome # BOM # COAP</name>
+
+  <properties>
+    <coap.version>1.0.6</coap.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.californium</groupId>
+      <artifactId>californium-osgi</artifactId>
+      <version>${coap.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.californium</groupId>
+      <artifactId>element-connector</artifactId>
+      <version>${coap.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.californium</groupId>
+      <artifactId>scandium</artifactId>
+      <version>${coap.version}</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+</project>

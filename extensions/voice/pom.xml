@@ -4,20 +4,22 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.extension</groupId>
-    <artifactId>pom</artifactId>
+    <groupId>org.eclipse.smarthome.extensions</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.voice</groupId>
-  <artifactId>pom</artifactId>
 
+  <groupId>org.eclipse.smarthome.voice</groupId>
+  <artifactId>org.eclipse.smarthome.reactor.extensions.voice</artifactId>
   <packaging>pom</packaging>
 
   <name>Eclipse SmartHome Voice Services</name>
 
   <modules>
     <module>org.eclipse.smarthome.voice.mactts</module>
-    <module>org.eclipse.smarthome.voice.mactts.test</module>
+    <!--
+<module>org.eclipse.smarthome.voice.mactts.test</module>
+    -->
   </modules>
 
 </project>

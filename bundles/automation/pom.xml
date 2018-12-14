@@ -4,13 +4,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome</groupId>
-    <artifactId>bundles</artifactId>
+    <groupId>org.eclipse.smarthome.bundles</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.bundles</groupId>
-  <artifactId>automation</artifactId>
 
+  <groupId>org.eclipse.smarthome.automation</groupId>
+  <artifactId>org.eclipse.smarthome.reactor.bundles.automation</artifactId>
   <packaging>pom</packaging>
 
   <name>Eclipse SmartHome Automation</name>
@@ -18,31 +18,33 @@
   <modules>
     <module>org.eclipse.smarthome.automation.api</module>
     <module>org.eclipse.smarthome.automation.commands</module>
+    <module>org.eclipse.smarthome.automation.core</module>
+    <module>org.eclipse.smarthome.automation.module.core</module>
+    <module>org.eclipse.smarthome.automation.module.media</module>
+    <module>org.eclipse.smarthome.automation.module.script</module>
+    <module>org.eclipse.smarthome.automation.module.script.defaultscope</module>
+    <module>org.eclipse.smarthome.automation.module.script.rulesupport</module>
+    <module>org.eclipse.smarthome.automation.module.timer</module>
     <module>org.eclipse.smarthome.automation.parser.gson</module>
     <module>org.eclipse.smarthome.automation.providers</module>
     <module>org.eclipse.smarthome.automation.provider.file</module>
-    <module>org.eclipse.smarthome.automation.core</module>
-    <module>org.eclipse.smarthome.automation.core.test</module>
-    <module>org.eclipse.smarthome.automation.sample.extension.json</module>
-    <module>org.eclipse.smarthome.automation.module.core</module>
-    <module>org.eclipse.smarthome.automation.module.core.test</module>
-    <module>org.eclipse.smarthome.automation.module.media</module>
-    <module>org.eclipse.smarthome.automation.module.timer</module>
-    <module>org.eclipse.smarthome.automation.module.timer.test</module>
-    <module>org.eclipse.smarthome.automation.module.script</module>
-    <module>org.eclipse.smarthome.automation.module.script.defaultscope</module>
-    <module>org.eclipse.smarthome.automation.module.script.defaultscope.test</module>
-    <module>org.eclipse.smarthome.automation.module.script.rulesupport</module>
-    <module>org.eclipse.smarthome.automation.module.script.test</module>
-    <module>org.eclipse.smarthome.automation.event.test</module>
-    <module>org.eclipse.smarthome.automation.integration.test</module>
-    <module>org.eclipse.smarthome.automation.sample.extension.java</module>
     <module>org.eclipse.smarthome.automation.rest</module>
+    <module>org.eclipse.smarthome.automation.sample.extension.java</module>
+    <module>org.eclipse.smarthome.automation.sample.extension.json</module>
+    <module>org.eclipse.smarthome.automation.sample.moduletype.demo</module>
     <module>org.eclipse.smarthome.automation.sample.rest.api</module>
     <module>org.eclipse.smarthome.automation.sample.java.demo</module>
     <module>org.eclipse.smarthome.automation.sample.json.demo</module>
-    <module>org.eclipse.smarthome.automation.sample.moduletype.demo</module>
     <module>org.eclipse.smarthome.automation.thingsupport</module>
+    <!--
+    <module>org.eclipse.smarthome.automation.core.test</module>
+    <module>org.eclipse.smarthome.automation.module.core.test</module>
+    <module>org.eclipse.smarthome.automation.module.timer.test</module>
+    <module>org.eclipse.smarthome.automation.module.script.defaultscope.test</module>
+    <module>org.eclipse.smarthome.automation.module.script.test</module>
+    <module>org.eclipse.smarthome.automation.event.test</module>
+    <module>org.eclipse.smarthome.automation.integration.test</module>
+    -->
   </modules>
 
 </project>

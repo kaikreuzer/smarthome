@@ -4,50 +4,126 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome</groupId>
-    <artifactId>bundles</artifactId>
+    <groupId>org.eclipse.smarthome.bundles</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.bundles</groupId>
-  <artifactId>model</artifactId>
 
+  <groupId>org.eclipse.smarthome.model</groupId>
+  <artifactId>org.eclipse.smarthome.reactor.bundles.model</artifactId>
   <packaging>pom</packaging>
 
   <name>Eclipse SmartHome Models</name>
 
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.bom</groupId>
+      <artifactId>org.eclipse.smarthome.bom.compile-model</artifactId>
+      <type>pom</type>
+    </dependency>
+  </dependencies>
+
   <modules>
     <module>org.eclipse.smarthome.model.lazygen</module>
     <module>org.eclipse.smarthome.model.core</module>
-    <module>org.eclipse.smarthome.model.core.test</module>
     <module>org.eclipse.smarthome.model.item</module>
     <module>org.eclipse.smarthome.model.item.ide</module>
     <module>org.eclipse.smarthome.model.item.runtime</module>
-    <module>org.eclipse.smarthome.model.item.tests</module>
     <module>org.eclipse.smarthome.model.lsp</module>
-    <module>org.eclipse.smarthome.model.lsp.test</module>
     <module>org.eclipse.smarthome.model.persistence</module>
     <module>org.eclipse.smarthome.model.persistence.ide</module>
     <module>org.eclipse.smarthome.model.persistence.runtime</module>
-    <module>org.eclipse.smarthome.model.persistence.tests</module>
     <module>org.eclipse.smarthome.model.rule</module>
     <module>org.eclipse.smarthome.model.rule.ide</module>
     <module>org.eclipse.smarthome.model.rule.runtime</module>
-    <module>org.eclipse.smarthome.model.rule.tests</module>
     <module>org.eclipse.smarthome.model.script</module>
     <module>org.eclipse.smarthome.model.script.ide</module>
     <module>org.eclipse.smarthome.model.script.runtime</module>
-    <module>org.eclipse.smarthome.model.script.tests</module>
     <module>org.eclipse.smarthome.model.sitemap</module>
     <module>org.eclipse.smarthome.model.sitemap.ide</module>
     <module>org.eclipse.smarthome.model.sitemap.runtime</module>
     <module>org.eclipse.smarthome.model.thing</module>
     <module>org.eclipse.smarthome.model.thing.ide</module>
     <module>org.eclipse.smarthome.model.thing.runtime</module>
+    <!--
+    <module>org.eclipse.smarthome.model.core.test</module>
+    <module>org.eclipse.smarthome.model.item.tests</module>
+    <module>org.eclipse.smarthome.model.lsp.test</module>
+    <module>org.eclipse.smarthome.model.persistence.tests</module>
+    <module>org.eclipse.smarthome.model.rule.tests</module>
+    <module>org.eclipse.smarthome.model.script.tests</module>
     <module>org.eclipse.smarthome.model.thing.tests</module>
+    -->
   </modules>
 
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <configuration>
+            <filesets>
+              <fileset>
+                <directory>${basedir}/xtend-gen</directory>
+                <includes>
+                  <include>**</include>
+                </includes>
+                <excludes>
+                  <exclude>.gitignore</exclude>
+                </excludes>
+              </fileset>
+              <fileset>
+                <directory>${basedir}/src/main/generated-sources/xtend</directory>
+                <includes>
+                  <include>**</include>
+                </includes>
+                <excludes>
+                  <exclude>.gitignore</exclude>
+                </excludes>
+              </fileset>
+            </filesets>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>add-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>src-gen</directory>
+                  <includes>
+                    <!-- binary version of xmi files -->
+                    <include>**/*.xtextbin</include>
+                    <!-- tokens - Loaded by reflection -->
+                    <!-- See: e.g. org.eclipse.smarthome.model.parser.antlr.ItemsAntlrTokenFileProvider -->
+                    <include>**/*.tokens</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>src</directory>
+                  <includes>
+                    <include>**/*.xtext</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>model</directory>
+                  <targetPath>model</targetPath>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>com.googlecode.maven-download-plugin</groupId>
         <artifactId>download-maven-plugin</artifactId>
@@ -67,10 +143,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.xtend</groupId>
-        <artifactId>xtend-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>

@@ -3,14 +3,55 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.extension.ui</groupId>
-    <artifactId>pom</artifactId>
+    <groupId>org.eclipse.smarthome.ui</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.ui</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.smarthome.ui.classic</artifactId>
-  <packaging>eclipse-plugin</packaging>
 
   <name>Eclipse SmartHome Classic UI</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.bom</groupId>
+      <artifactId>org.eclipse.smarthome.bom.compile-model</artifactId>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.smarthome.io</groupId>
+      <artifactId>org.eclipse.smarthome.io.rest.sitemap</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>add-resource</goal>
+            </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>snippets</directory>
+                  <targetPath>snippets</targetPath>
+                </resource>
+                <resource>
+                  <directory>web</directory>
+                  <targetPath>web</targetPath>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>

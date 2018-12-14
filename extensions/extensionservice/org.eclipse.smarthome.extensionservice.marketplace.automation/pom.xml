@@ -4,13 +4,21 @@
 
   <parent>
     <groupId>org.eclipse.smarthome.extensionservice</groupId>
-    <artifactId>pom</artifactId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.extensionservice</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.eclipse.smarthome.extensionservice.marketplace.automation</artifactId>
-  <packaging>eclipse-plugin</packaging>
 
   <name>Eclipse SmartHome IoT Marketplace Extension Automation Support</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.extensionservice</groupId>
+      <artifactId>org.eclipse.smarthome.extensionservice.marketplace</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
 
 </project>

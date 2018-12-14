@@ -5,85 +5,57 @@
 
   <parent>
     <groupId>org.eclipse.smarthome</groupId>
-    <artifactId>smarthome</artifactId>
+    <artifactId>org.eclipse.smarthome</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome</groupId>
-  <artifactId>bundles</artifactId>
 
+  <groupId>org.eclipse.smarthome.bundles</groupId>
+  <artifactId>org.eclipse.smarthome.reactor.bundles</artifactId>
   <packaging>pom</packaging>
 
   <name>Eclipse SmartHome Bundles</name>
 
   <modules>
-    <module>test</module>
     <module>auth</module>
+    <module>automation</module>
     <module>config</module>
     <module>core</module>
-    <module>automation</module>
     <module>io</module>
     <module>model</module>
+    <module>test</module>
     <module>ui</module>
     <module>storage</module>
   </modules>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
-      <version>${ds-annotations.version}</version>
-      <optional>true</optional>
-    </dependency>
-  </dependencies>
-
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+            </archive>
+            <skipIfEmpty>true</skipIfEmpty>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>${tycho-groupid}</groupId>
-        <artifactId>tycho-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>plugin-source</id>
-            <goals>
-              <goal>plugin-source</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-scr-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-scr-scrdescriptor</id>
-            <goals>
-              <goal>scr</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.1.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <phase>process-test-resources</phase>
-            <configuration>
-              <outputDirectory>${project.basedir}/OSGI-INF</outputDirectory>
-              <overwrite>true</overwrite>
-              <resources>
-                <resource>
-                  <directory>${project.basedir}/target/classes/OSGI-INF</directory>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
+        <groupId>biz.aQute.bnd</groupId>
+        <artifactId>bnd-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.bom</groupId>
+      <artifactId>org.eclipse.smarthome.bom.compile</artifactId>
+      <type>pom</type>
+    </dependency>
+  </dependencies>
 
 </project>

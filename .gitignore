@@ -24,3 +24,6 @@ bundles/storage/org.eclipse.smarthome.storage.mapdb.test/userdata/mapdb/storage.
 features/karaf/*/src/main/history
 
 Californium.properties
+
+*.orig
+

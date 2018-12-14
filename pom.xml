@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.eclipse.smarthome</groupId>
-  <artifactId>smarthome</artifactId>
+  <artifactId>org.eclipse.smarthome</artifactId>
   <version>0.11.0-SNAPSHOT</version>
 
   <packaging>pom</packaging>
@@ -24,20 +25,6 @@
     </license>
   </licenses>
 
-  <prerequisites>
-    <maven>3.0</maven>
-  </prerequisites>
-
-  <modules>
-    <module>bundles</module>
-    <module>extensions</module>
-    <module>features</module>
-    <module>products</module>
-    <module>tools</module>
-    <module>targetplatform</module>
-    <module>distribution</module>
-  </modules>
-
   <distributionManagement>
     <repository>
       <id>repo.eclipse.org</id>
@@ -52,18 +39,19 @@
   </distributionManagement>
 
   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <esh.java.version>1.8</esh.java.version>
     <maven.compiler.source>${esh.java.version}</maven.compiler.source>
     <maven.compiler.target>${esh.java.version}</maven.compiler.target>
     <maven.compiler.compilerVersion>${esh.java.version}</maven.compiler.compilerVersion>
-    <tycho-version>1.2.0</tycho-version>
-    <tycho-groupid>org.eclipse.tycho</tycho-groupid>
-    <xtext-version>2.14.0</xtext-version>
+
+    <bnd.version>4.1.0</bnd.version>
+    <jetty.version>9.4.11.v20180605</jetty.version>
     <karaf.version>4.2.1</karaf.version>
-    <ds-annotations.version>1.2.10</ds-annotations.version>
-    <jdt-annotations.version>2.1.0</jdt-annotations.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <sat.version>0.5.0</sat.version>
+    <slf4j.version>1.7.21</slf4j.version>
+    <xtext.version>2.14.0</xtext.version>
   </properties>
 
   <repositories>
@@ -91,6 +79,10 @@
       <name>Eclipse SmartHome 3rd party Maven Repository</name>
       <url>http://eclipse.github.io/smarthome/third-party/m2-repo/</url>
     </repository>
+    <repository>
+      <id>bintray-maggu2810-maven</id>
+      <url>https://dl.bintray.com/maggu2810/maven/</url>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -100,184 +92,283 @@
     </pluginRepository>
   </pluginRepositories>
 
-  <build>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.eclipse.smarthome.bom</groupId>
+        <artifactId>org.eclipse.smarthome.bom.compile</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.smarthome.bom</groupId>
+        <artifactId>org.eclipse.smarthome.bom.compile-model</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.smarthome.bom</groupId>
+        <artifactId>org.eclipse.smarthome.bom.runtime</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>runtime</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>.</directory>
+        <includes>
+          <include>NOTICE</include> <!-- general -->
+          <include>*.xsd</include> <!-- only a very rare -->
+        </includes>
+      </resource>
+      <resource>
+        <directory>ESH-INF</directory> <!-- general -->
+        <targetPath>ESH-INF</targetPath>
+      </resource>
+    </resources>
     <pluginManagement>
       <plugins>
+
+        <!-- BEG: bnd -->
+
+        <!-- Use the bnd-maven-plugin and assemble the symbolic names -->
         <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-        <plugin>
-          <groupId>${tycho-groupid}</groupId>
-          <artifactId>target-platform-configuration</artifactId>
-          <version>${tycho-version}</version>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-maven-plugin</artifactId>
+          <version>${bnd.version}</version>
           <configuration>
-            <!--
-            <resolver>p2</resolver>
-            <ignoreTychoRepositories>true</ignoreTychoRepositories>
-            -->
-            <pomDependencies>consider</pomDependencies>
-            <target>
-              <artifact>
-                <groupId>org.eclipse.smarthome</groupId>
-                <artifactId>targetplatform</artifactId>
-                <version>${project.version}</version>
-                <classifier>smarthome</classifier>
-              </artifact>
-            </target>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>${tycho-groupid}</groupId>
-          <artifactId>tycho-compiler-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <configuration>
-            <useProjectSettings>false</useProjectSettings>
-            <extraClasspathElements>
-              <extraClasspathElement>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
-                <version>${ds-annotations.version}</version>
-              </extraClasspathElement>
-              <extraClasspathElement>
-                <groupId>org.eclipse.jdt</groupId>
-                <artifactId>org.eclipse.jdt.annotation</artifactId>
-                <version>${jdt-annotations.version}</version>
-              </extraClasspathElement>
-            </extraClasspathElements>
-            <compilerArgs>
-              <arg>-err:+nullAnnot(org.eclipse.jdt.annotation.Nullable|org.eclipse.jdt.annotation.NonNull|org.eclipse.jdt.annotation.NonNullByDefault),+inheritNullAnnot,-nullUncheckedConversion</arg>
-              <arg>-warn:+null,+inheritNullAnnot,+nullAnnotConflict,-nullUncheckedConversion,+nullAnnotRedundant,+nullDereference</arg>
-            </compilerArgs>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>${tycho-groupid}</groupId>
-          <artifactId>tycho-maven-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>${tycho-groupid}</groupId>
-          <artifactId>tycho-source-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.eclipse.tycho.extras</groupId>
-          <artifactId>tycho-source-feature-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>${tycho-groupid}</groupId>
-          <artifactId>tycho-surefire-plugin</artifactId>
-          <version>${tycho-version}</version>
-          <configuration>
-            <failIfNoTests>false</failIfNoTests>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>${tycho-groupid}</groupId>
-          <artifactId>tycho-p2-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>${tycho-groupid}</groupId>
-          <artifactId>tycho-versions-plugin</artifactId>
-          <version>${tycho-version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-scr-plugin</artifactId>
-          <version>1.24.0</version>
-          <configuration>
-            <supportedProjectTypes>
-              <supportedProjectType>eclipse-plugin</supportedProjectType>
-              <supportedProjectType>eclipse-test-plugin</supportedProjectType>
-            </supportedProjectTypes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.codehaus.mojo</groupId>
-          <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.8</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>3.0.1</version>
-          <extensions>true</extensions>
-          <configuration>
-            <supportedProjectTypes>
-              <supportedProjectType>jar</supportedProjectType>
-              <supportedProjectType>bundle</supportedProjectType>
-              <supportedProjectType>eclipse-plugin</supportedProjectType>
-            </supportedProjectTypes>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.0</version>
-        </plugin>
-        <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>3.0</version>
-          <configuration>
-            <basedir>${basedir}</basedir>
-            <header>src/etc/header.txt</header>
-            <quiet>false</quiet>
-            <failIfMissing>true</failIfMissing>
-            <strictCheck>true</strictCheck>
-            <aggregate>true</aggregate>
-            <useDefaultMapping>true</useDefaultMapping>
-            <mapping>
-              <xtend>JAVADOC_STYLE</xtend>
-              <mwe2>JAVADOC_STYLE</mwe2>
-              <xml>xml-header-style</xml>
-            </mapping>
-            <headerDefinitions>
-              <headerDefinition>src/etc/xml-header-style.xml</headerDefinition>
-            </headerDefinitions>
-            <includes>
-              <include>src/**/*.java</include>
-              <include>src/**/*.xtend</include>
-              <include>src/**/*.mwe2</include>
-              <include>bin/**/*.mwe2</include>
-              <include>workflows/**/*.mwe2</include>
-              <include>src/main/feature/feature.xml</include>
-              <include>feature.xml</include>
-              <include>OSGI-INF/*.xml</include>
-            </includes>
-            <excludes>
-              <exclude>_*.java</exclude>
-            </excludes>
-            <useDefaultExcludes>true</useDefaultExcludes>
-            <properties>
-              <year>2019</year>
-            </properties>
-            <encoding>UTF-8</encoding>
+            <bnd><![CDATA[
+Bundle-SymbolicName: ${project.artifactId}
+Automatic-Module-Name: ${def;bsn}
+Import-Package: \\
+  io.swagger.annotations.*;resolution:=optional,\\
+  javax.annotation.security.*;resolution:=optional,\\
+  org.eclipse.jdt.annotation.*;resolution:=optional,\\
+  org.eclipse.jdt.annotation.*;resolution:=optional,\\
+  org.eclipse.smarthome.automation.annotation.*;resolution:=optional,\\
+  com.google.common.*;version="14.0",\\
+  *
+-exportcontents: \\
+  !*.internal.*,\\
+  !*.impl.*, \\
+  org.eclipse.smarthome.*
+-sources: false
+-contract: *
+]]></bnd>
+            <!-- Bundle-SymbolicName: ${project.groupId}.${project.artifactId} -->
           </configuration>
           <executions>
             <execution>
               <goals>
-                <goal>check</goal>
+                <goal>bnd-process</goal>
               </goals>
             </execution>
           </executions>
         </plugin>
+        <!-- Required to make the maven-jar-plugin pick up the bnd generated manifest. Also avoid packaging empty Jars -->
+        <!-- Moved... -->
+
+        <!-- Setup the indexer for running and testing -->
+        <plugin>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-indexer-maven-plugin</artifactId>
+          <version>${bnd.version}</version>
+          <configuration>
+            <localURLs>REQUIRED</localURLs>
+            <attach>false</attach>
+          </configuration>
+          <executions>
+            <execution>
+              <id>index</id>
+              <goals>
+                <goal>index</goal>
+              </goals>
+              <configuration>
+                <indexName>${project.artifactId}</indexName>
+              </configuration>
+            </execution>
+            <execution>
+              <id>test-index</id>
+              <goals>
+                <goal>index</goal>
+              </goals>
+              <configuration>
+                <indexName>${project.artifactId}</indexName>
+                <outputFile>${project.build.directory}/test-index.xml</outputFile>
+                <scopes>
+                  <scope>test</scope>
+                </scopes>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Define the version of the resolver plugin we use -->
+        <plugin>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-resolver-maven-plugin</artifactId>
+          <version>${bnd.version}</version>
+          <configuration>
+            <failOnChanges>false</failOnChanges>
+            <bndruns>
+            </bndruns>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>resolve</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Define the version of the export plugin we use -->
+        <plugin>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-export-maven-plugin</artifactId>
+          <version>${bnd.version}</version>
+          <configuration>
+            <resolve>true</resolve>
+            <failOnChanges>true</failOnChanges>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>export</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Define the version of the testing plugin that we use -->
+        <plugin>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-testing-maven-plugin</artifactId>
+          <version>${bnd.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>testing</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- Define the version of the baseline plugin we use and avoid failing when no baseline jar exists. (for example
+        before the first release) -->
+        <plugin>
+          <groupId>biz.aQute.bnd</groupId>
+          <artifactId>bnd-baseline-maven-plugin</artifactId>
+          <version>${bnd.version}</version>
+          <configuration>
+            <failOnMissing>false</failOnMissing>
+          </configuration>
+          <executions>
+            <execution>
+              <goals>
+                <goal>baseline</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- END: bnd -->
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>2.10.3</version>
+          <configuration>
+            <failOnError>!${quality.skip}</failOnError>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>3.6.0</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>2.5.2</version>
+          <configuration>
+            <preparationGoals>clean install</preparationGoals>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.7.1</version>
+        </plugin>
+
         <plugin>
           <groupId>org.eclipse.xtend</groupId>
           <artifactId>xtend-maven-plugin</artifactId>
-          <version>${xtext-version}</version>
+          <version>${xtext.version}</version>
           <dependencies>
+            <!-- https://github.com/eclipse/xtext-xtend/issues/493 -->
             <dependency>
-              <groupId>org.eclipse.platform</groupId>
-              <artifactId>org.eclipse.equinox.common</artifactId>
-              <version>3.10.0</version>
+              <groupId>org.eclipse.jdt</groupId>
+              <artifactId>org.eclipse.jdt.core</artifactId>
+              <version>3.15.0</version>
+            </dependency>
+            <dependency>
+              <groupId>org.eclipse.jdt</groupId>
+              <artifactId>org.eclipse.jdt.compiler.apt</artifactId>
+              <version>1.3.300</version>
+            </dependency>
+            <dependency>
+              <groupId>org.eclipse.jdt</groupId>
+              <artifactId>org.eclipse.jdt.compiler.tool</artifactId>
+              <version>1.2.300</version>
             </dependency>
             <!-- see https://github.com/eclipse/xtext/issues/1373#issuecomment-449001543 -->
             <dependency>
@@ -316,290 +407,66 @@
             </execution>
           </executions>
         </plugin>
+
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>2.5</version>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>3.0.0</version>
         </plugin>
+
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build
+        itself. -->
         <plugin>
-          <groupId>org.openhab.tools.sat</groupId>
-          <artifactId>sat-plugin</artifactId>
-          <version>${sat.version}</version>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
           <configuration>
-            <pmdFilter>${basedirRoot}/tools/static-code-analysis/pmd/suppressions.properties</pmdFilter>
-            <checkstyleProperties>${basedirRoot}/tools/static-code-analysis/checkstyle/ruleset.properties</checkstyleProperties>
-            <checkstyleFilter>${basedirRoot}/tools/static-code-analysis/checkstyle/suppressions.xml</checkstyleFilter>
-            <spotbugsExclude>${basedirRoot}/tools/static-code-analysis/spotbugs/suppressions.xml</spotbugsExclude>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.karaf.tooling</groupId>
+                    <artifactId>karaf-maven-plugin</artifactId>
+                    <versionRange>[4.2.1,)</versionRange>
+                    <goals>
+                      <goal>features-generate-descriptor</goal>
+                      <goal>verify</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <versionRange>[1.4.0,)</versionRange>
+                    <goals>
+                      <goal>java</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
           </configuration>
-          <executions>
-            <execution>
-              <id>sat-all</id>
-              <goals>
-                <goal>checkstyle</goal>
-                <goal>pmd</goal>
-                <goal>spotbugs</goal>
-                <goal>report</goal>
-              </goals>
-              <phase>verify</phase>
-            </execution>
-          </executions>
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
-        <groupId>org.commonjava.maven.plugins</groupId>
-        <artifactId>directory-maven-plugin</artifactId>
-        <version>0.2</version>
-        <executions>
-          <execution>
-            <id>directories</id>
-            <goals>
-              <goal>highest-basedir</goal>
-            </goals>
-            <phase>initialize</phase>
-            <configuration>
-              <property>basedirRoot</property>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>${tycho-groupid}</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <extensions>true</extensions>
-      </plugin>
-      <plugin>
-        <groupId>${tycho-groupid}</groupId>
-        <artifactId>target-platform-configuration</artifactId>
-        <configuration>
-          <environments>
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
-              <arch>x86</arch>
-            </environment>
-            <environment>
-              <os>linux</os>
-              <ws>gtk</ws>
-              <arch>x86_64</arch>
-            </environment>
-            <environment>
-              <os>win32</os>
-              <ws>win32</ws>
-              <arch>x86</arch>
-            </environment>
-            <environment>
-              <os>win32</os>
-              <ws>win32</ws>
-              <arch>x86_64</arch>
-            </environment>
-            <environment>
-              <os>macosx</os>
-              <ws>cocoa</ws>
-              <arch>x86_64</arch>
-            </environment>
-          </environments>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-clean-plugin</artifactId>
-        <version>2.5</version>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}/xtend-gen</directory>
-              <includes>
-                <include>**</include>
-              </includes>
-              <excludes>
-                <exclude>.gitignore</exclude>
-              </excludes>
-            </fileset>
-            <fileset>
-              <directory>${basedir}/src/main/generated-sources/xtend</directory>
-              <includes>
-                <include>**</include>
-              </includes>
-              <excludes>
-                <exclude>.gitignore</exclude>
-              </excludes>
-            </fileset>
-            <fileset>
-              <directory>${basedir}/OSGI-INF</directory>
-              <includes>
-                <include>**</include>
-              </includes>
-              <excludes>
-                <exclude>.gitignore</exclude>
-              </excludes>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-      </plugin>
-    </plugins>
+
   </build>
 
-  <profiles>
-    <profile>
-      <id>sign</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.eclipse.cbi.maven.plugins</groupId>
-            <artifactId>eclipse-jarsigner-plugin</artifactId>
-            <version>1.0.5</version>
-            <executions>
-              <execution>
-                <id>sign</id>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-                <phase>verify</phase>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>QA</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.7.4.201502262128</version>
-            <configuration>
-              <dataFile>${session.executionRootDirectory}/target/coverage.jacoco</dataFile>
-              <destFile>${session.executionRootDirectory}/target/coverage.jacoco</destFile>
-              <append>true</append>
-              <excludes>
-                <exclude>**/*Test.*</exclude>
-              </excludes>
-            </configuration>
-            <executions>
-              <execution>
-                <id>default-prepare-agent</id>
-                <goals>
-                  <goal>prepare-agent</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>default-prepare-agent-integration</id>
-                <goals>
-                  <goal>prepare-agent-integration</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <!-- We need this profile in order to set '-Xdoclint:none' as a project property which will be used later by maven-javadoc-plugin as an 'additionalparam' to be passed to the javadoc.exe. -->
-    <!-- This option will be used only if the JDK version is 1.8 or higher. Earlier versions of javadoc.exe does not accept this option. -->
-    <profile>
-      <id>doclint-java8-disable</id>
-      <activation>
-        <jdk>[1.8,)</jdk>
-      </activation>
-      <properties>
-        <javadoc.opts>-Xdoclint:none</javadoc.opts>
-      </properties>
-    </profile>
-    <profile>
-      <id>javadoc</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <version>2.10.3</version>
-            <configuration>
-              <!-- 'javadoc.opts' project property is set by the 'doclint-java8-disable' profile. It is important to keep 'javadoc' profile declaration after the declaration of 'doclint-java8-disable' profile. -->
-              <additionalparam>${javadoc.opts}</additionalparam>
-              <excludePackageNames>*.internal.*,nl.*</excludePackageNames>
-            </configuration>
-            <executions>
-              <execution>
-                <id>aggregate</id>
-                <goals>
-                  <goal>aggregate-jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>build-helper-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>attach-artifacts</id>
-                <goals>
-                  <goal>attach-artifact</goal>
-                </goals>
-                <phase>install</phase>
-                <configuration>
-                  <artifacts>
-                    <artifact>
-                      <file>${project.build.outputDirectory}/${project.artifactId}-${project.version}.jar</file>
-                      <type>jar</type>
-                      <classifier>javadoc</classifier>
-                    </artifact>
-                  </artifacts>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <!-- static code analysis profiles -->
-    <profile>
-      <id>skip-check</id>
-      <activation>
-        <property>
-          <name>skipChecks</name>
-        </property>
-      </activation>
-      <build>
-        <pluginManagement>
-          <plugins>
-            <plugin>
-              <groupId>org.openhab.tools.sat</groupId>
-              <artifactId>sat-plugin</artifactId>
-              <version>${sat.version}</version>
-              <executions>
-                <execution>
-                  <id>sat-all</id>
-                  <phase>none</phase>
-                </execution>
-              </executions>
-            </plugin>
-          </plugins>
-        </pluginManagement>
-      </build>
-    </profile>
-    <profile>
-      <id>check-bundles</id>
-      <activation>
-        <file>
-          <exists>META-INF/MANIFEST.MF</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.openhab.tools.sat</groupId>
-            <artifactId>sat-plugin</artifactId>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+  <modules>
+    <module>bom</module>
+    <module>demo</module>
+    <module>thirdparty</module>
+    <module>bundles</module>
+    <module>extensions</module>
+    <module>features</module>
+    <!--<module>tools</module> -->
+  </modules>
 
 </project>

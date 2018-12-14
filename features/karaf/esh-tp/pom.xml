@@ -3,12 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome</groupId>
-    <artifactId>karaf-features</artifactId>
+    <groupId>org.eclipse.smarthome.features.karaf</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.features.karaf</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>esh-tp</artifactId>
+  <artifactId>org.eclipse.smarthome.features.karaf.esh-tp</artifactId>
   <packaging>feature</packaging>
 
   <name>Eclipse SmartHome Target Platform Feature</name>
@@ -18,16 +18,6 @@
       <plugin>
         <groupId>org.apache.karaf.tooling</groupId>
         <artifactId>karaf-maven-plugin</artifactId>
-        <version>${karaf.version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <startLevel>60</startLevel>
-          <aggregateFeatures>true</aggregateFeatures>
-          <checkDependencyChange>true</checkDependencyChange>
-          <failOnDependencyChange>false</failOnDependencyChange>
-          <logDependencyChanges>true</logDependencyChanges>
-          <overwriteChangedDependencies>true</overwriteChangedDependencies>
-        </configuration>
       </plugin>
     </plugins>
   </build>

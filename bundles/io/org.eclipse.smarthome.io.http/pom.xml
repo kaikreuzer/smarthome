@@ -4,14 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>io</artifactId>
-    <groupId>org.eclipse.smarthome.bundles</groupId>
+    <groupId>org.eclipse.smarthome.io</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles.io</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.io</groupId>
-  <artifactId>org.eclipse.smarthome.io.http</artifactId>
 
-  <packaging>eclipse-plugin</packaging>
+  <artifactId>org.eclipse.smarthome.io.http</artifactId>
 
   <name>Eclipse SmartHome HTTP Interface</name>
 

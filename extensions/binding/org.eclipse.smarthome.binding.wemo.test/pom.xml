@@ -5,12 +5,13 @@
 
   <parent>
     <groupId>org.eclipse.smarthome.binding</groupId>
-    <artifactId>pom</artifactId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.binding</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.binding</groupId>
+
   <artifactId>org.eclipse.smarthome.binding.wemo.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
+
   <name>Eclipse SmartHome Wemo Binding Tests</name>
 
   <build>
@@ -156,9 +157,9 @@
               <autoStart>true</autoStart>
             </bundle>
           </bundleStartLevel>
-          <!--This property should specify the symbolic name of a bundle which contains a directory called jettyhome/. The` jettyhome/` 
-						directory should have a subdirectory called etc/ that contains the xml files to be applied to Jetty on startup. The jetty-osgi-boot.jar 
-						contains a` jettyhome/` directory with a default set of xml configuration files. -->
+          <!--This property should specify the symbolic name of a bundle which contains a directory called jettyhome/. The` jettyhome/`
+          directory should have a subdirectory called etc/ that contains the xml files to be applied to Jetty on startup. The jetty-osgi-boot.jar
+          contains a` jettyhome/` directory with a default set of xml configuration files. -->
           <argLine>-Djetty.port=9090 -Djetty.home.bundle=org.eclipse.jetty.osgi.boot</argLine>
         </configuration>
       </plugin>

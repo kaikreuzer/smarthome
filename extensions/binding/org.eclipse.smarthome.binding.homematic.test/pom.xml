@@ -5,12 +5,13 @@
 
   <parent>
     <groupId>org.eclipse.smarthome.binding</groupId>
-    <artifactId>pom</artifactId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.binding</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.binding</groupId>
+
   <artifactId>org.eclipse.smarthome.binding.homematic.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
+
   <name>Eclipse SmartHome Homematic Binding Tests</name>
 
   <build>

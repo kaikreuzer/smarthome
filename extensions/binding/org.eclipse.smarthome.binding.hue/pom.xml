@@ -5,13 +5,12 @@
 
   <parent>
     <groupId>org.eclipse.smarthome.binding</groupId>
-    <artifactId>pom</artifactId>
+    <artifactId>org.eclipse.smarthome.reactor.extensions.binding</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.eclipse.smarthome.binding</groupId>
   <artifactId>org.eclipse.smarthome.binding.hue</artifactId>
-  <packaging>eclipse-plugin</packaging>
+
 
   <name>Eclipse SmartHome hue Binding</name>
 

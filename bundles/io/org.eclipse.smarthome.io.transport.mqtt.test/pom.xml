@@ -4,13 +4,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.eclipse.smarthome.bundles</groupId>
-    <artifactId>io</artifactId>
+    <groupId>org.eclipse.smarthome.io</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles.io</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.io</groupId>
-  <artifactId>org.eclipse.smarthome.io.transport.mqtt.test</artifactId>
 
+  <artifactId>org.eclipse.smarthome.io.transport.mqtt.test</artifactId>
   <packaging>eclipse-test-plugin</packaging>
 
   <name>Eclipse SmartHome Mqtt Transport I/O Tests</name>

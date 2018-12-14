@@ -4,15 +4,21 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>io</artifactId>
-    <groupId>org.eclipse.smarthome.bundles</groupId>
+    <groupId>org.eclipse.smarthome.io</groupId>
+    <artifactId>org.eclipse.smarthome.reactor.bundles.io</artifactId>
     <version>0.11.0-SNAPSHOT</version>
   </parent>
-  <groupId>org.eclipse.smarthome.io</groupId>
+
   <artifactId>org.eclipse.smarthome.io.http.auth.basic</artifactId>
 
-  <packaging>eclipse-plugin</packaging>
-
   <name>Eclipse SmartHome HTTP Interface Basic Authentication</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.io</groupId>
+      <artifactId>org.eclipse.smarthome.io.http.auth</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>
