@@ -47,7 +47,6 @@
     <maven.compiler.compilerVersion>${esh.java.version}</maven.compiler.compilerVersion>
 
     <bnd.version>4.1.0</bnd.version>
-    <jetty.version>9.4.11.v20180605</jetty.version>
     <karaf.version>4.2.1</karaf.version>
     <sat.version>0.5.0</sat.version>
     <slf4j.version>1.7.21</slf4j.version>
@@ -114,6 +113,13 @@
         <version>${project.version}</version>
         <type>pom</type>
         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.smarthome.bom</groupId>
+        <artifactId>org.eclipse.smarthome.bom.test</artifactId>
+        <version>${project.version}</version>
+        <type>pom</type>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -347,6 +353,12 @@ Import-Package: \\
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-site-plugin</artifactId>
           <version>3.7.1</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.22.1</version>
         </plugin>
 
         <plugin>

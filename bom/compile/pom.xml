@@ -16,6 +16,10 @@
   <name>Eclipse SmartHome # BOM # Compile</name>
   <description>The dependencies that are used to compile the core bundles</description>
 
+  <properties>
+    <jetty.version>9.3.25.v20180904</jetty.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.osgi</groupId>
@@ -105,6 +109,12 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-proxy</artifactId>
+      <version>${jetty.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
       <version>${jetty.version}</version>
       <scope>compile</scope>
     </dependency>

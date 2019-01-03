@@ -13,6 +13,10 @@
 
   <name>Eclipse SmartHome Target Platform Feature</name>
 
+  <properties>
+    <jetty.version>9.4.11.v20180605</jetty.version>
+  </properties>
+
   <build>
     <plugins>
       <plugin>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -10,21 +11,28 @@
   </parent>
 
   <artifactId>org.eclipse.smarthome.test</artifactId>
-  <packaging>eclipse-test-plugin</packaging>
 
   <name>Eclipse SmartHome Test</name>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>${tycho-groupid}</groupId>
-        <artifactId>target-platform-configuration</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>${tycho-groupid}</groupId>
-        <artifactId>tycho-surefire-plugin</artifactId>
-      </plugin>
-    </plugins>
-  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.smarthome.bom</groupId>
+      <artifactId>org.eclipse.smarthome.bom.compile</artifactId>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.smarthome.bom</groupId>
+      <artifactId>org.eclipse.smarthome.bom.test</artifactId>
+      <type>pom</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.smarthome.core</groupId>
+      <artifactId>org.eclipse.smarthome.core</artifactId>
+      <version>${project.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+  </dependencies>
 
 </project>

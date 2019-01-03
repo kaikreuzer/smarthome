@@ -20,6 +20,9 @@
     <module>compile</module>
     <module>compile-model</module>
     <module>runtime</module>
+    <module>runtime-index</module>
+    <module>test</module>
+    <module>test-index</module>
     <module>esh-core</module>
     <module>esh-ext</module>
   </modules>

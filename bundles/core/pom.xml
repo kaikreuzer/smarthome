@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -28,17 +29,27 @@
     <module>org.eclipse.smarthome.core.thing.xml</module>
     <module>org.eclipse.smarthome.core.transform</module>
     <module>org.eclipse.smarthome.core.voice</module>
-    <!--
-    <module>org.eclipse.smarthome.core.audio.test</module>
-    <module>org.eclipse.smarthome.core.id.test</module>
-    <module>org.eclipse.smarthome.core.test</module>
-    <module>org.eclipse.smarthome.core.thing.test</module>
-    <module>org.eclipse.smarthome.core.semantics.test</module>
-    <module>org.eclipse.smarthome.core.transform.test</module>
-    <module>org.eclipse.smarthome.core.binding.xml.test</module>
-    <module>org.eclipse.smarthome.core.thing.xml.test</module>
-    <module>org.eclipse.smarthome.core.voice.test</module>
-    -->
   </modules>
+
+  <profiles>
+    <profile>
+      <activation>
+        <property>
+          <name>!skipTests</name>
+        </property>
+      </activation>
+      <modules>
+        <module>org.eclipse.smarthome.core.test</module>
+        <!-- <module>org.eclipse.smarthome.core.audio.test</module> -->
+        <!-- <module>org.eclipse.smarthome.core.id.test</module> -->
+        <!-- <module>org.eclipse.smarthome.core.thing.test</module> -->
+        <!-- <module>org.eclipse.smarthome.core.semantics.test</module> -->
+        <!-- <module>org.eclipse.smarthome.core.transform.test</module> -->
+        <!-- <module>org.eclipse.smarthome.core.binding.xml.test</module> -->
+        <!-- <module>org.eclipse.smarthome.core.thing.xml.test</module> -->
+        <!-- <module>org.eclipse.smarthome.core.voice.test</module> -->
+      </modules>
+    </profile>
+  </profiles>
 
 </project>
