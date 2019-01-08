@@ -167,12 +167,6 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
-      <groupId>org.eclipse.smarthome.binding</groupId>
-      <artifactId>org.eclipse.smarthome.binding.yahooweather</artifactId>
-      <version>${project.version}</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.smarthome.extensionservice</groupId>
       <artifactId>org.eclipse.smarthome.extensionservice.marketplace</artifactId>
       <version>${project.version}</version>
